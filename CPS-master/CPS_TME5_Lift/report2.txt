@@ -1,0 +1,16 @@
+Testsuite: lift.test.Lift2Test
+Tests run: 6, Failures: 0, Errors: 1, Time elapsed: 0,042 sec
+
+Testcase: testInitPre3 took 0,022 sec
+Testcase: testInitPre4 took 0,001 sec
+Testcase: testOpenDoorPre1 took 0,002 sec
+Testcase: testOpenDoorPre2 took 0,002 sec
+	Caused an ERROR
+Invariant failed: La porte n'est pas ouverte pendant l'attente
+lift.contracts.InvariantError: Invariant failed: La porte n'est pas ouverte pendant l'attente
+	at lift.contracts.LiftContract.checkInvariant(LiftContract.java:33)
+	at lift.contracts.LiftContract.closeDoor(LiftContract.java:351)
+	at lift.test.AbstractLiftTest.testOpenDoorPre2(AbstractLiftTest.java:104)
+
+Testcase: testInitPre1 took 0 sec
+Testcase: testInitPre2 took 0 sec

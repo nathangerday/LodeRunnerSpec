@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.1.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>50</x>
+      <y>140</y>
+      <w>200</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+Bridge</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>240</x>
+      <y>140</y>
+      <w>230</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=()-
+CarSensorClientService
+
+</panel_attributes>
+    <additional_attributes>210.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>240</x>
+      <y>200</y>
+      <w>210</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=()-
+Bridge Service</panel_attributes>
+    <additional_attributes>190.0;140.0;90.0;140.0;90.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>640</x>
+      <y>320</y>
+      <w>200</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+
+
+BridgeController</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>830</x>
+      <y>380</y>
+      <w>220</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=()-
+BridgeControllerService</panel_attributes>
+    <additional_attributes>200.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>430</x>
+      <y>390</y>
+      <w>230</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=)-
+RequireTrafficLightService</panel_attributes>
+    <additional_attributes>20.0;20.0;210.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>430</x>
+      <y>320</y>
+      <w>230</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=)-
+RequireBridgeService</panel_attributes>
+    <additional_attributes>20.0;20.0;210.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>1290</x>
+      <y>220</y>
+      <w>200</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+
+
+BridgeSimulator</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1130</x>
+      <y>140</y>
+      <w>290</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=)-
+RequireCarSensorServerService</panel_attributes>
+    <additional_attributes>20.0;20.0;50.0;20.0;50.0;100.0;160.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1030</x>
+      <y>300</y>
+      <w>330</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=)-
+RequireBridgeControllerService</panel_attributes>
+    <additional_attributes>20.0;100.0;90.0;100.0;90.0;10.0;260.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>720</x>
+      <y>130</y>
+      <w>200</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+CarSensor
+group=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>910</x>
+      <y>140</y>
+      <w>240</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=()-
+CarSensorServerService
+
+
+group=2</panel_attributes>
+    <additional_attributes>220.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>450</x>
+      <y>140</y>
+      <w>290</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=)-
+RequireCarSensorClientService
+group=2</panel_attributes>
+    <additional_attributes>20.0;20.0;270.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>50</x>
+      <y>380</y>
+      <w>200</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+TrafficLight</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>240</x>
+      <y>390</y>
+      <w>210</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=()-
+TrafficLightService</panel_attributes>
+    <additional_attributes>190.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>20</x>
+      <y>30</y>
+      <w>1530</w>
+      <h>540</h>
+    </coordinates>
+    <panel_attributes>BridgeSimulator</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

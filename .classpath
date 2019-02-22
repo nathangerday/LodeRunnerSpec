@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="CPS-master/CPS_Switch/src"/>
+	<classpathentry kind="src" path="CPS-master/CPS_TD3_Compte/src"/>
+	<classpathentry kind="src" path="CPS-master/CPS_TME1_Dataflow/src"/>
+	<classpathentry kind="src" path="CPS-master/CPS_TME2_Maleva/src"/>
+	<classpathentry kind="src" path="CPS-master/CPS_TME3_FilesPrio/src"/>
+	<classpathentry kind="src" path="CPS-master/CPS_TME4_Bridge/src"/>
+	<classpathentry kind="src" path="CPS-master/CPS_TME5_Lift/src"/>
+	<classpathentry kind="src" path="CPS-master/CPS_TME6_Projet/src"/>
+	<classpathentry kind="src" path="CPS-master/CPS_TME7_Projet/src"/>
+	<classpathentry kind="src" path="TME1/src"/>
+	<classpathentry kind="src" path="TME2/src"/>
+	<classpathentry kind="src" path="Umlet/custom_elements"/>
+	<classpathentry kind="lib" path="CPS-master/CPS_TME5_Lift/jars/junit.jar"/>
+	<classpathentry kind="lib" path="CPS-master/CPS_TME5_Lift/jars/lift1.jar"/>
+	<classpathentry kind="lib" path="CPS-master/CPS_TME5_Lift/jars/lift2.jar"/>
+	<classpathentry kind="lib" path="CPS-master/CPS_TME5_Lift/jars/lift3.jar"/>
+	<classpathentry kind="lib" path="CPS-master/TME7-Lemmings-TRAN-HALIFA-20160323.jar"/>
+	<classpathentry kind="lib" path="TME1-Dataflow-GERDAY NATHAN-GOMEZ PIERRE-20190208.jar"/>
+	<classpathentry kind="lib" path="TME2-Maleva-GERDAY-YYYYY-20190217.jar"/>
+	<classpathentry kind="lib" path="TME2/TME2-Maleva-skel-20190213.jar"/>
+	<classpathentry kind="lib" path="Umlet/lib/autocomplete-2.5.8.jar"/>
+	<classpathentry kind="lib" path="Umlet/lib/batik-awt-util-1.8.jar"/>
+	<classpathentry kind="lib" path="Umlet/lib/batik-dom-1.8.jar"/>
+	<classpathentry kind="lib" path="Umlet/lib/batik-ext-1.8.jar"/>
+	<classpathentry kind="lib" path="Umlet/lib/batik-svggen-1.8.jar"/>
+	<classpathentry kind="lib" path="Umlet/lib/batik-util-1.8.jar"/>
+	<classpathentry kind="lib" path="Umlet/lib/batik-xml-1.8.jar"/>
+	<classpathentry kind="lib" path="Umlet/lib/bcel-5.2.jar"/>
+	<classpathentry kind="lib" path="Umlet/lib/commons-io-2.4.jar"/>
+	<classpathentry kind="lib" path="Umlet/lib/ecj-4.4.2.jar"/>
+	<classpathentry kind="lib" path="Umlet/lib/itextpdf-5.4.1.jar"/>
+	<classpathentry kind="lib" path="Umlet/lib/javaparser-core-2.3.0.jar"/>
+	<classpathentry kind="lib" path="Umlet/lib/javax.mail-1.5.6.jar"/>
+	<classpathentry kind="lib" path="Umlet/lib/jlibeps-0.1.jar"/>
+	<classpathentry kind="lib" path="Umlet/lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="Umlet/lib/rsyntaxtextarea-2.5.8.jar"/>
+	<classpathentry kind="lib" path="Umlet/lib/slf4j-api-1.7.7.jar"/>
+	<classpathentry kind="lib" path="Umlet/lib/slf4j-log4j12-1.7.13.jar"/>
+	<classpathentry kind="lib" path="Umlet/lib/umlet-elements-14.3.0.jar"/>
+	<classpathentry kind="lib" path="Umlet/lib/umlet-swing-14.3.0.jar"/>
+	<classpathentry kind="lib" path="Umlet/umlet.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

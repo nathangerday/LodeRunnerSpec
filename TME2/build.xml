@@ -7,7 +7,7 @@
   <property name="build" location="build"/>
 
   <!-- METTRE ICI LE NOM DU BINOME -->
-  <property name="nom1" value="XXXXX"/>
+  <property name="nom1" value="GERDAY"/>
   <property name="nom2" value="YYYYY"/>
 
   <target name="init">

@@ -14,7 +14,7 @@ public class Trouillard extends Agent {
 	/* properties */
 	
 	/* inner components */
-	CapteurProie capteur;
+	CapteurPred capteur;
 	FuirAgent fuir;
 	RandomMouvement rndmvt;
 	Effecteur effecteur;
@@ -59,7 +59,7 @@ public class Trouillard extends Agent {
 		super.initialize();
 		
 		// create inner components
-		capteur = new CapteurProie(this);
+		capteur = new CapteurPred(this);
 		fuir = new FuirAgent(this);
 		rndmvt = new RandomMouvement(this);
 		effecteur = new Effecteur(this);
@@ -84,7 +84,15 @@ public class Trouillard extends Agent {
 	public boolean step() throws LifeCycleException {
 		super.step();
 	        
-		// A COMPLETER
+		capteur.step();
+		if(fuir.step()) {
+			System.out.println("Trouillard '"+getID()+"' sees agents, flees");
+			return effecteur.step();
+		}else if(rndmvt.step()) {
+			System.out.println("Trouillard '"+getID()+"' sees nothing or cannot flee");
+			return effecteur.step();
+		}
+		System.out.println("Trouillard '"+getID()+"' sees agents, follow");
 
 		return false;
 	}

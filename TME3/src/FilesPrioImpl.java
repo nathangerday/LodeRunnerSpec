@@ -1,14 +1,12 @@
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 
 public class FilesPrioImpl<T> implements FilesPrio<T> {
 	private int size;
-	private Map<Integer, List<T>> filep;
+	private Map<Integer, LinkedList<T>> filep;
 	
 	public FilesPrioImpl() {
 		this.size = 0;
@@ -31,8 +29,8 @@ public class FilesPrioImpl<T> implements FilesPrio<T> {
 	}
 
 	@Override
-	public boolean isActive(int prio) {
-		return filep.containsKey(prio);
+	public boolean isActive(int i) {
+		return filep.containsKey(i);
 	}
 
 	@Override
@@ -44,17 +42,17 @@ public class FilesPrioImpl<T> implements FilesPrio<T> {
 	}
 
 	@Override
-	public int getSizePrio(int prio) {
-		if(filep.containsKey(prio)) {
-			return filep.get(prio).size();
+	public int getSizePrio(int i) {
+		if(filep.containsKey(i)) {
+			return filep.get(i).size();
 		}else {
 			return 0;
 		}
 	}
 
 	@Override
-	public T getPrio(int prio) {
-		return getElemPrio(prio, 0); //TODO Check quelle valeur a prendre par defaut
+	public T getPrio(int i) {
+		return getElemPrio(i, 1);
 	}
 
 	@Override
@@ -64,16 +62,16 @@ public class FilesPrioImpl<T> implements FilesPrio<T> {
 
 	@Override
 	public T getElemPrio(int i, int k) {
-		return filep.get(i).get(k);
+		return filep.get(i).get(k-1); //Les valeurs donnees commencent a 1
 	}
 
 	@Override
 	public void putPrio(int i, T e) {
 		if(filep.containsKey(i)) {
-			filep.get(i).add(e);
+			filep.get(i).addFirst(e);
 		}else {
-			List<T> tmp = new LinkedList<>();
-			tmp.add(e);
+			LinkedList<T> tmp = new LinkedList<>();
+			tmp.addFirst(e);
 			filep.put(i, tmp);
 		}
 		this.size++;
@@ -90,7 +88,7 @@ public class FilesPrioImpl<T> implements FilesPrio<T> {
 		if(filep.get(i).size() == 1) {
 			filep.remove(i);
 		}else {
-			filep.get(i).remove(0);
+			filep.get(i).removeLast();
 		}
 		this.size--;
 	}

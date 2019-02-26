@@ -47,7 +47,7 @@ public interface FilesPrio<T> {
 	//\pre i >= 0
 	//\pre e != null
 	//\post isActive(i) \impl getActivePrios() == getActivePrios()@pre
-	//\post !isActive(i) \impl (getActivePrios() \union i) == getActivePrios()@pre
+	//\post !isActive(i) \impl (getActivePrios() \Union i) == getActivePrios()@pre
 	//\post sizePrio(i) == sizePrio(i)@pre + 1
 	//\post \Forall int j \with ( j \in ( getActivePrios() \ { i }), getSizePrio(i) == getSizePrio(j)@pre
 	//\post prio(i) == e

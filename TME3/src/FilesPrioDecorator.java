@@ -3,7 +3,7 @@ import java.util.Set;
 public class FilesPrioDecorator<T> implements FilesPrio<T>{
 	private FilesPrio<T> delegates;
 	
-	public FilesPrioDecorator(FilesPrio<T> f) {
+	protected FilesPrioDecorator(FilesPrio<T> f) {
 		this.delegates = f;
 	}
 

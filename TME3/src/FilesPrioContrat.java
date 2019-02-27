@@ -32,15 +32,15 @@ public class FilesPrioContrat<T> extends FilesPrioDecorator<T> {
 //				throw new InvariantError("\\Forall int i  ( i \\in getActivePrios()) == isActive(i)");
 //			}
 //		}
-		for(int i: new Random().ints(30, 0, getSize()).toArray()) {
+		for(int i: new Random().ints(30, 0, getSize()+1).toArray()) {
 			if(getActivePrios().contains(i) != isActive(i)) {
 				throw new InvariantError("\\Forall int i  ( i \\in getActivePrios()) == isActive(i)");
 			}
 		}
 		
-		
+		//TODO Ajouter dans tout les fichiers une precondition sur getMaxPrio, tq getSize() > 0
 		//\inv getMaxPrio() == max(getActivePrios()) \with ( max(E) = \Exists int x \with (x \in E \ union {0}), \ForAll int y \with (y \in E) x >= y )
-		if(getMaxPrio() != Collections.max(getActivePrios())) {
+		if(getSize() > 0 && getMaxPrio() != Collections.max(getActivePrios())) {
 			throw new InvariantError("getMaxPrio() == max(getActivePrios()) \\with ( max(E) = \\Exists int x \\with (x \\in E \\ union {0}), \\ForAll int y \\with (y \\in E) x >= y )");
 		}
 		
@@ -67,7 +67,7 @@ public class FilesPrioContrat<T> extends FilesPrioDecorator<T> {
 		
 		//\inv \Forall int i \with (i \not \in getActivePrios()) { getSizePrio(i) == 0 }
 		Set<Integer> activesPrios = getActivePrios();
-		for(int i: new Random().ints(30, 0, getSize()).toArray()) {
+		for(int i: new Random().ints(30, 0, getSize()+1).toArray()) {
 			if(activesPrios.contains(i)) {
 				continue; // On ne s'interesse pas aux valeurs dans prio
 			}
@@ -152,21 +152,27 @@ public class FilesPrioContrat<T> extends FilesPrioDecorator<T> {
 		
 		//Captures
 		boolean isActive_at_pre = isActive(i);
-		Set<Integer> getActivePrios_at_pre = getActivePrios();
+		Set<Integer> getActivePrios_at_pre = new HashSet<Integer>(getActivePrios());
 		
-		int getSizePrio_at_pre[] = new int[getMaxPrio()];
+		int getSizePrio_at_pre[] = new int[Math.max(i, getMaxPrio())+1];
 		for(int x=0; x<getSizePrio_at_pre.length; x++) {
 			getSizePrio_at_pre[x] = getSizePrio(x);
 		}
 		
 		
-		ArrayList<ArrayList<T>> getElemPrio_at_pre = new ArrayList<>();
-		for(int x=0; x<getMaxPrio(); x++) {
-			getElemPrio_at_pre.set(x, new ArrayList<T>());
-			for(int y=1; y < getSizePrio(i); y++) {
-				getElemPrio_at_pre.get(x).set(y, getElemPrio(x,y));
+		ArrayList<ArrayList<T>> getElemPrio_at_pre = new ArrayList<>(Math.max(i, getMaxPrio()+1));
+		for(int x=0; x<=getMaxPrio(); x++) {
+			getElemPrio_at_pre.add(new ArrayList<T>(getSizePrio(i) + 2));
+			getElemPrio_at_pre.get(x).add(null); //For padding to start at 1
+			for(int y=1; y <= getSizePrio(x); y++) {
+				if(getSizePrio(x) > 0) {
+					getElemPrio_at_pre.get(x).add(getElemPrio(x,y));					
+				}else {
+					getElemPrio_at_pre.get(x).add(null);
+				}
 			}
 		}
+
 		
 		//Traitement
 		super.putPrio(i,e);
@@ -266,16 +272,21 @@ public class FilesPrioContrat<T> extends FilesPrioDecorator<T> {
 		//captures
 		Set<Integer> getActivePrios_at_pre = getActivePrios();
 		
-		int getSizePrio_at_pre[] = new int[getMaxPrio()];
+		int getSizePrio_at_pre[] = new int[getMaxPrio()+1];
 		for(int x=0; x<getSizePrio_at_pre.length; x++) {
 			getSizePrio_at_pre[x] = getSizePrio(x);
 		}
 		
-		ArrayList<ArrayList<T>> getElemPrio_at_pre = new ArrayList<>();
-		for(int x=0; x<getMaxPrio(); x++) {
-			getElemPrio_at_pre.set(x, new ArrayList<T>());
-			for(int y=1; y < getSizePrio(i); y++) {
-				getElemPrio_at_pre.get(x).set(y, getElemPrio(x,y));
+		ArrayList<ArrayList<T>> getElemPrio_at_pre = new ArrayList<>(Math.max(i, getMaxPrio()+1));
+		for(int x=0; x<=getMaxPrio(); x++) {
+			getElemPrio_at_pre.add(new ArrayList<T>(getSizePrio(i) + 2));
+			getElemPrio_at_pre.get(x).add(null); //For padding to start at 1
+			for(int y=1; y <= getSizePrio(x); y++) {
+				if(getSizePrio(x) > 0) {
+					getElemPrio_at_pre.get(x).add(getElemPrio(x,y));					
+				}else {
+					getElemPrio_at_pre.get(x).add(null);
+				}
 			}
 		}
 		

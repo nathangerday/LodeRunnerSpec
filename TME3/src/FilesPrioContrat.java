@@ -26,19 +26,12 @@ public class FilesPrioContrat<T> extends FilesPrioDecorator<T> {
 		}
 		
 		//\inv \Forall int i  ( i \in getActivePrios()) == isActive(i)
-		//TODO Choose test method
-//		for(int i: getActivePrios()) {
-//			if(!isActive(i)) {
-//				throw new InvariantError("\\Forall int i  ( i \\in getActivePrios()) == isActive(i)");
-//			}
-//		}
 		for(int i: new Random().ints(30, 0, getSize()+1).toArray()) {
 			if(getActivePrios().contains(i) != isActive(i)) {
 				throw new InvariantError("\\Forall int i  ( i \\in getActivePrios()) == isActive(i)");
 			}
 		}
 		
-		//TODO Ajouter dans tout les fichiers une precondition sur getMaxPrio, tq getSize() > 0
 		//\inv getMaxPrio() == max(getActivePrios()) \with ( max(E) = \Exists int x \with (x \in E \ union {0}), \ForAll int y \with (y \in E) x >= y )
 		if(getSize() > 0 && getMaxPrio() != Collections.max(getActivePrios())) {
 			throw new InvariantError("getMaxPrio() == max(getActivePrios()) \\with ( max(E) = \\Exists int x \\with (x \\in E \\ union {0}), \\ForAll int y \\with (y \\in E) x >= y )");

@@ -262,6 +262,23 @@ public class FilesPrioContrat<T> extends FilesPrioDecorator<T> {
 		//pre invariant
 		checkInvariant();
 		
+
+		//captures
+		Set<Integer> getActivePrios_at_pre = getActivePrios();
+		
+		int getSizePrio_at_pre[] = new int[getMaxPrio()];
+		for(int x=0; x<getSizePrio_at_pre.length; x++) {
+			getSizePrio_at_pre[x] = getSizePrio(x);
+		}
+		
+		ArrayList<ArrayList<T>> getElemPrio_at_pre = new ArrayList<>();
+		for(int x=0; x<getMaxPrio(); x++) {
+			getElemPrio_at_pre.set(x, new ArrayList<T>());
+			for(int y=1; y < getSizePrio(i); y++) {
+				getElemPrio_at_pre.get(x).set(y, getElemPrio(x,y));
+			}
+		}
+		
 		//Traitement
 		super.removePrio(i);
 		
@@ -270,11 +287,53 @@ public class FilesPrioContrat<T> extends FilesPrioDecorator<T> {
 		
 		
 		//\post getSizePrio(i)@pre > 1 \impl getActivePrios() == getActivePrios()@pre
+		if(! (getSizePrio_at_pre[i] <= 1 || getActivePrios().equals(getActivePrios_at_pre))) {
+			throw new PostconditionError("removePrio: getSizePrio(i)@pre > 1 \\impl getActivePrios() == getActivePrios()@pre");
+		}
+		
 		//\post getSizePrio(i)@pre == 1 \impl getActivePrios() == (getActivePrios()@pre \ {i})
+		Set<Integer> getActivePrios_at_pre_priv_i = new HashSet<Integer>(getActivePrios_at_pre);
+		getActivePrios_at_pre_priv_i.remove(i);
+		if(! (getSizePrio_at_pre[i] != 1 || getActivePrios().equals(getActivePrios_at_pre_priv_i))) {
+			throw new PostconditionError("removePrio: getSizePrio(i)@pre == 1 \\impl getActivePrios() == (getActivePrios()@pre \\ {i})");
+		}
+		
+		
 		//\post getSizePrio(i) == getSizePrio(i)@pre - 1
+		if(getSizePrio(i) != getSizePrio_at_pre[i] - 1) {
+			throw new PostconditionError("removePrio: getSizePrio(i) == getSizePrio(i)@pre - 1");
+		}
+		
 		//\post \Forall int j \with ( j \in ( getActivePrios()@pre \ {i} )), getSizePrio(j) == getSizePrio(j)@pre
-		//\post \Forall int k \with ( k >= 1 \and k < getSizePrio(i) - 1), getElemPrio(i,k) == getElemPrio(i,k)@pre
-		//\post \Forall int j \with ( j \in (getActivePrios()@pre \ {i})), \Forall int k \with (k >= 1 \and k < getSizePrio(j)), getElemPrio(j,k) == getElemPrio(j,k)@pre
+		for(int j : getActivePrios_at_pre) {
+			if(j==i) {
+				continue;
+			}
+			if(getSizePrio_at_pre[j] != getSizePrio(j)) {
+				throw new PostconditionError("removePrio: \\Forall int j \\with ( j \\in ( getActivePrios()@pre \\ {i} )), getSizePrio(j) == getSizePrio(j)@pre");
+			}
+		}
+		
+		
+		//\post \Forall int k \with ( k >= 1 \and k <= getSizePrio(i) - 1), getElemPrio(i,k) == getElemPrio(i,k)@pre
+		for(int k=1; k<=getSizePrio(i)-1; k++) {
+			if(!getElemPrio(i, k).equals(getElemPrio_at_pre.get(i).get(k))) {
+				throw new PostconditionError("removePrio: \\Forall int k \\with ( k >= 1 \\and k <= getSizePrio(i) - 1), getElemPrio(i,k) == getElemPrio(i,k)@pre");
+			}
+		}
+		
+		
+		//\post \Forall int j \with ( j \in (getActivePrios()@pre \ {i})), \Forall int k \with (k >= 1 \and k <= getSizePrio(j)), getElemPrio(j,k) == getElemPrio(j,k)@pre
+		for(int j : getActivePrios_at_pre) {
+			if(j == i) {
+				continue;
+			}
+			for(int k=1; k<=getSizePrio(j); k++) {
+				if(!getElemPrio(j, k).equals(getElemPrio_at_pre.get(j).get(k))) {
+					throw new PostconditionError("removePrio: \\Forall int j \\with ( j \\in (getActivePrios()@pre \\ {i})), \\Forall int k \\with (k >= 1 \\and k <= getSizePrio(j)), getElemPrio(j,k) == getElemPrio(j,k)@pre");
+				}
+			}
+		}
 		
 	}
 	
@@ -286,6 +345,7 @@ public class FilesPrioContrat<T> extends FilesPrioDecorator<T> {
 		
 		//pre invariant
 		checkInvariant();
+		
 		
 		//Traitement
 		super.remove();

@@ -9,6 +9,8 @@ public class TestFilePrio {
 		f.putPrio(10, "Hello");
 		f.putPrio(10, "world");
 		f.putPrio(20, "Cruel");
+		f.putPrio(20, "Cruel2");
+		f.putPrio(20, "Cruel3");
 		f.put("T1");
 		f.putPrio(10, "T2");
 		f.putPrio(5, "TEST3");

@@ -21,7 +21,8 @@ public interface FilesPrio<T> {
 	//`pre k <= getSizePrios(i)
 	public T getElemPrio(int i, int k);
 
-		
+	
+	public void init();
 	/* Invariants */
 	
 	
@@ -34,7 +35,7 @@ public interface FilesPrio<T> {
 	
 	//\inv \Forall int i \with (i \in getActivePrios()) { getSizePrio(i) > 0 }
 	//\inv \Forall int i \with (i \not \in getActivePrios()) { getSizePrio(i) == 0 }
-	//\inv \Forall int i \with (i \in getActivePrios(), \Forall int k \with (k >= 1 \and k < getSizePrio(i)), { getElemPrio(i, k) != null }
+	//\inv \Forall int i \with (i \in getActivePrios(), \Forall int k \with (k >= 1 \and k <= getSizePrio(i)), { getElemPrio(i, k) != null }
 	
 	
 	/* Constructors */
@@ -48,8 +49,8 @@ public interface FilesPrio<T> {
 	//\post getSizePrio(i) == getSizePrio(i)@pre + 1
 	//\post \Forall int j \with ( j \in ( getActivePrios() \ { i })), getSizePrio(j) == getSizePrio(j)@pre
 	//\post getPrio(i) == e
-	//\post \Forall int k \with ( k >= 2 \and k < getSizePrio(i)@pre+1 ), getElemPrio(i, k) == getElemPrio(i, k-1)@pre
-	//\post \Forall int j \with ( j \in -getActivePrios()@pre \ { i })), \Forall int k \with ( k >= 1 \and k < getSizePrio(j)@pre ), getElemPrio(j,k) == getElemPrio(j,k)@pre
+	//\post \Forall int k \with ( k >= 2 \and k <= getSizePrio(i)@pre+1 ), getElemPrio(i, k) == getElemPrio(i, k-1)@pre
+	//\post \Forall int j \with ( j \in getActivePrios()@pre \ { i })), \Forall int k \with ( k >= 1 \and k <= getSizePrio(j)@pre ), getElemPrio(j,k) == getElemPrio(j,k)@pre
 	public void putPrio(int i, T e);
 	
 	//\pre e != null
@@ -61,7 +62,7 @@ public interface FilesPrio<T> {
 	//\post getSizePrio(i)@pre == 1 \impl getActivePrios() == (getActivePrios()@pre \ {i})
 	//\post getSizePrio(i) == getSizePrio(i)@pre - 1
 	//\post \Forall int j \with ( j \in ( getActivePrios()@pre \ {i} )), getSizePrio(j) == getSizePrio(j)@pre
-	//\post \Forall int k \with ( k >= 1 \and k < getSizePrio(i) - 1), getElemPrio(i,k) == getElemPrio(i,k)@pre
+	//\post \Forall int k \with ( k >= 1 \and k <= getSizePrio(i) - 1), getElemPrio(i,k) == getElemPrio(i,k)@pre
 	//\post \Forall int j \with ( j \in (getActivePrios()@pre \ {i})), \Forall int k \with (k >= 1 \and k < getSizePrio(j)), getElemPrio(j,k) == getElemPrio(j,k)@pre
 	public void removePrio(int i);
 	

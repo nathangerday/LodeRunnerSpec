@@ -6,6 +6,10 @@ public class FilesPrioDecorator<T> implements FilesPrio<T>{
 	protected FilesPrioDecorator(FilesPrio<T> f) {
 		this.delegates = f;
 	}
+	
+	public void init() {
+		this.delegates.init();
+	}
 
 	public int getSize() {
 		return delegates.getSize();

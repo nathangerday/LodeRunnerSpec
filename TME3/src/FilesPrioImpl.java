@@ -9,6 +9,10 @@ public class FilesPrioImpl<T> implements FilesPrio<T> {
 	private Map<Integer, LinkedList<T>> filep;
 	
 	public FilesPrioImpl() {
+		this.init();
+	}
+	
+	public void init() {
 		this.size = 0;
 		this.filep = new HashMap<>();
 	}

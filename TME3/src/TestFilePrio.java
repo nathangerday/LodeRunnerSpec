@@ -1,7 +1,7 @@
 
 public class TestFilePrio {
 	public static void main(String[] args) {
-		FilesPrio<String> fp = new FilesPrioImplBug<>();
+		FilesPrio<String> fp = new FilesPrioImpl<>();
 		FilesPrio<String> f = new FilesPrioContrat<String>(fp);
 		f.init();
 		

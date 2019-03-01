@@ -128,51 +128,8 @@ public class FilesPrioContrat<T> extends FilesPrioDecorator<T> {
 		
 		return super.getElemPrio(i, k);
 	}
-
-	public void putPrio(int i, T e) {
-		//\pre i >= 0
-		if(i < 0) {
-			throw new PreconditionError("putPrio: i >= 0");
-		}
-		
-		//\pre e != null
-		if(e == null) {
-			throw new PreconditionError("putPrio: e != null");
-		}
-		
-		//pre invariant
-		checkInvariant();
-		
-		//Captures
-		boolean isActive_at_pre = isActive(i);
-		Set<Integer> getActivePrios_at_pre = new HashSet<Integer>(getActivePrios());
-		
-		int getSizePrio_at_pre[] = new int[Math.max(i, getMaxPrio())+1];
-		for(int x=0; x<getSizePrio_at_pre.length; x++) {
-			getSizePrio_at_pre[x] = getSizePrio(x);
-		}
-		
-		
-		ArrayList<ArrayList<T>> getElemPrio_at_pre = new ArrayList<>(Math.max(i, getMaxPrio()+1));
-		for(int x=0; x<=getMaxPrio(); x++) {
-			getElemPrio_at_pre.add(new ArrayList<T>(getSizePrio(i) + 2));
-			getElemPrio_at_pre.get(x).add(null); //For padding to start at 1
-			for(int y=1; y <= getSizePrio(x); y++) {
-				if(getSizePrio(x) > 0) {
-					getElemPrio_at_pre.get(x).add(getElemPrio(x,y));					
-				}else {
-					getElemPrio_at_pre.get(x).add(null);
-				}
-			}
-		}
-
-		
-		//Traitement
-		super.putPrio(i,e);
-		
-		//post invariant
-		checkInvariant();
-		
+	
+	private void checkPostConditionPutPrio(int i, T e, boolean isActive_at_pre, Set<Integer> getActivePrios_at_pre, int getSizePrio_at_pre[],ArrayList<ArrayList<T>> getElemPrio_at_pre  ) {
 		//\post isActive(i)@pre \impl getActivePrios() == getActivePrios()@pre
 		if(! (!isActive_at_pre || getActivePrios().equals(getActivePrios_at_pre))) {
 			throw new PostconditionError("putPrio: isActive(i)@pre \\impl getActivePrios() == getActivePrios()@pre");
@@ -229,67 +186,9 @@ public class FilesPrioContrat<T> extends FilesPrioDecorator<T> {
 				}
 			}
 		}
-		
-		
 	}
 	
-	public void put(T e) {
-		//\pre e != null
-		if(e == null) {
-			throw new PreconditionError("put: e != null");
-		}
-		
-		//pre invariant
-		checkInvariant();
-		
-		//Traitement
-		super.put(e);
-		
-		//post invariant
-		checkInvariant();
-		
-		//\define put(e) = putPrio(e, getMaxPrio())
-		
-	}
-	
-	public void removePrio(int i) {
-		//\pre getSizePrio(i) > 0
-		if(getSizePrio(i) <= 0) {
-			throw new PreconditionError("removePrio: getSizePrio(i) > 0");
-		}
-		
-		//pre invariant
-		checkInvariant();
-		
-
-		//captures
-		Set<Integer> getActivePrios_at_pre = getActivePrios();
-		
-		int getSizePrio_at_pre[] = new int[getMaxPrio()+1];
-		for(int x=0; x<getSizePrio_at_pre.length; x++) {
-			getSizePrio_at_pre[x] = getSizePrio(x);
-		}
-		
-		ArrayList<ArrayList<T>> getElemPrio_at_pre = new ArrayList<>(Math.max(i, getMaxPrio()+1));
-		for(int x=0; x<=getMaxPrio(); x++) {
-			getElemPrio_at_pre.add(new ArrayList<T>(getSizePrio(i) + 2));
-			getElemPrio_at_pre.get(x).add(null); //For padding to start at 1
-			for(int y=1; y <= getSizePrio(x); y++) {
-				if(getSizePrio(x) > 0) {
-					getElemPrio_at_pre.get(x).add(getElemPrio(x,y));					
-				}else {
-					getElemPrio_at_pre.get(x).add(null);
-				}
-			}
-		}
-		
-		//Traitement
-		super.removePrio(i);
-		
-		//post invariant
-		checkInvariant();
-		
-		
+	private void checkPostConditionRemovePrio(int i, Set<Integer> getActivePrios_at_pre, int getSizePrio_at_pre[],ArrayList<ArrayList<T>> getElemPrio_at_pre ) {
 		//\post getSizePrio(i)@pre > 1 \impl getActivePrios() == getActivePrios()@pre
 		if(! (getSizePrio_at_pre[i] <= 1 || getActivePrios().equals(getActivePrios_at_pre))) {
 			throw new PostconditionError("removePrio: getSizePrio(i)@pre > 1 \\impl getActivePrios() == getActivePrios()@pre");
@@ -338,7 +237,141 @@ public class FilesPrioContrat<T> extends FilesPrioDecorator<T> {
 				}
 			}
 		}
+				
+	}
+	
+
+	public void putPrio(int i, T e) {
+		//\pre i >= 0
+		if(i < 0) {
+			throw new PreconditionError("putPrio: i >= 0");
+		}
 		
+		//\pre e != null
+		if(e == null) {
+			throw new PreconditionError("putPrio: e != null");
+		}
+		
+		//pre invariant
+		checkInvariant();
+		
+		//Captures
+		boolean isActive_at_pre = isActive(i);
+		Set<Integer> getActivePrios_at_pre = new HashSet<Integer>(getActivePrios());
+		
+		int getSizePrio_at_pre[] = new int[Math.max(i, getMaxPrio())+1];
+		for(int x=0; x<getSizePrio_at_pre.length; x++) {
+			getSizePrio_at_pre[x] = getSizePrio(x);
+		}
+		
+		
+		ArrayList<ArrayList<T>> getElemPrio_at_pre = new ArrayList<>(Math.max(i, getMaxPrio()+1));
+		for(int x=0; x<=getMaxPrio(); x++) {
+			getElemPrio_at_pre.add(new ArrayList<T>(getSizePrio(i) + 2));
+			getElemPrio_at_pre.get(x).add(null); //For padding to start at 1
+			for(int y=1; y <= getSizePrio(x); y++) {
+				if(getSizePrio(x) > 0) {
+					getElemPrio_at_pre.get(x).add(getElemPrio(x,y));					
+				}else {
+					getElemPrio_at_pre.get(x).add(null);
+				}
+			}
+		}
+
+		
+		//Traitement
+		super.putPrio(i,e);
+		
+		//post invariant
+		checkInvariant();
+		
+		//post condition
+		checkPostConditionPutPrio(i, e, isActive_at_pre, getActivePrios_at_pre, getSizePrio_at_pre, getElemPrio_at_pre);	
+	}
+	
+	public void put(T e) {
+		//\pre e != null
+		if(e == null) {
+			throw new PreconditionError("put: e != null");
+		}
+		
+		//pre invariant
+		checkInvariant();
+		
+		//Captures
+		int i = getMaxPrio();
+		boolean isActive_at_pre = isActive(i);
+		Set<Integer> getActivePrios_at_pre = new HashSet<Integer>(getActivePrios());
+		
+		int getSizePrio_at_pre[] = new int[Math.max(i, getMaxPrio())+1];
+		for(int x=0; x<getSizePrio_at_pre.length; x++) {
+			getSizePrio_at_pre[x] = getSizePrio(x);
+		}
+		
+		
+		ArrayList<ArrayList<T>> getElemPrio_at_pre = new ArrayList<>(Math.max(i, getMaxPrio()+1));
+		for(int x=0; x<=getMaxPrio(); x++) {
+			getElemPrio_at_pre.add(new ArrayList<T>(getSizePrio(i) + 2));
+			getElemPrio_at_pre.get(x).add(null); //For padding to start at 1
+			for(int y=1; y <= getSizePrio(x); y++) {
+				if(getSizePrio(x) > 0) {
+					getElemPrio_at_pre.get(x).add(getElemPrio(x,y));					
+				}else {
+					getElemPrio_at_pre.get(x).add(null);
+				}
+			}
+		}
+		
+		//Traitement
+		super.put(e);
+		
+		//post invariant
+		checkInvariant();
+		
+		//\define put(e) = putPrio(e, getMaxPrio())
+		checkPostConditionPutPrio(getMaxPrio(), e, isActive_at_pre, getActivePrios_at_pre, getSizePrio_at_pre, getElemPrio_at_pre);
+		
+	}
+	
+	public void removePrio(int i) {
+		//\pre getSizePrio(i) > 0
+		if(getSizePrio(i) <= 0) {
+			throw new PreconditionError("removePrio: getSizePrio(i) > 0");
+		}
+		
+		//pre invariant
+		checkInvariant();
+		
+
+		//captures
+		Set<Integer> getActivePrios_at_pre = getActivePrios();
+		
+		int getSizePrio_at_pre[] = new int[getMaxPrio()+1];
+		for(int x=0; x<getSizePrio_at_pre.length; x++) {
+			getSizePrio_at_pre[x] = getSizePrio(x);
+		}
+		
+		ArrayList<ArrayList<T>> getElemPrio_at_pre = new ArrayList<>(Math.max(i, getMaxPrio()+1));
+		for(int x=0; x<=getMaxPrio(); x++) {
+			getElemPrio_at_pre.add(new ArrayList<T>(getSizePrio(i) + 2));
+			getElemPrio_at_pre.get(x).add(null); //For padding to start at 1
+			for(int y=1; y <= getSizePrio(x); y++) {
+				if(getSizePrio(x) > 0) {
+					getElemPrio_at_pre.get(x).add(getElemPrio(x,y));					
+				}else {
+					getElemPrio_at_pre.get(x).add(null);
+				}
+			}
+		}
+		
+		//Traitement
+		super.removePrio(i);
+		
+		//post invariant
+		checkInvariant();
+		
+		//post condition
+		checkPostConditionRemovePrio(i, getActivePrios_at_pre, getSizePrio_at_pre, getElemPrio_at_pre);	
 	}
 	
 	public void remove() {
@@ -350,6 +383,28 @@ public class FilesPrioContrat<T> extends FilesPrioDecorator<T> {
 		//pre invariant
 		checkInvariant();
 		
+		//captures
+		int i = getMaxPrio();
+		Set<Integer> getActivePrios_at_pre = getActivePrios();
+		
+		int getSizePrio_at_pre[] = new int[getMaxPrio()+1];
+		for(int x=0; x<getSizePrio_at_pre.length; x++) {
+			getSizePrio_at_pre[x] = getSizePrio(x);
+		}
+		
+		ArrayList<ArrayList<T>> getElemPrio_at_pre = new ArrayList<>(Math.max(i, getMaxPrio()+1));
+		for(int x=0; x<=getMaxPrio(); x++) {
+			getElemPrio_at_pre.add(new ArrayList<T>(getSizePrio(i) + 2));
+			getElemPrio_at_pre.get(x).add(null); //For padding to start at 1
+			for(int y=1; y <= getSizePrio(x); y++) {
+				if(getSizePrio(x) > 0) {
+					getElemPrio_at_pre.get(x).add(getElemPrio(x,y));					
+				}else {
+					getElemPrio_at_pre.get(x).add(null);
+				}
+			}
+		}
+		
 		
 		//Traitement
 		super.remove();
@@ -358,6 +413,7 @@ public class FilesPrioContrat<T> extends FilesPrioDecorator<T> {
 		checkInvariant();
 		
 		//\define remove() = removePrio(getMaxPrio())
+		checkPostConditionRemovePrio(i, getActivePrios_at_pre, getSizePrio_at_pre, getElemPrio_at_pre);
 		
 	}
 	

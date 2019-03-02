@@ -25,11 +25,7 @@
 
   <target name="run" depends="compile"
           description="run examples">
-    <!-- <echo>================ Run Maleva simulator ================</echo> -->
     <java classname="TestFilePrio" classpath="${build}">
-       <!-- <arg value="200" description="numSteps"/>
-       <arg value="2" description="numMechants"/>
-       <arg value="3" description="numTrouillards"/> -->
     </java>
   </target>
 

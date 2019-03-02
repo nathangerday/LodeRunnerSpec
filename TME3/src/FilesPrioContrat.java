@@ -129,6 +129,12 @@ public class FilesPrioContrat<T> extends FilesPrioDecorator<T> {
 		return super.getElemPrio(i, k);
 	}
 	
+	
+	/*
+	 * On verifie les post condition dans une fonction afin de pouvoir tester les memes post conditions
+	 * sur putPrio et sur put ( car put define putPrio )
+	 * Toutes les captures sont passees en parametres.
+	 */
 	private void checkPostConditionPutPrio(int i, T e, boolean isActive_at_pre, Set<Integer> getActivePrios_at_pre, int getSizePrio_at_pre[],ArrayList<ArrayList<T>> getElemPrio_at_pre  ) {
 		//\post isActive(i)@pre \impl getActivePrios() == getActivePrios()@pre
 		if(! (!isActive_at_pre || getActivePrios().equals(getActivePrios_at_pre))) {
@@ -188,6 +194,13 @@ public class FilesPrioContrat<T> extends FilesPrioDecorator<T> {
 		}
 	}
 	
+	
+
+	/*
+	 * On verifie les post condition dans une fonction afin de pouvoir tester les memes post conditions
+	 * sur removePrio et sur remove ( car remove define removePrio)
+	 * Toutes les captures sont passees en parametres.
+	 */
 	private void checkPostConditionRemovePrio(int i, Set<Integer> getActivePrios_at_pre, int getSizePrio_at_pre[],ArrayList<ArrayList<T>> getElemPrio_at_pre ) {
 		//\post getSizePrio(i)@pre > 1 \impl getActivePrios() == getActivePrios()@pre
 		if(! (getSizePrio_at_pre[i] <= 1 || getActivePrios().equals(getActivePrios_at_pre))) {

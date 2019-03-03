@@ -31,8 +31,8 @@ public class TrafficLight implements
 	@Override
 	public void switchOn() {
 		on = true;
-		red = true;
-		green = false;
+		red = false;
+		green = true;
 	}
 
 	@Override

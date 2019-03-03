@@ -18,6 +18,9 @@ public class BridgeSimulator implements
 	private BridgeControllerService controller;
 	
 	private Random rand;
+
+	private int nbInIsland = 0;
+	private int nbInMainland = 0;
 	
 	public BridgeSimulator() {
 		sensors = new HashMap<String, CarSensorServerService>();
@@ -58,20 +61,23 @@ public class BridgeSimulator implements
 		}
 	}
 
-	
 	public void stepRandom() {
 		if(rand.nextBoolean()) {
 			sensors.get("InIsland").activate();
+			nbInIsland++;
 		}
 
 		if(rand.nextBoolean()) {
 			sensors.get("InMainland").activate();
+			nbInMainland++;
 		}
-		if(rand.nextBoolean()) {
+		if(nbInIsland > 0 && rand.nextBoolean()) {
 			sensors.get("OutIsland").activate();
+			nbInIsland--;
 		}
-		if(rand.nextBoolean()) {
+		if(nbInMainland > 0 && rand.nextBoolean()) {
 			sensors.get("OutMainland").activate();
+			nbInMainland--;
 		}
 	}
 

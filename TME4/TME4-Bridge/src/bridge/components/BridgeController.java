@@ -59,6 +59,15 @@ public class BridgeController implements
 
 	
 	public void control() {
+		if(!islandLight.isOn()) {
+			islandLight.switchOn();
+		}
+		
+		if(!mainlandLight.isOn()) {
+			mainlandLight.switchOn();
+			mainlandLight.changeRed();
+		}
+		
 		if(!bridge.isFull() && !islandLight.isRed()) {
 			islandLight.changeRed();
 			mainlandLight.changeGreen();

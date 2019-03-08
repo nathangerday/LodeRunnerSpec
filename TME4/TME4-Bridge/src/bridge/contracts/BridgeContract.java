@@ -189,9 +189,9 @@ public class BridgeContract extends LimitedRoadContract implements BridgeService
 
 	@Override
 	public void leaveOut() {
-		//pre getNbIn() > 0
-		if(! (getNbIn() > 0)) {
-			Contractor.defaultContractor().preconditionError("BridgeContract", "leaveOut", "getNbIn() > 0");
+		//pre getNbOut() > 0
+		if(! (getNbOut() > 0)) {
+			Contractor.defaultContractor().preconditionError("BridgeContract", "leaveOut", "getNbOut() > 0");
 		}
 		
 		//capture

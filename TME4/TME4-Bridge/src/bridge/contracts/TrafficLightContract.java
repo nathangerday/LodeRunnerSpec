@@ -35,7 +35,7 @@ public class TrafficLightContract extends LightContract implements TrafficLightS
 		// puis vérifier au-dessus
 		super.checkInvariant();
 		// inv'
-		boolean inv = isOn() && ((isGreen()==true && isRed()==false) || (isGreen()==false && isRed()==true));
+		boolean inv = !isOn() || ((isGreen()==true && isRed()==false) || (isGreen()==false && isRed()==true));
 		if(!inv) {
 			Contractor.defaultContractor().invariantError("TrafficLightService","The traffic light has two distinct colors !");
 		}

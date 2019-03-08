@@ -1,0 +1,27 @@
+Testsuite: lift.test.Lift1Test
+Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 sec
+------------- Standard Output ---------------
+LIFT1: begin moving up
+LIFT1: step moving up
+LIFT1: step moving up
+LIFT1: step moving up
+LIFT1: end moving up
+------------- ---------------- ---------------
+
+Testcase: testInit1 took 0.009 sec
+Testcase: testInit2 took 0 sec
+Testcase: testInit3 took 0 sec
+Testcase: testOpenDoor1 took 0 sec
+Testcase: testOpenDoor2 took 0 sec
+Testcase: testCloseDoor1 took 0 sec
+Testcase: testCloseDoor2 took 0 sec
+Testcase: testDoorAck1 took 0 sec
+Testcase: testDoorAck2 took 0 sec
+Testcase: testSelectLevel1 took 0 sec
+Testcase: testSelectLevel2 took 0 sec
+Testcase: testTransitionInit took 0 sec
+Testcase: testTransitionOpenDoor took 0 sec
+Testcase: testEtatRemarquableEtageMax took 0.002 sec
+Testcase: testPaireTransitionCloseDoor_DoorAck took 0 sec
+Testcase: testPaireTransitionDoorAck_CloseDoor took 0.001 sec
+Testcase: testScenario1 took 0 sec

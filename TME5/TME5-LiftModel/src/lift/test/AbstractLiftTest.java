@@ -74,7 +74,224 @@ public abstract class AbstractLiftTest {
 		
 		//Or: Exception PreconditionError
 	}
-	
+
+	@Test
+	public void testBeginMoveUp1(){
+		//CI
+		lift.init(2, 5);
+		lift.selectLevel(3);
+		lift.closeDoor();
+		lift.doorAck();
+
+		//Op
+		lift.beginMoveUp();
+
+		//Or Pas d'exception
+	}
+
+	@Test(expected = PreconditionError.class)
+	public void testBeginMoveUp2(){
+		//CI
+		lift.init(2, 5);
+		lift.closeDoor();
+		lift.doorAck();
+		
+		//Op
+		lift.beginMoveUp();
+
+		//Or Exception PreconditionError
+	}
+
+	@Test
+	public void testStepMoveUp1(){
+		//CI
+		lift.init(2, 5);
+		lift.selectLevel(3);
+		lift.closeDoor();
+		lift.doorAck();
+		lift.beginMoveUp();
+
+		//Op
+		lift.stepMoveUp();
+
+		//Or Pas d'exception
+	}
+	@Test(expected = PreconditionError.class)
+	public void testStepMoveUp2(){
+		//CI
+		lift.init(2, 5);
+		lift.selectLevel(3);
+		lift.closeDoor();
+		lift.doorAck();
+
+		//Op
+		lift.stepMoveUp();
+
+		//Or Exception PreconditionError
+	}
+	@Test
+	public void testEndMoveUp1(){
+		//CI
+		lift.init(2, 5);
+		lift.selectLevel(3);
+		lift.closeDoor();
+		lift.doorAck();
+		lift.beginMoveUp();
+		lift.stepMoveUp();
+
+		//Op
+		lift.endMoveUp();
+
+		//Or Pas d'exception
+	}
+	@Test(expected = PreconditionError.class)
+	public void testEndMoveUp2(){
+		//CI
+		lift.init(2, 5);
+		lift.selectLevel(4);
+		lift.closeDoor();
+		lift.doorAck();
+		lift.beginMoveUp();
+		lift.stepMoveUp();
+
+		//Op
+		lift.endMoveUp();
+
+		//Or Exception PreconditionError
+	}
+	@Test
+	public void testBeginMoveDown1(){
+		//CI
+		lift.init(2, 5);
+		lift.selectLevel(3);
+		lift.closeDoor();
+		lift.doorAck();
+		lift.beginMoveUp();
+		lift.stepMoveUp();
+		lift.endMoveUp();
+		lift.openDoor();
+		lift.doorAck();
+		lift.selectLevel(2);
+		lift.closeDoor();
+		lift.doorAck();
+
+		//Op
+		lift.beginMoveDown();
+
+		//Or Pas d'exception
+	}
+	@Test(expected = PreconditionError.class)
+	public void testBeginMoveDown2(){
+		//CI
+		lift.init(2, 5);
+		lift.selectLevel(3);
+		lift.closeDoor();
+		lift.doorAck();
+		lift.beginMoveUp();
+		lift.stepMoveUp();
+		lift.endMoveUp();
+		lift.openDoor();
+		lift.doorAck();
+		lift.selectLevel(2);
+		lift.closeDoor();
+
+		//Op
+		lift.beginMoveDown();
+
+		//Or Exception PreconditionError
+	}
+	@Test
+	public void testStepMoveDown1(){
+		//CI
+		lift.init(2, 5);
+		lift.selectLevel(3);
+		lift.closeDoor();
+		lift.doorAck();
+		lift.beginMoveUp();
+		lift.stepMoveUp();
+		lift.endMoveUp();
+		lift.openDoor();
+		lift.doorAck();
+		lift.selectLevel(2);
+		lift.closeDoor();
+		lift.doorAck();
+		lift.beginMoveDown();
+
+		//Op
+		lift.stepMoveDown();
+
+		//Or Pas d'exception
+	}
+	@Test(expected = PreconditionError.class)
+	public void testStepMoveDown2(){
+		//CI
+		lift.init(2, 5);
+		lift.selectLevel(3);
+		lift.closeDoor();
+		lift.doorAck();
+		lift.beginMoveUp();
+		lift.stepMoveUp();
+		lift.endMoveUp();
+		lift.openDoor();
+		lift.doorAck();
+		lift.selectLevel(2);
+		lift.closeDoor();
+		lift.doorAck();
+
+		//Op
+		lift.stepMoveDown();
+
+		//Or Exception PreconditionError
+	}
+	@Test
+	public void testEndMoveDown1(){
+		//CI
+		lift.init(2, 5);
+		lift.selectLevel(3);
+		lift.closeDoor();
+		lift.doorAck();
+		lift.beginMoveUp();
+		lift.stepMoveUp();
+		lift.endMoveUp();
+		lift.openDoor();
+		lift.doorAck();
+		lift.selectLevel(2);
+		lift.closeDoor();
+		lift.doorAck();
+		lift.beginMoveDown();
+		lift.stepMoveDown();
+		
+		//Op
+		lift.endMoveDown();
+		
+		//Or Pas d'exception
+	}
+	@Test(expected = PreconditionError.class)
+	public void testEndMoveDown2(){
+		//CI
+		lift.init(2, 5);
+		lift.selectLevel(4);
+		lift.closeDoor();
+		lift.doorAck();
+		lift.beginMoveUp();
+		lift.stepMoveUp();
+		lift.stepMoveUp();
+		lift.endMoveUp();
+		lift.openDoor();
+		lift.doorAck();
+		lift.selectLevel(2);
+		lift.closeDoor();
+		lift.doorAck();
+		lift.beginMoveDown();
+		lift.stepMoveDown();
+
+		//Op
+		lift.endMoveDown();
+
+		//Or Exception PreconditionError
+	}
+
+
 	@Test
 	public void testOpenDoor1() {
 		//CI
@@ -246,7 +463,36 @@ public abstract class AbstractLiftTest {
 	public void testScenario1() {
 		//Pas de CI
 		
-		//TODO
+		lift.init(2, 5);
+		lift.selectLevel(5);
+		lift.selectLevel(3);
+		lift.closeDoor();
+		lift.doorAck();
+		lift.beginMoveUp();
+		lift.stepMoveUp();
+		lift.endMoveUp();
+		lift.openDoor(); //Floor 3
+		lift.doorAck();
+		// lift.selectLevel(2);
+		lift.closeDoor();
+		lift.doorAck();
+		lift.beginMoveUp();
+		lift.stepMoveUp();
+		lift.stepMoveUp();
+		lift.endMoveUp();
+		lift.openDoor();
+		lift.doorAck(); //Floor 5
+		lift.selectLevel(2);
+		lift.closeDoor();
+		lift.doorAck();
+		lift.beginMoveDown();
+		lift.stepMoveDown();
+		lift.stepMoveDown();
+		lift.stepMoveDown();
+		lift.endMoveDown();
+		lift.openDoor(); //Floor 2
+		lift.doorAck();
+		
 		
 		//Or Pas d'exception
 	}

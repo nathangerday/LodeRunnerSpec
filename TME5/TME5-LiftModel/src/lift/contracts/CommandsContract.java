@@ -1,5 +1,7 @@
 package lift.contracts;
 
+import java.util.Random;
+
 import lift.decorators.CommandsDecorator;
 import lift.services.CommandsService;
 
@@ -12,11 +14,32 @@ public class CommandsContract extends CommandsDecorator {
 	public void checkInvariant() {
 		// inv: hasUpCommand(Integer cmd) 
 		//      ==  \exists i \in [0..getNbUpCommands()-1] { getUpCommand(i) == cmd }
-		// TODO
+		for(int cmd: new Random().ints(10, 0, 20).toArray()) {
+			boolean exists = false;
+			for(int i=0; i<getNbUpCommands(); i++){
+				if(getUpCommand(i) == cmd){
+					exists = true;
+				}
+			}
+			if(!(hasUpCommand(cmd) == exists )){
+				throw new InvariantError("Incohérence sur la minimisation de hasUpCommand");
+			}
+		}
+
 		
 		// inv: hasDownCommand(Integer cmd) 
 		//      ==  \exists i \in [0..getNbDownCommands()-1] { getDownCommand(i) == cmd }	
-		// TODO
+		for(int cmd: new Random().ints(10, 0, 20).toArray()) {
+			boolean exists = false;
+			for(int i=0; i<getNbDownCommands(); i++){
+				if(getDownCommand(i) == cmd){
+					exists = true;
+				}
+			}
+			if(!(hasDownCommand(cmd) == exists )){
+				throw new InvariantError("Incohérence sur la minimisation de hasDownCommand");
+			}
+		}
 		
 		// inv: forall i:Integer \in [0..getNbUpCommands()-1] {
 		//          getUpCommand(i) < getUpCommand(i+1)

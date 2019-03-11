@@ -2,13 +2,13 @@ package lift.test;
 
 import lift.contracts.LiftContract;
 import lift.services.LiftService;
-import liftimpl1.Lift1;
+import liftimpl2.Lift2;
 
-public class Lift1Test extends AbstractLiftTest{
+public class Lift2Test extends AbstractLiftTest{
 
 	@Override
 	public void beforeTests() {
-		LiftService l = new Lift1();
+		LiftService l = new Lift2();
 		setLift(new LiftContract(l));
 	}
 

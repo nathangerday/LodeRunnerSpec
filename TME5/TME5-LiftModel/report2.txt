@@ -1,5 +1,5 @@
 Testsuite: lift.test.Lift2Test
-Tests run: 29, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.029 sec
+Tests run: 40, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.034 sec
 ------------- Standard Output ---------------
 LIFT1: begin moving up
 LIFT1: begin moving up
@@ -38,55 +38,101 @@ LIFT1: begin moving down
 LIFT1: step moving down
 LIFT1: begin moving up
 LIFT1: step moving up
+LIFT1: begin moving up
+LIFT1: step moving up
+LIFT1: end moving up
+LIFT1: begin moving down
+LIFT1: step moving down
+LIFT1: begin moving up
+LIFT1: step moving up
+LIFT1: end moving up
+LIFT1: begin moving up
+LIFT1: step moving up
+LIFT1: end moving up
+LIFT1: begin moving down
+LIFT1: step moving down
+LIFT1: end moving down
+LIFT1: begin moving up
+LIFT1: step moving up
+LIFT1: end moving up
+LIFT1: begin moving up
+LIFT1: step moving up
+LIFT1: end moving up
+LIFT1: begin moving down
+LIFT1: step moving down
+LIFT1: end moving down
+LIFT1: begin moving up
+LIFT1: step moving up
 LIFT1: step moving up
 LIFT1: step moving up
 LIFT1: end moving up
 LIFT1: begin moving up
 LIFT1: step moving up
 LIFT1: end moving up
+LIFT1: begin moving up
+LIFT1: step moving up
+LIFT1: step moving up
+LIFT1: end moving up
+LIFT1: begin moving down
+LIFT1: step moving down
+LIFT1: step moving down
+LIFT1: step moving down
+LIFT1: end moving down
 ------------- ---------------- ---------------
 
-Testcase: testInit2 took 0.008 sec
+Testcase: testInit2 took 0.009 sec
 Testcase: testInit3 took 0 sec
 Testcase: testBeginMoveUp1 took 0.001 sec
 Testcase: testBeginMoveUp2 took 0 sec
 Testcase: testStepMoveUp1 took 0 sec
-Testcase: testStepMoveUp2 took 0 sec
+Testcase: testStepMoveUp2 took 0.001 sec
 Testcase: testEndMoveUp1 took 0 sec
 Testcase: testEndMoveUp2 took 0 sec
 Testcase: testBeginMoveDown1 took 0 sec
-Testcase: testBeginMoveDown2 took 0 sec
-Testcase: testStepMoveDown1 took 0.001 sec
-Testcase: testStepMoveDown2 took 0 sec
-Testcase: testEndMoveDown1 took 0 sec
-Testcase: testEndMoveDown2 took 0 sec
-Testcase: testOpenDoor1 took 0 sec
-Testcase: testOpenDoor2 took 0 sec
-Testcase: testCloseDoor1 took 0 sec
-Testcase: testCloseDoor2 took 0.001 sec
-Testcase: testDoorAck1 took 0 sec
-Testcase: testDoorAck2 took 0 sec
-Testcase: testPaireTransitionCloseDoor_DoorAck took 0 sec
-Testcase: testInit1 took 0 sec
-Testcase: testPaireTransitionDoorAck_CloseDoor took 0 sec
-Testcase: testSelectLevel1 took 0 sec
-Testcase: testSelectLevel2 took 0 sec
-Testcase: testTransitionInit took 0 sec
-Testcase: testTransitionOpenDoor took 0 sec
-Testcase: testEtatRemarquableEtageMax took 0 sec
-Testcase: testScenario1 took 0.001 sec
+Testcase: testBeginMoveDown2 took 0.001 sec
+Testcase: testStepMoveDown1 took 0 sec
+Testcase: testStepMoveDown2 took 0.001 sec
 	Caused an ERROR
-No first down command
-java.lang.Error: No first down command
+Unexpected exception, expected<lift.contracts.PreconditionError> but was<java.lang.Error>
+java.lang.Exception: Unexpected exception, expected<lift.contracts.PreconditionError> but was<java.lang.Error>
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+Caused by: java.lang.Error: No first down command
 	at lift.impl.CommandsImpl.endDownCommand(CommandsImpl.java:100)
 	at liftimpl2.Lift2.endMoveUp(Lift2.java:82)
 	at lift.decorators.LiftDecorator.endMoveUp(LiftDecorator.java:62)
 	at lift.contracts.LiftContract.endMoveUp(LiftContract.java:187)
-	at lift.test.AbstractLiftTest.testScenario1(AbstractLiftTest.java:473)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at lift.test.AbstractLiftTest.testStepMoveDown2(AbstractLiftTest.java:234)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
 
+Testcase: testEndMoveDown1 took 0.001 sec
+Testcase: testEndMoveDown2 took 0 sec
+Testcase: testOpenDoor1 took 0 sec
+Testcase: testOpenDoor2 took 0.001 sec
+Testcase: testCloseDoor1 took 0 sec
+Testcase: testCloseDoor2 took 0 sec
+Testcase: testDoorAck1 took 0 sec
+Testcase: testDoorAck2 took 0 sec
+Testcase: testPaireTransitionDoorAck_OpenDoor took 0 sec
+Testcase: testPaireTransitionBeginMoveUp_StepMoveUp took 0.001 sec
+Testcase: testPaireTransitionBeginMoveDown_StepMoveDown took 0 sec
+Testcase: testPaireTransitionStepMoveUp_EndMoveUp took 0 sec
+Testcase: testPaireTransitionStepMoveDown_EndMoveDown took 0 sec
+Testcase: testPaireTransitionEndMoveUp_OpenDoor took 0.001 sec
+Testcase: testPaireTransitionEndMoveDown_OpenDoor took 0 sec
+Testcase: testPaireTransitionCloseDoor_DoorAck took 0 sec
+Testcase: testInit1 took 0 sec
+Testcase: testPaireTransitionDoorAck_CloseDoor took 0 sec
+Testcase: testPaireTransitionInit_SelectLevel took 0 sec
+Testcase: testSelectLevel1 took 0 sec
+Testcase: testSelectLevel2 took 0 sec
+Testcase: testTransitionInit took 0 sec
+Testcase: testTransitionOpenDoor took 0.001 sec
+Testcase: testEtatRemarquableEtageMax took 0 sec
+Testcase: testPaireTransitionInit_CloseDoor took 0 sec
+Testcase: testPaireTransitionSelectLevel_CloseDoor took 0 sec
+Testcase: testPaireTransitionOpenDoor_DoorAck took 0 sec
+Testcase: testScenario1 took 0.001 sec

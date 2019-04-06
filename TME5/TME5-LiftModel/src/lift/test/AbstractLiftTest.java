@@ -10,6 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+
 public abstract class AbstractLiftTest {
 	private LiftService lift;
 	private CommandsService commands;

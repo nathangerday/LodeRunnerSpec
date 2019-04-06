@@ -94,7 +94,6 @@ public class LiftContract extends LiftDecorator {
 		if(!(getCommands().getNbDownCommands() == 0)) {
 			throw new PostconditionError("Il y a des commandes de descente à l'initialisation");
 		}
-
 	}
 	
 	@Override

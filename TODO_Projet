@@ -1,0 +1,38 @@
+1er rendu de TME :
+
+    A faire pour jeudi 18
+
+    Archive classique contenant
+        Contrat
+        Implem
+        2-3 tests java
+
+
+    ( Pas de rapport )
+
+Projet
+    Pour rapport
+        Spec
+        rapport de tests
+        Manues + descriptions des choix et extensions + extraits pertinants
+
+Soutenance 
+    10 min de presentation (ne pas parler d'élements trop généraux sur le projet) 
+                                1) parler des choix intéressant, structure, extensions => 3min
+                                2) Montrer des extraits intéressants (pas tous) de spec => 7min
+
+    5 min de demo
+
+
+
+
+
+
+
+
+
+
+
+===== Erreurs dans le sujet =====
+
+Environment doit redefinir init en prenant un EditableScreen

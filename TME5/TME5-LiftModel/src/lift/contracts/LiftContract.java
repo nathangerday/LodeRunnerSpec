@@ -52,7 +52,7 @@ public class LiftContract extends LiftDecorator {
 		
 		// inv pre
 		checkInvariant();
-		
+
 		// run
 		super.init(minLevel, maxLevel);
 		

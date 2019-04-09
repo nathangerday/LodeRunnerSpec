@@ -1,4 +1,8 @@
+package services;
+
 import java.util.Set;
+
+import data.Entity;
 
 public interface Environment extends /* includes */ Screen{
     /* Observators */

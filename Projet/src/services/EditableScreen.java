@@ -1,4 +1,8 @@
-public interface EditableScreen extends /* includes */ Screen{
+package services;
+
+import data.*;
+
+public interface EditableScreen extends /* includes */ Screen {
     /* Observators */
     
     public boolean isPlayable();

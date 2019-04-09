@@ -1,4 +1,8 @@
-public interface Character{
+package services;
+
+import data.Entity;
+
+public interface Character extends Entity{
     /* Observators */
     public Environment getEnvi();
     public int getHgt();

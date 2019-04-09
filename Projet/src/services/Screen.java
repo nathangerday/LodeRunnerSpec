@@ -1,4 +1,8 @@
-public interface Screen{
+package services;
+
+import data.*;
+
+public interface Screen {
     /* Observators */
 
 

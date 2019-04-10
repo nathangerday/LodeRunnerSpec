@@ -14,7 +14,7 @@ public interface Environment extends /* includes */ Screen{
     public Set<Entity> getCellContent(int x, int y);
     
     //TODO D'apres le prof, il faut rajouter un init, contenant un EditableScreen, afin de pouvoir l'avoir en attribut (3eme erreur au tableau). Faire la spec du init
-    public void init(int h, int w, EditableScreen screen);
+    public void init(EditableScreen screen);
 
 
     /* Invariants */

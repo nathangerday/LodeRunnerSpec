@@ -2,6 +2,7 @@ package impl;
 
 import java.util.List;
 
+import data.Cell;
 import data.Command;
 import data.Coord;
 import data.Item;
@@ -40,11 +41,33 @@ public class EngineImpl implements Engine {
     
 
     public void init(EditableScreen screen, List<Coord> guards, List<Coord> treasures) {
-
+        this.envi = new EnvironmentImpl();
+        this.envi.init(screen);
+        //TODO reste
     }
 
     public void step() {
         //TODO
         this.player.step();
+    }
+
+    public void display() {
+        for(int i=this.envi.getHeight()-1; i >= 0; i--){
+            for(int j=0; j < this.envi.getWidth(); j++){
+                Cell c = this.envi.getCellNature(j, i);
+                switch(c){
+                    case PLT:
+                        System.out.print("X");
+                        break;
+                    case EMP:
+                        System.out.print(".");
+                        break;
+                    case MTL:
+                        System.out.print("W");
+                        break;
+                }
+            }
+            System.out.println();
+        }
     }
 }

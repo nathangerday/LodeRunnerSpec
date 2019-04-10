@@ -19,7 +19,6 @@ public class EditableScreenImpl extends ScreenImpl implements EditableScreen {
         return true;
     }
 
-    @Override
     public void setNature(int x, int y, Cell type) {
         this.natures[x][y] = type;
     }

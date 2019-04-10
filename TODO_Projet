@@ -13,7 +13,7 @@
 Projet
     Pour rapport
         Spec
-        rapport de tests
+        rapport de tests (Avoir au total au moins une centaine de tests, pour le rapport il faut en présenter au moins une dizaine)
         Manues + descriptions des choix et extensions + extraits pertinants
 
 Soutenance 
@@ -36,3 +36,10 @@ Soutenance
 ===== Erreurs dans le sujet =====
 
 Environment doit redefinir init en prenant un EditableScreen
+
+
+
+===== Remarques =====
+
+Pour step, faire un clone puis verifier que le step fait la meme chose qu'un goleft par exemple.
+Pour le engine par contre, pas la peine de verifier que faire le step correspond a faire tout les steps de chaque element, c'est trop. 

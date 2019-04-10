@@ -6,6 +6,10 @@ public interface Player extends /* includes */ Character{
     public Engine getEngine();
     
 
+    /* Constructors */
+    public void init(Environment s, int x, int y, Engine e);
+
+
     /* Operators */
     public void step();
 

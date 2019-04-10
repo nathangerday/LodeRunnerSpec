@@ -26,5 +26,5 @@ public interface EditableScreen extends /* includes */ Screen {
     //                              getCellNature(x, y) != Cell.HOL
     //                      \and 
     //                      \Forall x in [0, getWidth()]
-    //                          //getCellNature(x, y) == getCellNature(x, y)@pre
+    //                          getCellNature(x, 0) == Cell.MTL
 }

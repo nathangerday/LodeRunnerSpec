@@ -12,7 +12,8 @@ public interface Character extends Entity{
     /* Constructors */
 
     //\pre s.getCellNature(x, y) == EMP
-    public void init(Screen s, int x, int y);
+    //TODO Veut-on directement un environment ici ? Dans le sujet on donne un Screen, sauf qu'on veut que getEnvi renvoi un environment. Il faut peut etre créer ici l'environement a partir du screen...
+    public void init(Environment s, int x, int y);
 
     /* Invariants */
     //\inv getEnvi().getCellNature(getWdt(), getHdt()) \in {EMP, HOL, LAD, HDR}

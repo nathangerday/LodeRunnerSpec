@@ -7,7 +7,7 @@ public interface Player extends /* includes */ Character{
     
 
     /* Constructors */
-    public void init(Environment s, int x, int y, Engine e);
+    public void init(int x, int y, Engine e);
 
 
     /* Operators */

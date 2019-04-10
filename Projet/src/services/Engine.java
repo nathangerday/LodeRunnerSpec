@@ -18,7 +18,7 @@ public interface Engine{
     public Command getNextCommand();
 
     /* Constructors */
-    public void init(EditableScreen screen, List<Coord> guards, List<Coord> treasures);
+    public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures);
     
 
     /* Operators */

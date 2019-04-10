@@ -23,8 +23,11 @@ public class LodeRunner{
             }
         }
         
-        engi.init(screen, null, null);
-        engi.display();
+        engi.init(screen, 5, 2, null, null);
+        while(true){
+            engi.step();
+            engi.display();
+        }
 
     }
 }

@@ -12,6 +12,7 @@ public interface Character extends Entity{
     /* Constructors */
 
     //\pre s.getCellNature(x, y) == EMP
+    //TODO Surement ajouter une precondition pour le fait qu'on ne veut qu'un seul personnage par case (Ou pas en fait, a la fin du sujet on dit qu'on peut avoir plusieurs character sur la meme case pour detecter une partie perdu)
     //TODO Veut-on directement un environment ici ? Dans le sujet on donne un Screen, sauf qu'on veut que getEnvi renvoi un environment. Il faut peut etre créer ici l'environement a partir du screen...
     public void init(Environment s, int x, int y);
 

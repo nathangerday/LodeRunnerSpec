@@ -12,6 +12,12 @@ public interface Environment extends /* includes */ Screen{
     //\pre 0 <= x
     //\pre x <= getWidht()
     public Set<Entity> getCellContent(int x, int y);
+
+    public void addToCellContent(int x, int y, Entity e);
+
+    public void removeFromCellContent(int x, int y, Entity e);
+
+    public Character removeCharacter(int x, int y);
     
     //TODO D'apres le prof, il faut rajouter un init, contenant un EditableScreen, afin de pouvoir l'avoir en attribut (3eme erreur au tableau). Faire la spec du init
     public void init(EditableScreen screen);

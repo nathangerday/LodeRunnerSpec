@@ -1,5 +1,6 @@
 package impl;
 
+import data.Command;
 import services.Engine;
 import services.Environment;
 import services.Player;
@@ -13,11 +14,14 @@ public class PlayerImpl extends CharacterImpl implements Player {
     }
 
     public void step() {
-        //TODO
+        //TODO Gestion des différents ca
+        if(this.engi.getNextCommand() == Command.MOVEL){
+            goLeft();;
+        }
     }
 
-    public void init(Environment s, int x, int y, Engine e) {
-        super.init(s, x, y);
+    public void init(int x, int y, Engine e) {
+        super.init(e.getEnvironment(), x, y);
         this.engi = e;
     }
 

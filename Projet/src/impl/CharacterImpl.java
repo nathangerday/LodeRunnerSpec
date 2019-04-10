@@ -18,6 +18,7 @@ public class CharacterImpl implements Character{
         this.x = x;
         this.y = y;
         this.envi = s;
+        this.envi.addToCellContent(x, y, this);
     }
 
     public Environment getEnvi() {
@@ -36,6 +37,9 @@ public class CharacterImpl implements Character{
 
     @Override
     public void goLeft() {
+        if(this.x == 0){
+            return;
+        }
         Cell currentCaseNature = this.envi.getCellNature(this.x, this.y);
         Cell leftCaseNature = this.envi.getCellNature(this.x - 1, this.y);
         Cell belowCaseNature = this.envi.getCellNature(this.x, this.y - 1);
@@ -62,12 +66,16 @@ public class CharacterImpl implements Character{
 
 
         Set<Cell> MTL_PLT_LAD = new HashSet<>();
-        MTL_PLT.add(Cell.MTL);
-        MTL_PLT.add(Cell.PLT);
+        MTL_PLT_LAD.add(Cell.MTL);
+        MTL_PLT_LAD.add(Cell.PLT);
+        MTL_PLT_LAD.add(Cell.LAD);
         if(this.x != 0 && !MTL_PLT.contains(leftCaseNature) && 
             (LAD_HDR.contains(currentCaseNature) || MTL_PLT_LAD.contains(belowCaseNature) || Util.constainsCharacter(this.envi.getCellContent(this.x, this.y - 1)))
            && !Util.constainsCharacter(this.envi.getCellContent(this.x - 1, this.y))){
-               this.x = this.x - 1; 
+                this.envi.removeCharacter(x, y);
+                this.x = this.x - 1; 
+                this.envi.addToCellContent(x, y, this);
+                
            }
 
     }

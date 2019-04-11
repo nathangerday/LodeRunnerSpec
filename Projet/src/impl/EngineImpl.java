@@ -64,13 +64,6 @@ public class EngineImpl implements Engine {
         // TODO 3 => Gestion de Holes
         // TODO 4 => Si joueur dans la meme case qu'un garde
         this.player.step();
-        
-        //UGLY
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public void display() {

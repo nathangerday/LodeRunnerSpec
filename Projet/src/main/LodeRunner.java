@@ -32,6 +32,12 @@ public class LodeRunner{
         while(true){
             engi.step();
             engi.display();
+            //UGLY
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
     }

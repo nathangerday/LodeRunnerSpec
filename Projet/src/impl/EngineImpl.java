@@ -12,6 +12,7 @@ import services.EditableScreen;
 import services.Engine;
 import services.Environment;
 import services.Player;
+import utils.CommandManager;
 import utils.Util;
 
 public class EngineImpl implements Engine {
@@ -21,7 +22,6 @@ public class EngineImpl implements Engine {
     private Status status;
     private Command nextCommand;
 
-    private Scanner scanner = new Scanner(System.in);
 
     public Environment getEnvironment() {
         return this.envi;
@@ -49,15 +49,17 @@ public class EngineImpl implements Engine {
         this.envi.init(screen);
         this.player = new PlayerImpl();
         this.player.init(5, 2, this);
-        //TODO reste
+        this.status = Status.Playing;
+        //TODO reste (treasures and guards)
     }
 
     public void step() {
         //TODO Gestion des autres step
-        //TODO Gerer ailleurs les commandes (ex: CommandManager)
-        if(scanner.next().equals("q")){
-            this.nextCommand = Command.MOVEL;
-        }
+        //TODO 1 => Si joueur sur un trésor, trésor disparait
+        //TODO 2 => Si plus de trésors, jeu gagné
+        //TODO 3 => Gestion de Holes
+        //TODO 4 => Si joueur dans la meme case qu'un garde
+        this.nextCommand = CommandManager.getNextUserCommandInput();
         this.player.step();
     }
 
@@ -79,6 +81,16 @@ public class EngineImpl implements Engine {
                         case MTL:
                             System.out.print("W");
                             break;
+                        case LAD:
+                            System.out.print("H");
+                            break;
+                        case HDR:
+                            System.out.print("_");
+                            break;
+                        case HOL:
+                            System.out.print("U");
+                            break;
+                            
                     }
                 }
             }

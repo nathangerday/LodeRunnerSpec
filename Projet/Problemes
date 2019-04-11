@@ -1,1 +1,3 @@
 1) Dans Environment, 2eme invariants "(getCellNature(x, y) \in {MTL, PLR})" => Pas de type PLR, surement PLT
+
+2) Modifier pour faire en sorte qu'un joueur puisse aller sur la meme case qu'un garde (déclenche la perte de la partie)

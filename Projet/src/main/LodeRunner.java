@@ -1,6 +1,7 @@
 package main;
 
 import data.Cell;
+import data.Status;
 import impl.*;
 import services.*;
 
@@ -9,7 +10,7 @@ public class LodeRunner{
         Engine engi = new EngineImpl();
         EditableScreen screen = new EditableScreenImpl();
         
-        screen.init(5, 10);
+        screen.init(8, 20);
         for(int i=0; i<screen.getWidth(); i++){
             screen.setNature(i, 0, Cell.MTL);
         }
@@ -25,16 +26,24 @@ public class LodeRunner{
         
         screen.setNature(8, 1, Cell.LAD);
         screen.setNature(8, 2, Cell.LAD);
-        screen.setNature(8, 3, Cell.EMP);
-        screen.setNature(3, 2, Cell.PLT);
+        screen.setNature(8, 3, Cell.LAD);
+        screen.setNature(8, 4, Cell.LAD);
+        screen.setNature(8, 5, Cell.LAD);
+        screen.setNature(8, 6, Cell.LAD);
+
+        screen.setNature(9, 4, Cell.HDR);
+        screen.setNature(10, 4, Cell.HDR);
+        screen.setNature(11, 4, Cell.HDR);
+        screen.setNature(12, 4, Cell.HDR);
+        // screen.setNature(3, 2, Cell.PLT);
         
         engi.init(screen, 5, 2, null, null);
-        while(true){
+        while(engi.getStatus() == Status.Playing){
             engi.step();
             engi.display();
             //UGLY
             try {
-                Thread.sleep(200);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

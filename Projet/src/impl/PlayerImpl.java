@@ -20,16 +20,16 @@ public class PlayerImpl extends CharacterImpl implements Player {
 
     public void step() {
         //TODO Gestion des différents ca
-        Set<Cell> libre = new HashSet<>();
-        libre.add(Cell.EMP);
-        libre.add(Cell.LAD);
-        libre.add(Cell.HDR);
-        libre.add(Cell.HOL);
+        Set<Cell> EMP_HDR_HOL = new HashSet<>();
+        EMP_HDR_HOL.add(Cell.EMP);
+        // EMP_HDR_HOL.add(Cell.LAD);
+        EMP_HDR_HOL.add(Cell.HDR);
+        EMP_HDR_HOL.add(Cell.HOL);
 
         Set<Cell> LAD_HDR = new HashSet<>();
         LAD_HDR.add(Cell.LAD);
         LAD_HDR.add(Cell.HDR);
-        if(!LAD_HDR.contains(this.envi.getCellNature(this.x, this.y)) && libre.contains(this.envi.getCellNature(this.x, this.y - 1)) &&
+        if(!LAD_HDR.contains(this.envi.getCellNature(this.x, this.y)) && EMP_HDR_HOL.contains(this.envi.getCellNature(this.x, this.y - 1)) &&
         !Util.constainsCharacter(this.envi.getCellContent(this.x, this.y - 1))){
             goDown();
             return;
@@ -51,10 +51,10 @@ public class PlayerImpl extends CharacterImpl implements Player {
                 goUp();
                 break;
             case DIGL:
-                //TODO digl
+                digLeft();
                 break;
             case DIGR:
-                //TODO digr
+                digRight();
                 break;
             case NONE:
                 break;
@@ -65,5 +65,45 @@ public class PlayerImpl extends CharacterImpl implements Player {
         super.init(e.getEnvironment(), x, y);
         this.engi = e;
     }
+
+    public void digLeft(){
+        Set<Cell> MTL_PLT = new HashSet<>();
+        MTL_PLT.add(Cell.MTL);
+        MTL_PLT.add(Cell.PLT);
+
+        Set<Cell> libre = new HashSet<>();
+        libre.add(Cell.EMP);
+        libre.add(Cell.LAD);
+        libre.add(Cell.HDR);
+        libre.add(Cell.HOL);
+
+        if((MTL_PLT.contains(this.envi.getCellNature(this.x, this.y - 1)) || Util.constainsCharacter(this.envi.getCellContent(this.x, this.y - 1))) 
+        && this.envi.getCellNature(this.x - 1, this.y - 1) == Cell.PLT){
+            this.envi.dig(this.x - 1, this.y - 1);
+            this.engi.addHole(this.x - 1, this.y - 1);
+        }   
+
+    }
+
+    public void digRight(){
+        Set<Cell> MTL_PLT = new HashSet<>();
+        MTL_PLT.add(Cell.MTL);
+        MTL_PLT.add(Cell.PLT);
+
+        Set<Cell> libre = new HashSet<>();
+        libre.add(Cell.EMP);
+        libre.add(Cell.LAD);
+        libre.add(Cell.HDR);
+        libre.add(Cell.HOL);
+
+        if((MTL_PLT.contains(this.envi.getCellNature(this.x, this.y - 1)) || Util.constainsCharacter(this.envi.getCellContent(this.x, this.y - 1))) 
+        && this.envi.getCellNature(this.x + 1, this.y - 1) == Cell.PLT){
+            this.envi.dig(this.x + 1, this.y - 1);
+            this.engi.addHole(this.x + 1, this.y - 1);
+        }   
+
+    
+    }
+
 
 }

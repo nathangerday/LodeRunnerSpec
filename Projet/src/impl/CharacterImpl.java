@@ -74,7 +74,7 @@ public class CharacterImpl implements Character{
         MTL_PLT_LAD.add(Cell.MTL);
         MTL_PLT_LAD.add(Cell.PLT);
         MTL_PLT_LAD.add(Cell.LAD);
-        if(this.x != 0 && !MTL_PLT.contains(this.envi.getCellNature(this.x + 1, this.y)) && 
+        if(this.x != this.envi.getWidth() - 1 && !MTL_PLT.contains(this.envi.getCellNature(this.x + 1, this.y)) && 
             (LAD_HDR.contains(this.envi.getCellNature(this.x, this.y)) || MTL_PLT_LAD.contains(this.envi.getCellNature(this.x, this.y - 1)) || Util.constainsCharacter(this.envi.getCellContent(this.x, this.y - 1)))
            && !Util.constainsCharacter(this.envi.getCellContent(this.x + 1, this.y))){
                 this.envi.removeCharacter(this.x, this.y);

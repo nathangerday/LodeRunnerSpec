@@ -30,7 +30,7 @@ public class CommandManager extends Thread{
             case "a":
                 return Command.DIGL;
             case "e":
-                return Command.DIGL;
+                return Command.DIGR;
             default:
                 return Command.NONE;
         }

@@ -34,6 +34,8 @@ public class ScreenImpl implements Screen{
 
     @Override
     public void dig(int x, int y) {
+        System.out.println(x);
+        System.out.println(y);
         if(this.natures[x][y] == Cell.PLT){
             this.natures[x][y] = Cell.HOL;
         }

@@ -12,5 +12,7 @@ public interface Player extends /* includes */ Character{
 
     /* Operators */
     public void step();
+    public void digLeft();
+    public void digRight();
 
 }

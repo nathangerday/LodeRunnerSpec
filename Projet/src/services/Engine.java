@@ -24,7 +24,7 @@ public interface Engine{
 
     /* Operators */
     public void step();
-
+    public void addHole(int x, int y);    
     public void display();
 
 }

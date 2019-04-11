@@ -29,14 +29,14 @@ public class PlayerImpl extends CharacterImpl implements Player {
         Set<Cell> LAD_HDR = new HashSet<>();
         LAD_HDR.add(Cell.LAD);
         LAD_HDR.add(Cell.HDR);
-        
         if(!LAD_HDR.contains(this.envi.getCellNature(this.x, this.y)) && libre.contains(this.envi.getCellNature(this.x, this.y - 1)) &&
-        !Util.constainsCharacter(this.envi.getCellContent(this.x, this.y))){
-            this.goDown();
+        !Util.constainsCharacter(this.envi.getCellContent(this.x, this.y - 1))){
+            goDown();
             return;
         }
 
         Command next = this.engi.getNextCommand();
+        this.engi.setNextCommand(Command.NONE);
         switch(next){
             case MOVEL:
                 goLeft();

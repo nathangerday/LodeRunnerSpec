@@ -24,14 +24,14 @@ public class LodeRunner{
         }
         
         screen.setNature(8, 1, Cell.LAD);
-        screen.setNature(8, 2, Cell.EMP);
+        screen.setNature(8, 2, Cell.LAD);
         screen.setNature(8, 3, Cell.EMP);
         screen.setNature(3, 2, Cell.PLT);
         
         engi.init(screen, 5, 2, null, null);
         while(true){
-            engi.display();
             engi.step();
+            engi.display();
         }
 
     }

@@ -22,7 +22,6 @@ public class EngineImpl implements Engine {
     private Status status;
     private Command nextCommand;
 
-
     public Environment getEnvironment() {
         return this.envi;
     }
@@ -39,10 +38,13 @@ public class EngineImpl implements Engine {
         return this.status;
     }
 
-    public Command getNextCommand() {
+    public synchronized Command getNextCommand() {
         return this.nextCommand;
     }
-    
+
+    public synchronized void setNextCommand(Command next) {
+        this.nextCommand = next;
+    }
 
     public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures) {
         this.envi = new EnvironmentImpl();
@@ -50,17 +52,25 @@ public class EngineImpl implements Engine {
         this.player = new PlayerImpl();
         this.player.init(5, 2, this);
         this.status = Status.Playing;
-        //TODO reste (treasures and guards)
+        this.nextCommand = Command.NONE;
+        new CommandManager(this, Thread.currentThread());
+        // TODO reste (treasures and guards)
     }
 
     public void step() {
-        //TODO Gestion des autres step
-        //TODO 1 => Si joueur sur un trésor, trésor disparait
-        //TODO 2 => Si plus de trésors, jeu gagné
-        //TODO 3 => Gestion de Holes
-        //TODO 4 => Si joueur dans la meme case qu'un garde
-        this.nextCommand = CommandManager.getNextUserCommandInput();
+        // TODO Gestion des autres step
+        // TODO 1 => Si joueur sur un trésor, trésor disparait
+        // TODO 2 => Si plus de trésors, jeu gagné
+        // TODO 3 => Gestion de Holes
+        // TODO 4 => Si joueur dans la meme case qu'un garde
         this.player.step();
+        
+        //UGLY
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void display() {

@@ -16,6 +16,7 @@ public interface Engine{
     public List<Item> getTreasures();
     public Status getStatus();
     public Command getNextCommand();
+    public void setNextCommand(Command next);
 
     /* Constructors */
     public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures);

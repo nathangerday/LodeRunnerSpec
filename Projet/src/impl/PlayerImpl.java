@@ -18,7 +18,6 @@ public class PlayerImpl extends CharacterImpl implements Player {
     }
 
     public void step() {
-        //TODO Gestion des différents ca
         Set<Cell> EMP_HDR_HOL = new HashSet<>();
         EMP_HDR_HOL.add(Cell.EMP);
         // EMP_HDR_HOL.add(Cell.LAD);

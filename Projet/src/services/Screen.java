@@ -5,7 +5,6 @@ import data.*;
 public interface Screen {
     /* Observators */
 
-
     public int getHeight();
     public int getWidth();
 
@@ -18,7 +17,6 @@ public interface Screen {
 
     
     /* Constructors */    
-    
 
     //\pre 0 < h
     //\pre 0 < w

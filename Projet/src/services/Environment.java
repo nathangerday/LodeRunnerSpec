@@ -19,6 +19,8 @@ public interface Environment extends /* includes */ Screen{
 
     public Character removeCharacter(int x, int y);
     
+    //\pre screen != null
+    //\pre screen.isPlayable()
     //TODO D'apres le prof, il faut rajouter un init, contenant un EditableScreen, afin de pouvoir l'avoir en attribut (3eme erreur au tableau). Faire la spec du init
     public void init(EditableScreen screen);
 

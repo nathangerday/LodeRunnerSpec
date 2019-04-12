@@ -6,7 +6,6 @@ import java.util.Set;
 import data.Cell;
 import data.Command;
 import services.Engine;
-import services.Environment;
 import services.Player;
 import utils.Util;
 
@@ -32,6 +31,7 @@ public class PlayerImpl extends CharacterImpl implements Player {
         if(!LAD_HDR.contains(this.envi.getCellNature(this.x, this.y)) && EMP_HDR_HOL.contains(this.envi.getCellNature(this.x, this.y - 1)) &&
         !Util.constainsCharacter(this.envi.getCellContent(this.x, this.y - 1))){
             goDown();
+            this.engi.setNextCommand(Command.NONE);
             return;
         }
 
@@ -67,9 +67,10 @@ public class PlayerImpl extends CharacterImpl implements Player {
     }
 
     public void digLeft(){
-        Set<Cell> MTL_PLT = new HashSet<>();
-        MTL_PLT.add(Cell.MTL);
-        MTL_PLT.add(Cell.PLT);
+        Set<Cell> MTL_PLT_LAD = new HashSet<>();
+        MTL_PLT_LAD.add(Cell.MTL);
+        MTL_PLT_LAD.add(Cell.PLT);
+        MTL_PLT_LAD.add(Cell.LAD);
 
         Set<Cell> libre = new HashSet<>();
         libre.add(Cell.EMP);
@@ -77,7 +78,7 @@ public class PlayerImpl extends CharacterImpl implements Player {
         libre.add(Cell.HDR);
         libre.add(Cell.HOL);
 
-        if((MTL_PLT.contains(this.envi.getCellNature(this.x, this.y - 1)) || Util.constainsCharacter(this.envi.getCellContent(this.x, this.y - 1))) 
+        if((MTL_PLT_LAD.contains(this.envi.getCellNature(this.x, this.y - 1)) || Util.constainsCharacter(this.envi.getCellContent(this.x, this.y - 1))) 
         && this.envi.getCellNature(this.x - 1, this.y - 1) == Cell.PLT){
             this.envi.dig(this.x - 1, this.y - 1);
             this.engi.addHole(this.x - 1, this.y - 1);
@@ -86,9 +87,10 @@ public class PlayerImpl extends CharacterImpl implements Player {
     }
 
     public void digRight(){
-        Set<Cell> MTL_PLT = new HashSet<>();
-        MTL_PLT.add(Cell.MTL);
-        MTL_PLT.add(Cell.PLT);
+        Set<Cell> MTL_PLT_LAD = new HashSet<>();
+        MTL_PLT_LAD.add(Cell.MTL);
+        MTL_PLT_LAD.add(Cell.PLT);
+        MTL_PLT_LAD.add(Cell.LAD);
 
         Set<Cell> libre = new HashSet<>();
         libre.add(Cell.EMP);
@@ -96,7 +98,7 @@ public class PlayerImpl extends CharacterImpl implements Player {
         libre.add(Cell.HDR);
         libre.add(Cell.HOL);
 
-        if((MTL_PLT.contains(this.envi.getCellNature(this.x, this.y - 1)) || Util.constainsCharacter(this.envi.getCellContent(this.x, this.y - 1))) 
+        if((MTL_PLT_LAD.contains(this.envi.getCellNature(this.x, this.y - 1)) || Util.constainsCharacter(this.envi.getCellContent(this.x, this.y - 1))) 
         && this.envi.getCellNature(this.x + 1, this.y - 1) == Cell.PLT){
             this.envi.dig(this.x + 1, this.y - 1);
             this.engi.addHole(this.x + 1, this.y - 1);

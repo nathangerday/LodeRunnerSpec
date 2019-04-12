@@ -1,3 +1,9 @@
 1) Dans Environment, 2eme invariants "(getCellNature(x, y) \in {MTL, PLR})" => Pas de type PLR, surement PLT
 
 2) Modifier pour faire en sorte qu'un joueur puisse aller sur la meme case qu'un garde (déclenche la perte de la partie)
+
+3) Probleme sur le fait de tomber, la spec indique qu'on tombe sur une case libre en dessous, j'ai modifié pour ne pas tomber quand la case en desosus est une échelle
+
+4) Faut il spécifier les classes Item, Hole et Coord ? 
+
+5) Vitesse des step ? (On dit qu'un trou de rempli après 15 step par exemple)

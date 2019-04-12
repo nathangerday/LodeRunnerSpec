@@ -6,7 +6,6 @@ import java.util.Set;
 import data.Cell;
 import services.Character;
 import services.Environment;
-import services.Screen;
 import utils.Util;
 
 public class CharacterImpl implements Character{

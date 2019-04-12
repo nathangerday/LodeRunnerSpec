@@ -70,9 +70,9 @@ public class EngineImpl implements Engine {
         // TODO 1 => Si joueur sur un trésor, trésor disparait
         // TODO 2 => Si plus de trésors, jeu gagné
         // TODO 3 => Si joueur dans la meme case qu'un garde
-        Iterator holesIter = this.holes.iterator();
+        Iterator<Hole> holesIter = this.holes.iterator();
         while(holesIter.hasNext()){
-            Hole h = (Hole)holesIter.next();
+            Hole h = holesIter.next();
             h.incTime();
             if(h.getTime() == 15){
                 this.envi.fill(h.getX(), h.getY());

@@ -1,0 +1,73 @@
+digraph p_feu {
+size="8,10";
+  GT [shape=box,style=dotted,label="feu"];
+  GT -> S42;
+	S42 -> S2  [color=black,style=bold,label="((((mode==initialisation)&&!(panne))&&clignotant))"];
+	S42 -> S32  [color=black,style=bold,label="((((mode==actif)&&!(panne))&&!(clignotant)))"];
+	S42 -> S35  [color=black,style=bold,label="(panne)"];
+	S42 -> S42  [color=black,style=bold,label="else"];
+	S2 -> S3  [color=black,style=bold,label="etat_avant = light"];
+	S3 -> S4  [color=black,style=bold,label="mode = actif"];
+	S4 -> S5  [color=black,style=bold,label="light = rouge"];
+	S5 -> S6  [color=black,style=bold,label="clignotant = 0"];
+	S6 -> S8  [color=black,style=bold,label="etat_apres = light"];
+	S8 -> S9  [color=black,style=bold,label="assert(!((clignotant&&((light==rouge)||(light==vert)))))"];
+	S9 -> S42  [color=black,style=bold,label="ch!etat_avant,etat_apres"];
+	S32 -> S12  [color=black,style=bold,label="((((light==rouge)&&!(panne))&&!(clignotant)))"];
+	S32 -> S19  [color=black,style=bold,label="((((light==vert)&&!(panne))&&!(clignotant)))"];
+	S32 -> S26  [color=black,style=bold,label="((((light==orange)&&!(panne))&&!(clignotant)))"];
+	S12 -> S13  [color=black,style=bold,label="etat_avant = light"];
+	S13 -> S14  [color=black,style=bold,label="light = vert"];
+	S14 -> S16  [color=black,style=bold,label="etat_apres = light"];
+	S16 -> S17  [color=black,style=bold,label="assert(!((clignotant&&((light==rouge)||(light==vert)))))"];
+	S17 -> S42  [color=black,style=bold,label="ch!etat_avant,etat_apres"];
+	S19 -> S20  [color=black,style=bold,label="etat_avant = light"];
+	S20 -> S21  [color=black,style=bold,label="light = orange"];
+	S21 -> S23  [color=black,style=bold,label="etat_apres = light"];
+	S23 -> S24  [color=black,style=bold,label="assert(!((clignotant&&((light==rouge)||(light==vert)))))"];
+	S24 -> S42  [color=black,style=bold,label="ch!etat_avant,etat_apres"];
+	S26 -> S27  [color=black,style=bold,label="etat_avant = light"];
+	S27 -> S28  [color=black,style=bold,label="light = rouge"];
+	S28 -> S30  [color=black,style=bold,label="etat_apres = light"];
+	S30 -> S31  [color=black,style=bold,label="assert(!((clignotant&&((light==rouge)||(light==vert)))))"];
+	S31 -> S42  [color=black,style=bold,label="ch!etat_avant,etat_apres"];
+	S35 -> S36  [color=black,style=bold,label="light = orange"];
+	S36 -> S37  [color=black,style=bold,label="clignotant = 1"];
+	S37 -> S39  [color=black,style=bold,label="etat_apres = light"];
+	S39 -> S40  [color=black,style=bold,label="assert(!((clignotant&&((light==rouge)||(light==vert)))))"];
+	S40 -> S42  [color=black,style=bold,label="ch!etat_avant,etat_apres"];
+}
+digraph p_check_light {
+size="8,10";
+  GT [shape=box,style=dotted,label="check_light"];
+  GT -> S1;
+	S1 -> S14  [color=black,style=bold,label="ch?e1,e2"];
+	S14 -> S5  [color=black,style=solid,label="((e1==rouge))"];
+	S14 -> S9  [color=black,style=solid,label="((e1==orange))"];
+	S14 -> S13  [color=black,style=solid,label="((e1==vert))"];
+	S5 -> S14  [color=black,style=bold,label="assert(!((clignotant&&((light==rouge)||(light==vert)))))"];
+	S9 -> S14  [color=black,style=bold,label="assert(!((clignotant&&((light==rouge)||(light==vert)))))"];
+	S13 -> S14  [color=black,style=bold,label="assert(!((clignotant&&((light==rouge)||(light==vert)))))"];
+}
+digraph p_injection_panne {
+size="8,10";
+  GT [shape=box,style=dotted,label="injection_panne"];
+  GT -> S5;
+	S5 -> S2  [color=black,style=bold,label="(!(panne))"];
+	S5 -> S4  [color=black,style=bold,label="(1)"];
+	S2 -> S5  [color=black,style=bold,label="panne = 1"];
+	S4 -> S5  [color=black,style=bold,label="panne = 0"];
+}
+digraph init {
+size="8,10";
+  GT [shape=box,style=dotted,label="init"];
+  GT -> S1;
+	S1 -> S2  [color=black,style=bold,label="light = orange"];
+	S2 -> S3  [color=black,style=bold,label="clignotant = 1"];
+	S3 -> S7  [color=black,style=bold,label="mode = initialisation"];
+	S7 -> S5  [color=black,style=dashed,label="(run feu())"];
+	S5 -> S6  [color=black,style=dashed,label="(run injection_panne())"];
+	S6 -> S8  [color=black,style=solid,label="(run check_light())"];
+	S8 -> S0  [color=black,style=solid,label="-end-"];
+  S8 [color=blue,style=bold,shape=box];
+}

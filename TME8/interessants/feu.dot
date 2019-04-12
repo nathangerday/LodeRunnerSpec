@@ -1,0 +1,38 @@
+digraph p_feu {
+size="8,10";
+  GT [shape=box,style=dotted,label="feu"];
+  GT -> S16;
+	S16 -> S2  [color=black,style=bold,label="(((mode==initialisation)&&!(panne)))"];
+	S16 -> S11  [color=black,style=bold,label="(((mode==actif)&&!(panne)))"];
+	S16 -> S14  [color=black,style=bold,label="(panne)"];
+	S16 -> S16  [color=black,style=bold,label="else"];
+	S2 -> S3  [color=black,style=bold,label="mode = actif"];
+	S3 -> S16  [color=black,style=bold,label="light = rouge"];
+	S11 -> S6  [color=black,style=bold,label="(((light==rouge)&&!(panne)))"];
+	S11 -> S8  [color=black,style=bold,label="(((light==vert)&&!(panne)))"];
+	S11 -> S10  [color=black,style=bold,label="(((light==orange)&&!(panne)))"];
+	S6 -> S16  [color=black,style=bold,label="light = vert"];
+	S8 -> S16  [color=black,style=bold,label="light = orange"];
+	S10 -> S16  [color=black,style=bold,label="light = rouge"];
+	S14 -> S16  [color=black,style=bold,label="light = orange_clignotant"];
+}
+digraph p_injection_panne {
+size="8,10";
+  GT [shape=box,style=dotted,label="injection_panne"];
+  GT -> S5;
+	S5 -> S2  [color=black,style=bold,label="(!(panne))"];
+	S5 -> S4  [color=black,style=bold,label="(1)"];
+	S2 -> S5  [color=black,style=bold,label="panne = 1"];
+	S4 -> S5  [color=black,style=bold,label="panne = 0"];
+}
+digraph init {
+size="8,10";
+  GT [shape=box,style=dotted,label="init"];
+  GT -> S1;
+	S1 -> S2  [color=black,style=bold,label="light = orange_clignotant"];
+	S2 -> S5  [color=black,style=bold,label="mode = initialisation"];
+	S5 -> S4  [color=black,style=dashed,label="(run feu())"];
+	S4 -> S6  [color=black,style=solid,label="(run injection_panne())"];
+	S6 -> S0  [color=black,style=solid,label="-end-"];
+  S6 [color=blue,style=bold,shape=box];
+}

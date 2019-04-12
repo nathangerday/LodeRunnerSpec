@@ -1,0 +1,15 @@
+<project name="tme8" default="compile" basedir=".">
+
+  <!-- set global properties for this build -->
+  <!-- METTRE ICI LE NOM DU BINOME -->
+  <property name="nom1" value="3870201"/>
+  <property name="nom2" value="3775759"/>
+
+  <target name="dist"
+        description="Generer la distribution" >
+    <!-- tout mettre dans l'archive -->
+    <jar basedir=".." jarfile="../TME8-Concurrence-${nom1}-${nom2}-${DSTAMP}.jar"
+    includes="TME8/**/*" excludes="**/CVS"/>
+  </target>
+
+</project>

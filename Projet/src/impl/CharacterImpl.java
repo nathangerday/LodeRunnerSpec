@@ -30,7 +30,7 @@ public class CharacterImpl implements Character{
     }
 
     @Override
-    public int getWdt() {
+    public int getCol() {
         return this.x;
     }
 
@@ -85,6 +85,7 @@ public class CharacterImpl implements Character{
     
     @Override
     public void goDown() {
+        //TODO Gerer s'il y a un Character en dessous
         Set<Cell> libre = new HashSet<>();
         libre.add(Cell.EMP);
         libre.add(Cell.LAD);
@@ -100,6 +101,7 @@ public class CharacterImpl implements Character{
 
     @Override
     public void goUp() {
+        //TODO Gerer s'il y a un Character en au dessus
         Set<Cell> libre = new HashSet<>();
         libre.add(Cell.EMP);
         libre.add(Cell.LAD);

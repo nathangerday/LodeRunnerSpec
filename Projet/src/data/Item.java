@@ -25,7 +25,7 @@ public class Item implements Entity{
         return this.y;
     }
 
-    public int getWdt(){
+    public int getCol(){
         return this.x;
     }
 }

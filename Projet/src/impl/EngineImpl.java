@@ -76,7 +76,7 @@ public class EngineImpl implements Engine {
             h.incTime();
             if(h.getTime() == 15){
                 this.envi.fill(h.getX(), h.getY());
-                if(this.player.getHgt() == h.getY() && this.player.getWdt() == h.getX()){
+                if(this.player.getHgt() == h.getY() && this.player.getCol() == h.getX()){
                     this.status = Status.Loss;
                 }
                 // TODO Gerer le fait de reset les gardes

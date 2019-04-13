@@ -72,6 +72,7 @@ public class EngineImpl implements Engine {
         // TODO 1 => Si joueur sur un trésor, trésor disparait
         // TODO 2 => Si plus de trésors, jeu gagné
         // TODO 3 => Si joueur dans la meme case qu'un garde
+        this.player.step();
         this.nextCommand = this.commandManager.receiveCurrentCommand();
         Iterator<Hole> holesIter = this.holes.iterator();
         while(holesIter.hasNext()){
@@ -86,7 +87,6 @@ public class EngineImpl implements Engine {
                 holesIter.remove();
             }
         }
-        this.player.step();
     }
 
     public void display() {

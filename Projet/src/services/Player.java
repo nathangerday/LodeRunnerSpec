@@ -27,13 +27,13 @@ public interface Player extends /* includes */ Character{
     //               \and getEnvi().getCellNature(getCol(), getHgt() - 1)@pre \in {EMP, HDR, HOL}
     //               \and \not \Exists Character c \in getEnvi().getCellContent(getCol(), getHgt() - 1)@pre
 
-    //\post falling \impl step() == goDown()
-    //\post (\not falling) \and getNextCommand()@pre == MOVEL \impl step() == goLeft()
-    //\post (\not falling) \and getNextCommand()@pre == MOVER \impl step() == goRight()
-    //\post (\not falling) \and getNextCommand()@pre == MOVED \impl step() == goDown()
-    //\post (\not falling) \and getNextCommand()@pre == MOVEU \impl step() == goUp()
-    //\post (\not falling) \and getNextCommand()@pre == DIGL \impl step() == digLeft()
-    //\post (\not falling) \and getNextCommand()@pre == DIGR \impl step() == digRight()
+    //\post falling \impl step() == this@pre.goDown()
+    //\post (\not falling) \and getNextCommand()@pre == MOVEL \impl step() == this@pre.goLeft()
+    //\post (\not falling) \and getNextCommand()@pre == MOVER \impl step() == this@pre.goRight()
+    //\post (\not falling) \and getNextCommand()@pre == MOVED \impl step() == this@pre.goDown()
+    //\post (\not falling) \and getNextCommand()@pre == MOVEU \impl step() == this@pre.goUp()
+    //\post (\not falling) \and getNextCommand()@pre == DIGL \impl step() == this@pre.digLeft()
+    //\post (\not falling) \and getNextCommand()@pre == DIGR \impl step() == this@pre.digRight()
     //\post (\not falling) \and getNextCommand()@pre == NONE \impl this == this@pre
     public void step();
 

@@ -22,7 +22,6 @@ public interface Character extends Entity{
     //\post getCol() == x
     //\post getEnvi() == s
     //\post this \in getEnvi().getCellContent(x, y)
-    //TODO Veut-on directement un environment ici ? Dans le sujet on donne un Screen, sauf qu'on veut que getEnvi renvoi un environment....
     public void init(Environment s, int x, int y);
 
     /* Invariants */

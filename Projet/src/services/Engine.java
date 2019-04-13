@@ -44,11 +44,15 @@ public interface Engine{
     //              \impl \not \Exists Hole o \in getHoles() \with (o.getX() == h.getX() \and o.getY() == h.getY())
     //          h.getTime() == 14 \and getPlayer().getX() == h.getX() \and getPlayer().getY() == h.getY() 
     //              \impl getStatus() == Loss
+    //\post \not \Exists Hole h \in getHoles()@pre \with (h.getTime() == 14 \and h.getX() == getPlayer().getX() \and h.getY() == getPlayer().getY())
+    //..    \impl getStatus() == Playing
     public void step();
 
     //\pre \not \Exists Hole h \in getHoles() \with (h.getX() == x && h.getY() == y)
     //\pre getEnvironment().getCellNature(x, y) == HOL
     //\post getHoles() == getHoles()@pre \Union {h} \with (h.getX() == x \and h.getY() == y)
+    //\post getStatus() == getStatus()@pre
+    //\post getTreasures() == getTreasures()@pre
     public void addHole(int x, int y);    
     
     //\post getTreasures() == getTreasures()@pre

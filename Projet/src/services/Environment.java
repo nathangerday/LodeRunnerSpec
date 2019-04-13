@@ -7,8 +7,6 @@ import data.Entity;
 public interface Environment extends /* includes */ Screen{
     /* Observators */
 
-    //TODO Post conditions
-
     //\pre 0 <= y
     //\pre y < getHeight()
     //\pre 0 <= x
@@ -27,6 +25,7 @@ public interface Environment extends /* includes */ Screen{
     //\post \Forall i in [0, getWidth() - 1]
     //          \Forall j in [0, getHeight() - 1]
     //              i != x || j != y \impl getCellContent(i, j) == getCellContent(i, j)@pre
+    //              getCellNature(i, j) == getCellNature(i, j)@pre
     public void addToCellContent(int x, int y, Entity e);
 
 
@@ -39,6 +38,7 @@ public interface Environment extends /* includes */ Screen{
     //\post \Forall i in [0, getWidth() - 1]
     //          \Forall j in [0, getHeight() - 1]
     //              i != x || j != y \impl getCellContent(i, j) == getCellContent(i, j)@pre
+    //              getCellNature(i, j) == getCellNature(i, j)@pre
     public void removeFromCellContent(int x, int y, Entity e);
 
 
@@ -52,6 +52,7 @@ public interface Environment extends /* includes */ Screen{
     //\post \Forall i in [0, getWidth() - 1]
     //          \Forall j in [0, getHeight() - 1]
     //              i != x || j != y \impl getCellContent(i, j) == getCellContent(i, j)@pre
+    //              getCellNature(i, j) == getCellNature(i, j)@pre
     public Character removeCharacter(int x, int y);
     
     //\pre screen != null
@@ -59,13 +60,14 @@ public interface Environment extends /* includes */ Screen{
     //\post \Forall x in [0, getWidth() - 1]
     //          \Forall y in [0, getHeight() - 1]
     //              getCellNature(x, y) == screen.getCellNature(x, y)
+    //              getCellContent(x, y) == {}
     public void init(EditableScreen screen);
 
 
     /* Invariants */
 
-    //\inv  \Forall x in [0, getWidth() - 1]
-    //          \Forall y in [0, getHeight() - 1]
+    //\inv \Forall x in [0, getWidth() - 1]
+    //         \Forall y in [0, getHeight() - 1]
     //              \Forall Character c1, c2 \in getCellContent(x, y)
     //                  c1 == c2
 

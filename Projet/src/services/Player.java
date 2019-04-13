@@ -35,7 +35,6 @@ public interface Player extends /* includes */ Character{
     //\post (\not falling) \and getNextCommand()@pre == DIGL \impl step() == digLeft()
     //\post (\not falling) \and getNextCommand()@pre == DIGR \impl step() == digRight()
     //\post (\not falling) \and getNextCommand()@pre == NONE \impl this == this@pre
-    //\post getEngi().getNextCommand() == NONE
     public void step();
 
     //\def noCellNatureChanged = \Forall i in [0, getEnvi().getWidth() - 1]

@@ -30,12 +30,10 @@ public class PlayerImpl extends CharacterImpl implements Player {
         if(!LAD_HDR.contains(this.envi.getCellNature(this.x, this.y)) && EMP_HDR_HOL.contains(this.envi.getCellNature(this.x, this.y - 1)) &&
         !Util.constainsCharacter(this.envi.getCellContent(this.x, this.y - 1))){
             goDown();
-            this.engi.setNextCommand(Command.NONE);
             return;
         }
 
         Command next = this.engi.getNextCommand();
-        this.engi.setNextCommand(Command.NONE);
         switch(next){
             case MOVEL:
                 goLeft();

@@ -35,9 +35,6 @@ public interface Engine{
     //\pre getStatus() == Status.Playing
     public void step();
 
-    //\pre next != null
-    public void setNextCommand(Command next);
-    
     //\pre \not \Exists Hole h \in getHoles() \with (h.getX() == x && h.getY() == y)
     //\pre getEnvironment().getCellNature(x, y) == Cell.HOL
     public void addHole(int x, int y);    

@@ -25,6 +25,7 @@ public class EngineImpl implements Engine {
     private Status status;
     private Command nextCommand;
     private Set<Hole> holes;
+    private CommandManager commandManager;
 
     public Environment getEnvironment() {
         return this.envi;
@@ -50,10 +51,6 @@ public class EngineImpl implements Engine {
         return this.nextCommand;
     }
 
-    public synchronized void setNextCommand(Command next) {
-        this.nextCommand = next;
-    }
-
     public void addHole(int x, int y){
         this.holes.add(new Hole(x, y));
     }
@@ -66,7 +63,7 @@ public class EngineImpl implements Engine {
         this.status = Status.Playing;
         this.nextCommand = Command.NONE;
         this.holes = new HashSet<>();
-        new CommandManager(this, Thread.currentThread());
+        this.commandManager = new CommandManager(this, Thread.currentThread());
         // TODO reste (treasures and guards)
     }
 
@@ -75,6 +72,7 @@ public class EngineImpl implements Engine {
         // TODO 1 => Si joueur sur un trésor, trésor disparait
         // TODO 2 => Si plus de trésors, jeu gagné
         // TODO 3 => Si joueur dans la meme case qu'un garde
+        this.nextCommand = this.commandManager.receiveCurrentCommand();
         Iterator<Hole> holesIter = this.holes.iterator();
         while(holesIter.hasNext()){
             Hole h = holesIter.next();

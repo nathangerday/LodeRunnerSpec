@@ -27,9 +27,9 @@ public interface Engine{
     //\pre playerX < screen.getWidth()
     //\pre playerY < screen.getHeight()
     //TODO Guards / Treasures
-    //\post getStatus == Playing
+    //\post getStatus() == Playing
     //\post getNextCommand() == NONE
-    //\post getHoles == {}
+    //\post getHoles() == {}
     public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures);
     
     

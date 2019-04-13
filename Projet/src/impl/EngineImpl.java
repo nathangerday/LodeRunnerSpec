@@ -1,8 +1,10 @@
 package impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import data.Cell;
 import data.Command;
@@ -23,7 +25,7 @@ public class EngineImpl implements Engine {
     private List<Item> treasures;
     private Status status;
     private Command nextCommand;
-    private List<Hole> holes;
+    private Set<Hole> holes;
 
     public Environment getEnvironment() {
         return this.envi;
@@ -60,7 +62,7 @@ public class EngineImpl implements Engine {
         this.player.init(5, 2, this);
         this.status = Status.Playing;
         this.nextCommand = Command.NONE;
-        this.holes = new ArrayList<>();
+        this.holes = new HashSet<>();
         new CommandManager(this, Thread.currentThread());
         // TODO reste (treasures and guards)
     }

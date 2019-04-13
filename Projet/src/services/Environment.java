@@ -13,10 +13,28 @@ public interface Environment extends /* includes */ Screen{
     //\pre x <= getWidht()
     public Set<Entity> getCellContent(int x, int y);
 
+    //\pre 0 <= y
+    //\pre y < getHeight()
+    //\pre 0 <= x
+    //\pre x <= getWidht()
+    //\pre e != null
+    //\pre (\Exists Character c \in getCellContent(x, y)) \impl (\not (e \is Character)) //TODO On veut potentiellement supprimer ca
     public void addToCellContent(int x, int y, Entity e);
 
+
+    //\pre 0 <= y
+    //\pre y < getHeight()
+    //\pre 0 <= x
+    //\pre x <= getWidht()
+    //\pre \Exists e \in getCellContent(x, y)
     public void removeFromCellContent(int x, int y, Entity e);
 
+
+    //\pre 0 <= y
+    //\pre y < getHeight()
+    //\pre 0 <= x
+    //\pre x <= getWidht()
+    //\pre \Exists Character c \in getCellContent(x, y)
     public Character removeCharacter(int x, int y);
     
     //\pre screen != null

@@ -26,13 +26,14 @@ public interface Character extends Entity{
     public void init(Environment s, int x, int y);
 
     /* Invariants */
+
     //\inv getEnvi().getCellNature(getCol(), getHdt()) \in {EMP, HOL, LAD, HDR}
     //\inv (\Exists Character c \in getEnvi().getCellContent(getCol(), getHdt()))
     //          \impl c == this
 
-    //TODO A verifier pour le 2eme invariants, (2eme erreur que le prof avait corrige au tableau)
 
     /* Operators */
+    
     //\post getHgt() == getHgt()@pre
     //\post getCol() == 0 \impl getCol() == getCol()@pre
     //\post (getEnvi().getCellNature(getCol() - 1, getHgt()) \in {MTL, PLT}) \impl getCol() == getCol()@pre

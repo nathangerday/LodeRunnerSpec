@@ -21,13 +21,15 @@ public interface Environment extends /* includes */ Screen{
     
     //\pre screen != null
     //\pre screen.isPlayable()
-    //TODO D'apres le prof, il faut rajouter un init, contenant un EditableScreen, afin de pouvoir l'avoir en attribut (3eme erreur au tableau). Faire la spec du init
+    //\post \Forall x in [0, getWidht() - 1]
+    //          \Forall y in [0, getHeight() - 1]
+    //              getCellNature(x, y) == screen.getCellNature(x, y)
     public void init(EditableScreen screen);
 
 
     /* Invariants */
 
-    //\inv  \\Forall x in [0, getWidht() - 1]
+    //\inv  \Forall x in [0, getWidht() - 1]
     //          \Forall y in [0, getHeight() - 1]
     //              \Forall Character c1, c2 \in getCellContent(x, y)
     //                  c1 == c2

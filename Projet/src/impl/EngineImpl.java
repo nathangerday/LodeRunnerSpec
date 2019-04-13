@@ -1,6 +1,5 @@
 package impl;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -41,6 +40,10 @@ public class EngineImpl implements Engine {
 
     public Status getStatus() {
         return this.status;
+    }
+
+    public Set<Hole> getHoles() {
+        return this.holes;
     }
 
     public synchronized Command getNextCommand() {
@@ -136,4 +139,5 @@ public class EngineImpl implements Engine {
             System.out.println("============================");
         }
     }
+
 }

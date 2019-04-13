@@ -14,14 +14,14 @@ public interface EditableScreen extends /* includes */ Screen {
     //\pre 0 <= x
     //\pre x < getWidth()
     //\post getCellNature(x, y) == type
-    //\post \Forall u in [0, getWidht() - 1]
+    //\post \Forall u in [0, getWidth() - 1]
     //          \Forall v in [0, getHeight() - 1]
     //              u != x || v != y \impl getCellNature(u,v) == getCellNature(u, v)@pre 
     public void setNature(int x, int y, Cell type);
 
     /* Invariants */
     
-    //\inv isPlayable() ==  \Forall x in [0, getWidht() - 1]
+    //\inv isPlayable() ==  \Forall x in [0, getWidth() - 1]
     //                          \Forall y in [0, getHeigth() - 1]
     //                              getCellNature(x, y) != Cell.HOL
     //                      \and 

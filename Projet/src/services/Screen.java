@@ -33,14 +33,14 @@ public interface Screen {
 
     //\pre getCellNature(x,y) == Cell.PLT
     //\post getCellNature(x, y) == Cell.HOL
-    //\post \Forall u in [0, getWidht() - 1]
+    //\post \Forall u in [0, getWidth() - 1]
     //          \Forall v in [0, getHeight() - 1]
     //              u != x || v != y \impl getCellNature(u,v) == getCellNature(u, v)@pre
     public void dig(int x, int y);
 
     //\pre getCellNature(x,y) == Cell.HOL
     //\post getCellNature(x, y) == Cell.PLT
-    //\post \Forall u in [0, getWidht() - 1]
+    //\post \Forall u in [0, getWidth() - 1]
     //          \Forall v in [0, getHeight() - 1]
     //              u != x || v != y \impl getCellNature(u,v) == getCellNature(u, v)@pre
     public void fill(int x, int y);

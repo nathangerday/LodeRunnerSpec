@@ -15,4 +15,6 @@
 
 3) Comment faire en sorte qu'une classe utilise des contrats lorsqu'elle est créée en dehors du main ? 
 
-4) Include ou Refine ? Dans un include faut-il réécrire les invariants ? 
+4) Include ou Refine ? 
+
+5) Vérification des invariants dans les observateurs ?

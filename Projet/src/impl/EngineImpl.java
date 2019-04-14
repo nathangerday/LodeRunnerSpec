@@ -90,7 +90,7 @@ public class EngineImpl implements Engine {
     }
 
     public void display() {
-        //TODO Separer afficahge dans une autre classe
+        //TODO Separer affichage dans une autre classe
 
         if(this.status == Status.Win){
             System.out.println("============================");

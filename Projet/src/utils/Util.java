@@ -14,4 +14,13 @@ public class Util {
         }
         return false;
     }
+
+    public static Character getCharacter(Set<Entity> content){
+        for(Entity e : content){
+            if(e instanceof Character){
+                return (Character)e;
+            }
+        }
+        return null;
+    }
 }

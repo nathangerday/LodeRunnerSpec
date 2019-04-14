@@ -6,6 +6,8 @@
 
 4) Vitesse des step ? (On dit qu'un trou de rempli après 15 step par exemple)
 
+5) On ne veut pas du init de Screen dans Environment, comment faire ? (Remarque : pour l'instant il n'a pas été spécifier. Peut etre l'ajouter dans la spec avec une precondition toujours fausse ?)
+
 
 ============== Questions de spec ==============
 
@@ -18,3 +20,5 @@
 4) Include ou Refine ? 
 
 5) Vérification des invariants dans les observateurs ?
+
+6) Spécification des méthodes de Util ?

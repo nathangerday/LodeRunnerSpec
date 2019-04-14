@@ -10,7 +10,7 @@ public interface Environment extends /* includes */ Screen{
     //\pre 0 <= y
     //\pre y < getHeight()
     //\pre 0 <= x
-    //\pre x <= getWidth()
+    //\pre x < getWidth()
     public Set<Entity> getCellContent(int x, int y);
 
     /* Operators */
@@ -18,7 +18,7 @@ public interface Environment extends /* includes */ Screen{
     //\pre 0 <= y
     //\pre y < getHeight()
     //\pre 0 <= x
-    //\pre x <= getWidth()
+    //\pre x < getWidth()
     //\pre e != null
     //\pre (\Exists Character c \in getCellContent(x, y)) \impl (\not (e \is Character)) //TODO On veut potentiellement supprimer ca
     //\post getCellContent(x, y) == getCellContent(x, y)@pre \Union {e}
@@ -32,7 +32,7 @@ public interface Environment extends /* includes */ Screen{
     //\pre 0 <= y
     //\pre y < getHeight()
     //\pre 0 <= x
-    //\pre x <= getWidth()
+    //\pre x < getWidth()
     //\pre \Exists e \in getCellContent(x, y)
     //\post getCellContent(x, y) == getCellContent(x, y)@pre \ {e}
     //\post \Forall i in [0, getWidth() - 1]
@@ -45,7 +45,7 @@ public interface Environment extends /* includes */ Screen{
     //\pre 0 <= y
     //\pre y < getHeight()
     //\pre 0 <= x
-    //\pre x <= getWidth()
+    //\pre x < getWidth()
     //\pre \Exists Character c \in getCellContent(x, y)
     //\post \Exists Character c \in getCellContent(x, y)@pre 
     //          \impl getCellContent(x, y) == getCellContent(x, y)@pre \ {c}
@@ -57,6 +57,8 @@ public interface Environment extends /* includes */ Screen{
     
     //\pre screen != null
     //\pre screen.isPlayable()
+    //\post getHeight() == screen.getHeight()
+    //\post getWidth() == screen.getWidht()
     //\post \Forall x in [0, getWidth() - 1]
     //          \Forall y in [0, getHeight() - 1]
     //              getCellNature(x, y) == screen.getCellNature(x, y)

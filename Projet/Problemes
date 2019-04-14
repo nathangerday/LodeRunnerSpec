@@ -12,3 +12,7 @@
 1) Faut il spécifier les classes Item, Hole et Coord ? 
 
 2) Si une operation modifie uniquement des élements qui ne sont pas dans sa classe (exemple digLeft), faut-il indiquer dans les postconditions les changements sur les autres classes qui nous intéresse
+
+3) Comment faire en sorte qu'une classe utilise des contrats lorsqu'elle est créée en dehors du main ? 
+
+4) Include ou Refine ? Dans un include faut-il réécrire les invariants ? 

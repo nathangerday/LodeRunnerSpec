@@ -34,7 +34,7 @@ public interface Character extends Entity{
     /* Operators */
     
     //\post getHgt() == getHgt()@pre
-    //\post getCol() == 0 \impl getCol() == getCol()@pre
+    //\post getCol()@pre == 0 \impl getCol() == getCol()@pre
     //\post (getEnvi().getCellNature(getCol()@pre - 1, getHgt()@pre) \in {MTL, PLT}) \impl getCol() == getCol()@pre
     //\post \not (getEnvi().getCellNature(getCol()@pre, getHgt()@pre) \in {LAD, HDR})
     //      \and \not getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1) \in {PLT, MTL, LAD}
@@ -51,7 +51,7 @@ public interface Character extends Entity{
     public void goLeft();
 
     //\post getHgt() == getHgt()@pre
-    //\post getCol() == getEnvi().getWidth() - 1 \impl getCol() == getCol()@pre
+    //\post getCol()@pre == getEnvi().getWidth() - 1 \impl getCol() == getCol()@pre
     //\post (getEnvi().getCellNature(getCol()@pre + 1, getHgt()@pre) \in {MTL, PLT}) \impl getCol() == getCol()@pre
     //\post \not (getEnvi().getCellNature(getCol()@pre, getHgt()@pre) \in {LAD, HDR})
     //      \and \not getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1) \in {PLT, MTL, LAD}

@@ -32,6 +32,10 @@ public interface Engine{
     //\post getHoles() == {}
     public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures);
     
+    /* Invariants */
+    //TODO Synchronisation entre l'environment et personnage
+    
+    
     
     /* Operators */
 
@@ -45,7 +49,7 @@ public interface Engine{
     //          h.getTime() == 14 \and getPlayer().getX() == h.getX() \and getPlayer().getY() == h.getY() 
     //              \impl getStatus() == Loss
     //\post \not \Exists Hole h \in getHoles()@pre \with (h.getTime() == 14 \and h.getX() == getPlayer().getX() \and h.getY() == getPlayer().getY())
-    //..    \impl getStatus() == Playing
+    //      \impl getStatus() == Playing
     public void step();
 
     //\pre \not \Exists Hole h \in getHoles() \with (h.getX() == x && h.getY() == y)
@@ -60,5 +64,6 @@ public interface Engine{
     //\post getNextCommand() == getNextCommand()@pre
     //\post getHoles() == getHoles()@pre
     public void display();
+    
 
 }

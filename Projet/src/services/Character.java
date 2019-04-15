@@ -26,8 +26,8 @@ public interface Character extends Entity{
 
     /* Invariants */
 
-    //\inv getEnvi().getCellNature(getCol(), getHdt()) \in {EMP, HOL, LAD, HDR}
-    //\inv (\Exists Character c \in getEnvi().getCellContent(getCol(), getHdt()))
+    //\inv getEnvi().getCellNature(getCol(), getHgt()) \in {EMP, HOL, LAD, HDR}
+    //\inv (\Exists Character c \in getEnvi().getCellContent(getCol(), getHgt()))
     //          \impl c == this
 
 

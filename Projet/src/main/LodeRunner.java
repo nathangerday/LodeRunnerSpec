@@ -1,5 +1,6 @@
 package main;
 
+import contracts.EditableScreenContract;
 import data.Cell;
 import data.Status;
 import impl.*;
@@ -7,8 +8,8 @@ import services.*;
 
 public class LodeRunner{
     public static void main(String[] args){
-        Engine engi = new EngineImpl();
-        EditableScreen screen = new EditableScreenImpl();
+        Engine engi = new EngineImpl(new PlayerImpl(), new EnvironmentImpl());
+        EditableScreen screen = new EditableScreenContract(new EditableScreenImpl());
         
         screen.init(8, 20);
         for(int i=0; i<screen.getWidth(); i++){

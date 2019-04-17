@@ -6,8 +6,14 @@ import java.util.List;
 import java.util.Set;
 
 import data.Cell;
+import data.Command;
 import data.Entity;
 import decorators.PlayerDecorator;
+import impl.EditableScreenImpl;
+import impl.EngineImpl;
+import impl.EnvironmentImpl;
+import impl.PlayerImpl;
+import services.EditableScreen;
 import services.Engine;
 import services.Environment;
 import services.Player;
@@ -21,6 +27,10 @@ public class PlayerContract extends PlayerDecorator{
 
     public void checkInvariant(){
         
+    }
+
+    public boolean equals(PlayerContract other){
+        return getDelegate().equals(other.getDelegate());
     }
 
     @Override
@@ -96,6 +106,20 @@ public class PlayerContract extends PlayerDecorator{
     @Override
     public void step() {
         //captures
+        Cell[][] getCellNature_atPre = new Cell[getEnvi().getWidth()][getEnvi().getHeight()];
+        List<List<Set<Entity>>> getCellContent_atPre = new ArrayList<>();
+        for(int u = 0; u < getEnvi().getWidth(); u++){
+            getCellContent_atPre.add(new ArrayList<>());
+            for(int v = 0; v < getEnvi().getHeight(); v++){
+                getCellNature_atPre[u][v] = getEnvi().getCellNature(u, v);
+                getCellContent_atPre.get(u).add(new HashSet<>(getEnvi().getCellContent(u, v)));
+            }
+        }
+        int getHgt_atPre = getHgt();
+        int getCol_atPre = getCol();
+        Environment getEnvi_atPre = getEnvi();
+        PlayerContract this_atPre = new PlayerContract(duplicatePlayer(getDelegate()));
+
 
         //inv pre
         checkInvariant();
@@ -105,30 +129,61 @@ public class PlayerContract extends PlayerDecorator{
         //inv post
         checkInvariant();
 
-        //\post falling \impl step() == this@pre.goDown()
+        // //\post falling \impl step() == this@pre.goDown()
+        // PlayerContract clone = (PlayerContract)this_atPre.clone();
+        // clone.goDown();
+        // if(!(Checker.implication(isFalling(getCol_atPre, getHgt_atPre, getCellNature_atPre, getCellContent_atPre), this.isEqual(clone)))){
+        //     Contractor.defaultContractor().postconditionError("PlayerContract", "step", "falling \\impl step() == this@pre.goDown()");
+        // }
 
-
-        //\post (\not falling) \and getNextCommand()@pre == MOVEL \impl step() == this@pre.goLeft()
+        // //\post (\not falling) \and getNextCommand()@pre == MOVEL \impl step() == this@pre.goLeft()
+        // clone = (PlayerContract)this_atPre.clone();
+        // clone.goLeft();
+        // if(!(Checker.implication(!isFalling(getCol_atPre, getHgt_atPre, getCellNature_atPre, getCellContent_atPre) && getEngine().getNextCommand() == Command.MOVEL, this.isEqual(clone)))){
+        //     Contractor.defaultContractor().postconditionError("PlayerContract", "step", "(\\not falling) \\and getNextCommand()@pre == MOVEL \\impl step() == this@pre.goLeft()");
+        // }
 
 
         //\post (\not falling) \and getNextCommand()@pre == MOVER \impl step() == this@pre.goRight()
+        PlayerContract clone = new PlayerContract(duplicatePlayer(this_atPre.getDelegate()));
+        clone.goRight();
+        if(!(Checker.implication(!isFalling(getCol_atPre, getHgt_atPre, getCellNature_atPre, getCellContent_atPre) && getEngine().getNextCommand() == Command.MOVER, this.isEqual(clone)))){
+            Contractor.defaultContractor().postconditionError("PlayerContract", "step", "(\\not falling) \\and getNextCommand()@pre == MOVER \\impl step() == this@pre.goRight()");
+        }
 
+        // //\post (\not falling) \and getNextCommand()@pre == MOVED \impl step() == this@pre.goDown()
+        // clone = (PlayerContract)this_atPre.clone();
+        // clone.goDown();
+        // if(!(Checker.implication(!isFalling(getCol_atPre, getHgt_atPre, getCellNature_atPre, getCellContent_atPre) && getEngine().getNextCommand() == Command.MOVED, this.isEqual(clone)))){
+        //     Contractor.defaultContractor().postconditionError("PlayerContract", "step", "(\\not falling) \\and getNextCommand()@pre == MOVED \\impl step() == this@pre.goDown()");
+        // }
 
-        //\post (\not falling) \and getNextCommand()@pre == MOVED \impl step() == this@pre.goDown()
+        // //\post (\not falling) \and getNextCommand()@pre == MOVEU \impl step() == this@pre.goUp()
+        // clone = (PlayerContract)this_atPre.clone();
+        // clone.goUp();
+        // if(!(Checker.implication(!isFalling(getCol_atPre, getHgt_atPre, getCellNature_atPre, getCellContent_atPre) && getEngine().getNextCommand() == Command.MOVEU, this.isEqual(clone)))){
+        //     Contractor.defaultContractor().postconditionError("PlayerContract", "step", "(\\not falling) \\and getNextCommand()@pre == MOVEU \\impl step() == this@pre.goUp()");
+        // }
 
+        // //\post (\not falling) \and getNextCommand()@pre == DIGL \impl step() == this@pre.digLeft()
+        // clone = (PlayerContract)this_atPre.clone();
+        // clone.digLeft();
+        // if(!(Checker.implication(!isFalling(getCol_atPre, getHgt_atPre, getCellNature_atPre, getCellContent_atPre) && getEngine().getNextCommand() == Command.DIGL, this.isEqual(clone)))){
+        //     Contractor.defaultContractor().postconditionError("PlayerContract", "step", "(\\not falling) \\and getNextCommand()@pre == DIGL \\impl step() == this@pre.digLeft()");
+        // }
 
-        //\post (\not falling) \and getNextCommand()@pre == MOVEU \impl step() == this@pre.goUp()
+        // //\post (\not falling) \and getNextCommand()@pre == DIGR \impl step() == this@pre.digRight()
+        // clone = (PlayerContract)this_atPre.clone();
+        // clone.digRight();
+        // if(!(Checker.implication(!isFalling(getCol_atPre, getHgt_atPre, getCellNature_atPre, getCellContent_atPre) && getEngine().getNextCommand() == Command.DIGR, this.isEqual(clone)))){
+        //     Contractor.defaultContractor().postconditionError("PlayerContract", "step", "(\\not falling) \\and getNextCommand()@pre == DIGR \\impl step() == this@pre.digRight()");
+        // }
 
-
-        //\post (\not falling) \and getNextCommand()@pre == DIGL \impl step() == this@pre.digLeft()
-
-
-        //\post (\not falling) \and getNextCommand()@pre == DIGR \impl step() == this@pre.digRight()
-
-
-        //\post (\not falling) \and getNextCommand()@pre == NONE \impl this == this@pre
-
-
+        // //\post (\not falling) \and getNextCommand()@pre == NONE \impl this == this@pre
+        // clone = (PlayerContract)this_atPre.clone();
+        // if(!(Checker.implication(!isFalling(getCol_atPre, getHgt_atPre, getCellNature_atPre, getCellContent_atPre) && getEngine().getNextCommand() == Command.NONE, this.isEqual(clone)))){
+        //     Contractor.defaultContractor().postconditionError("PlayerContract", "step", "(\\not falling) \\and getNextCommand()@pre == NONE \\impl this == this@pre");
+        // }
     }
 
     @Override
@@ -377,5 +432,21 @@ public class PlayerContract extends PlayerDecorator{
 
     }
     
+    
+    private Player duplicatePlayer(Player d){
+        Player res = new PlayerImpl();
+
+        Engine resEngine = new EngineImpl(res, new EnvironmentImpl());
+        EditableScreen resES = new EditableScreenImpl();
+
+        resES.init(d.getEnvi().getHeight(), d.getEnvi().getWidth());
+        resEngine.init(resES, d.getCol(), d.getHgt(), null, null);
+        res.init(d.getCol(), d.getHgt(), resEngine)
+        return res;
+    }
+
+    private boolean isEqual(PlayerContract pc){
+        return true;
+    }
     
 }

@@ -103,6 +103,4 @@ public class PlayerImpl extends CharacterImpl implements Player {
 
     
     }
-
-
 }

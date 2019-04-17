@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import contracts.EnvironmentContract;
+import contracts.PlayerContract;
 import data.Cell;
 import data.Command;
 import data.Coord;
@@ -26,6 +28,11 @@ public class EngineImpl implements Engine {
     private Command nextCommand;
     private Set<Hole> holes;
     private CommandManager commandManager;
+
+    public EngineImpl(Player player, Environment environment){
+        this.player = player;
+        this.envi = environment;
+    }
 
     public Environment getEnvironment() {
         return this.envi;
@@ -56,9 +63,10 @@ public class EngineImpl implements Engine {
     }
 
     public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures) {
-        this.envi = new EnvironmentImpl();
+        // this.envi = new EnvironmentContract(new EnvironmentImpl());
         this.envi.init(screen);
-        this.player = new PlayerImpl();
+        // this.player = new PlayerImpl();
+        // this.player = new PlayerContract(new PlayerImpl());
         this.player.init(5, 2, this);
         this.status = Status.Playing;
         this.nextCommand = Command.NONE;

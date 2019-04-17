@@ -421,7 +421,7 @@ public class EnvironmentContract extends EnvironmentDecorator{
         //              getCellNature(i, j) == getCellNature(i, j)@pre
         for(int i = 0; i < getWidth(); i++){
             for(int j = 0; j < getHeight(); j++){
-                if(!Checker.implication(i != x || j != y, getCellContent(i, j).equals(getCellContent_atPre.get(x).get(y)))){
+                if(!Checker.implication(i != x || j != y, getCellContent(i, j).equals(getCellContent_atPre.get(i).get(j)))){
                     Contractor.defaultContractor().postconditionError("EnvironmentContract", "removeCharacter", "\\Forall i in [0, getWidth() - 1] \\Forall j in [0, getHeight() - 1] i != x || j != y \\impl getCellContent(i,j) == getCellContent(i, j)@pre");
                 }
                 if(!(getCellNature(i, j) == getCellNature_atPre[i][j])){

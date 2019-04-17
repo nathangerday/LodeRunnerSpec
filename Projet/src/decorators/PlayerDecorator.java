@@ -38,5 +38,15 @@ public class PlayerDecorator extends CharacterDecorator implements Player {
         getDelegate().digRight();
     }
 
+    @Override
+    public Player clone() {
+        return getDelegate().clone();
+    }
+
+    @Override
+    public boolean equals(Player other) {
+        return getDelegate().equals(other);
+    }
+
     
 }

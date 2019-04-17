@@ -1,10 +1,3 @@
-# 1 "feu_safe.pml"
-# 1 "<built-in>"
-# 1 "<command-line>"
-# 31 "<command-line>"
-# 1 "/usr/include/stdc-predef.h" 1 3 4
-# 32 "<command-line>" 2
-# 1 "feu_safe.pml"
 mtype {Rouge, Orange, Vert, Indeter}
 mtype couleur = Indeter;
 bool clignotant = false;
@@ -19,13 +12,13 @@ proctype feu(){
     clignotant = false;
     couleur = Rouge;
     goto normal;
-
+    
     normal:
-
+    
     do
         :: couleur == Vert -> couleur1 = couleur; couleur = Orange; couleur2 = couleur; ch ! couleur1, couleur2, clignotant;
-        :: couleur == Orange -> couleur1 = couleur; couleur = Rouge; couleur2 = couleur; ch ! couleur1, couleur2, clignotant;
-        :: couleur == Rouge -> couleur1 = couleur; couleur = Vert; couleur2 = couleur; ch ! couleur1, couleur2, clignotant;
+        :: couleur == Orange -> couleur1 = couleur; couleur = Rouge;  couleur2 = couleur; ch ! couleur1, couleur2, clignotant;
+        :: couleur == Rouge ->  couleur1 = couleur; couleur = Vert;  couleur2 = couleur; ch ! couleur1, couleur2, clignotant;
         :: !isWorking -> goto panne;
     od
 
@@ -52,11 +45,11 @@ active proctype observer(){
     bool clign;
     loop:
         ch ? c1, c2, clign;
-        assert((clign || !(c1 == Rouge && c2 == Orange)));
-        assert((clign || !(c1 == Orange && c2 == Vert)));
+        assert((clign || !(c1 == Rouge && c2 == Orange))); 
+        assert((clign || !(c1 == Orange && c2 == Vert))); 
         assert((clign || !(c1 == Vert && c2 == Rouge)));
-        assert(!clign || c2 != Rouge);
-        assert(!clign || c2 != Vert);
+        assert(!clign || c2 != Rouge); 
+        assert(!clign || c2 != Vert); 
         goto loop;
 
 }

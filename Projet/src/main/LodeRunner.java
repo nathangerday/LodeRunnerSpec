@@ -1,6 +1,7 @@
 package main;
 
 import contracts.EditableScreenContract;
+import contracts.PlayerContract;
 import data.Cell;
 import data.Status;
 import impl.*;
@@ -8,7 +9,7 @@ import services.*;
 
 public class LodeRunner{
     public static void main(String[] args){
-        Engine engi = new EngineImpl(new PlayerImpl(), new EnvironmentImpl());
+        Engine engi = new EngineImpl(new PlayerContract(new PlayerImpl()), new EnvironmentImpl());
         EditableScreen screen = new EditableScreenContract(new EditableScreenImpl());
         
         screen.init(8, 20);

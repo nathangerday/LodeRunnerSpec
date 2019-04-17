@@ -67,7 +67,7 @@ public class EngineImpl implements Engine {
         this.envi.init(screen);
         // this.player = new PlayerImpl();
         // this.player = new PlayerContract(new PlayerImpl());
-        this.player.init(5, 2, this);
+        this.player.init(playerX, playerY, this);
         this.status = Status.Playing;
         this.nextCommand = Command.NONE;
         this.holes = new HashSet<>();

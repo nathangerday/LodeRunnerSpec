@@ -1,9 +1,12 @@
 package contracts;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import data.Cell;
+import data.Entity;
 import decorators.CharacterDecorator;
 import services.Character;
 import services.Environment;
@@ -106,7 +109,7 @@ public class CharacterContract extends CharacterDecorator {
             Contractor.defaultContractor().postconditionError("CharacterContract", "init", "getEnvi() == s");
         }
         //\post this \in getEnvi().getCellContent(x, y)
-        if(!(getEnvi().getCellContent(x, y).contains(this))){
+        if(!(getEnvi().getCellContent(x, y).contains(getDelegate()))){
             Contractor.defaultContractor().postconditionError("CharacterContract", "init", "this \\in getEnvi().getCellContent(x, y)");
         }
         
@@ -115,6 +118,15 @@ public class CharacterContract extends CharacterDecorator {
     @Override
     public void goLeft() {
         //captures
+        Cell[][] getCellNature_atPre = new Cell[getEnvi().getWidth()][getEnvi().getHeight()];
+        List<List<Set<Entity>>> getCellContent_atPre = new ArrayList<>();
+        for(int u = 0; u < getEnvi().getWidth(); u++){
+            getCellContent_atPre.add(new ArrayList<>());
+            for(int v = 0; v < getEnvi().getHeight(); v++){
+                getCellNature_atPre[u][v] = getEnvi().getCellNature(u, v);
+                getCellContent_atPre.get(u).add(new HashSet<>(getEnvi().getCellContent(u, v)));
+            }
+        }
         int getHgt_atPre = getHgt();
         int getCol_atPre = getCol();
         Environment getEnvi_atPre = getEnvi();
@@ -162,7 +174,7 @@ public class CharacterContract extends CharacterDecorator {
 
         boolean cond1 = !(LAD_HDR.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre)));
         boolean cond2 = !(PLT_MTL_LAD.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre - 1)));
-        boolean cond3 = !Util.constainsCharacter(getEnvi().getCellContent(getCol_atPre, getHgt_atPre - 1));
+        boolean cond3 = !Util.constainsCharacter(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre - 1));
         if(!(Checker.implication(cond1 && cond2 && cond3, getCol_atPre == getCol()))){
             Contractor.defaultContractor().postconditionError("CharacterContract", "goLeft", "\\not (getEnvi().getCellNature(getCol()@pre, getHgt()@pre) \\in {LAD, HDR}) \\and \\not getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1) \\in {PLT, MTL, LAD} \\and \\not \\Exists Character c \\in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1) \\impl getCol() == getCol()@pre()");
         }
@@ -170,7 +182,7 @@ public class CharacterContract extends CharacterDecorator {
 
         
         //\post \Exists Character c \in getEnvi().getCellContent(getCol()@pre - 1, getHgt()@pre) \impl getCol() == getCol()@pre
-        if(!(Checker.implication(Util.constainsCharacter(getEnvi().getCellContent(getCol_atPre - 1, getHgt_atPre)), getCol_atPre == getCol()))){
+        if(!(Checker.implication(Util.constainsCharacter(getCellContent_atPre.get(getCol_atPre - 1).get(getHgt_atPre)), getCol_atPre == getCol()))){
             Contractor.defaultContractor().postconditionError("CharacterContract", "goLeft", "\\Exists Character c \\in getEnvi().getCellContent(getCol()@pre - 1, getHgt()@pre) \\impl getCol() == getCol()@pre");
         }
 
@@ -186,8 +198,8 @@ public class CharacterContract extends CharacterDecorator {
         boolean condAND2 = !MTL_PLT.contains(getEnvi().getCellNature(getCol_atPre - 1, getHgt_atPre));
         boolean condOR1 = (LAD_HDR.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre)));
         boolean condOR2 = (PLT_MTL_LAD.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre - 1)));
-        boolean condOR3 = Util.constainsCharacter(getEnvi().getCellContent(getCol_atPre, getHgt_atPre - 1));
-        boolean condAND3 = !Util.constainsCharacter(getEnvi().getCellContent(getCol_atPre - 1, getHgt_atPre));
+        boolean condOR3 = Util.constainsCharacter(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre - 1));
+        boolean condAND3 = !Util.constainsCharacter(getCellContent_atPre.get(getCol_atPre - 1).get(getHgt_atPre));
         if(!Checker.implication(condAND1 && condAND2 && (condOR1 || condOR2 || condOR3) && condAND3, getCol() == getCol_atPre)){
             Contractor.defaultContractor().postconditionError("CharacterContract", "goLeft", "Check if goLeft is possible with all conditions");
         }
@@ -204,6 +216,15 @@ public class CharacterContract extends CharacterDecorator {
     @Override
     public void goRight() {
         //captures
+        Cell[][] getCellNature_atPre = new Cell[getEnvi().getWidth()][getEnvi().getHeight()];
+        List<List<Set<Entity>>> getCellContent_atPre = new ArrayList<>();
+        for(int u = 0; u < getEnvi().getWidth(); u++){
+            getCellContent_atPre.add(new ArrayList<>());
+            for(int v = 0; v < getEnvi().getHeight(); v++){
+                getCellNature_atPre[u][v] = getEnvi().getCellNature(u, v);
+                getCellContent_atPre.get(u).add(new HashSet<>(getEnvi().getCellContent(u, v)));
+            }
+        }
         int getHgt_atPre = getHgt();
         int getCol_atPre = getCol();
         Environment getEnvi_atPre = getEnvi();
@@ -250,13 +271,13 @@ public class CharacterContract extends CharacterDecorator {
 
         boolean cond1 = !(LAD_HDR.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre)));
         boolean cond2 = !(PLT_MTL_LAD.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre - 1)));
-        boolean cond3 = !Util.constainsCharacter(getEnvi().getCellContent(getCol_atPre, getHgt_atPre - 1));
+        boolean cond3 = !Util.constainsCharacter(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre - 1));
         if(!(Checker.implication(cond1 && cond2 && cond3, getCol_atPre == getCol()))){
             Contractor.defaultContractor().postconditionError("CharacterContract", "goRight", "\\not (getEnvi().getCellNature(getCol()@pre, getHgt()@pre) \\in {LAD, HDR}) \\and \\not getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1) \\in {PLT, MTL, LAD} \\and \\not \\Exists Character c \\in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1) \\impl getCol() == getCol()@pre()");
         }
         
         //\post \Exists Character c \in getEnvi().getCellContent(getCol()@pre + 1, getHgt()@pre) \impl getCol() == getCol()@pre
-        if(!(Checker.implication(Util.constainsCharacter(getEnvi().getCellContent(getCol_atPre + 1, getHgt_atPre)), getCol_atPre == getCol()))){
+        if(!(Checker.implication(Util.constainsCharacter(getCellContent_atPre.get(getCol_atPre + 1).get(getHgt_atPre)), getCol_atPre == getCol()))){
             Contractor.defaultContractor().postconditionError("CharacterContract", "goRight", "\\Exists Character c \\in getEnvi().getCellContent(getCol()@pre + 1, getHgt()@pre) \\impl getCol() == getCol()@pre");
         }
         
@@ -272,8 +293,8 @@ public class CharacterContract extends CharacterDecorator {
         boolean condAND2 = !MTL_PLT.contains(getEnvi().getCellNature(getCol_atPre + 1, getHgt_atPre));
         boolean condOR1 = (LAD_HDR.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre)));
         boolean condOR2 = (PLT_MTL_LAD.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre - 1)));
-        boolean condOR3 = Util.constainsCharacter(getEnvi().getCellContent(getCol_atPre, getHgt_atPre - 1));
-        boolean condAND3 = !Util.constainsCharacter(getEnvi().getCellContent(getCol_atPre + 1, getHgt_atPre));
+        boolean condOR3 = Util.constainsCharacter(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre - 1));
+        boolean condAND3 = !Util.constainsCharacter(getCellContent_atPre.get(getCol_atPre + 1).get(getHgt_atPre));
         if(!Checker.implication(condAND1 && condAND2 && (condOR1 || condOR2 || condOR3) && condAND3, getCol() == getCol_atPre)){
             Contractor.defaultContractor().postconditionError("CharacterContract", "goRight", "Check if goRight is possible with all conditions");
         }
@@ -288,6 +309,15 @@ public class CharacterContract extends CharacterDecorator {
     @Override
     public void goUp() {
         //captures
+        Cell[][] getCellNature_atPre = new Cell[getEnvi().getWidth()][getEnvi().getHeight()];
+        List<List<Set<Entity>>> getCellContent_atPre = new ArrayList<>();
+        for(int u = 0; u < getEnvi().getWidth(); u++){
+            getCellContent_atPre.add(new ArrayList<>());
+            for(int v = 0; v < getEnvi().getHeight(); v++){
+                getCellNature_atPre[u][v] = getEnvi().getCellNature(u, v);
+                getCellContent_atPre.get(u).add(new HashSet<>(getEnvi().getCellContent(u, v)));
+            }
+        }
         int getHgt_atPre = getHgt();
         int getCol_atPre = getCol();
         Environment getEnvi_atPre = getEnvi();
@@ -324,7 +354,7 @@ public class CharacterContract extends CharacterDecorator {
         }
 
         //\post \Exists Character c \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre + 1) \impl getHgt() == getHgt()@pre
-        if(!Checker.implication(Util.constainsCharacter(getEnvi().getCellContent(getCol_atPre, getHgt_atPre + 1)), getHgt() == getHgt_atPre)){
+        if(!Checker.implication(Util.constainsCharacter(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre + 1)), getHgt() == getHgt_atPre)){
             Contractor.defaultContractor().postconditionError("CharacterContract", "goUp", "\\Exists Character c \\in getEnvi().getCellContent(getCol()@pre, getHgt()@pre + 1) \\impl getHgt() == getHgt()@pre");
         }
 
@@ -336,7 +366,7 @@ public class CharacterContract extends CharacterDecorator {
         boolean cond1 = getHgt_atPre != getEnvi().getHeight() - 1;
         boolean cond2 = !MTL_PLT.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre + 1));
         boolean cond3 = getEnvi().getCellNature(getCol_atPre, getHgt_atPre) == Cell.LAD;
-        boolean cond4 = !Util.constainsCharacter(getEnvi().getCellContent(getCol_atPre, getHgt_atPre + 1));
+        boolean cond4 = !Util.constainsCharacter(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre + 1));
         if(!Checker.implication(cond1 && cond2 && cond3 && cond4, getHgt() == getHgt_atPre + 1)){
             Contractor.defaultContractor().postconditionError("CharacterContract", "goUp", "getHgt()@pre != getEnvi().getHeight() - 1  \\and \\not getEnvi().getCellNature(getCol()@pre, getHgt()@pre + 1 \\in {MTL, PLT} \\and getEnvi().getCellNature(getCol()@pre, getHgt()@pre) == LAD \\and \\not \\Exists Character c \\in getEnvi().getCellContent(getCol()@pre, getHgt()@pre + 1) \\impl getHgt() == getHgt()@pre + 1");
         }
@@ -351,6 +381,15 @@ public class CharacterContract extends CharacterDecorator {
     @Override
     public void goDown() {
         //captures
+        Cell[][] getCellNature_atPre = new Cell[getEnvi().getWidth()][getEnvi().getHeight()];
+        List<List<Set<Entity>>> getCellContent_atPre = new ArrayList<>();
+        for(int u = 0; u < getEnvi().getWidth(); u++){
+            getCellContent_atPre.add(new ArrayList<>());
+            for(int v = 0; v < getEnvi().getHeight(); v++){
+                getCellNature_atPre[u][v] = getEnvi().getCellNature(u, v);
+                getCellContent_atPre.get(u).add(new HashSet<>(getEnvi().getCellContent(u, v)));
+            }
+        }
         int getHgt_atPre = getHgt();
         int getCol_atPre = getCol();
         Environment getEnvi_atPre = getEnvi();
@@ -382,7 +421,7 @@ public class CharacterContract extends CharacterDecorator {
         }
         
         //\post \Exists Character c \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1) \impl getHgt() == getHgt()@pre
-        if(!(Checker.implication(Util.constainsCharacter(getEnvi().getCellContent(getCol_atPre, getHgt_atPre - 1)), getHgt() == getHgt_atPre))){
+        if(!(Checker.implication(Util.constainsCharacter(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre - 1)), getHgt() == getHgt_atPre))){
             Contractor.defaultContractor().postconditionError("CharacterContract", "goDown", "\\Exists Character c \\in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1) \\impl getHgt() == getHgt()@pre");
         }
         
@@ -392,7 +431,7 @@ public class CharacterContract extends CharacterDecorator {
         //      \impl getHgt() == getHgt()@pre - 1
         boolean cond1 = getHgt_atPre != 0;
         boolean cond2 = !MTL_PLT.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre - 1));
-        boolean cond3 = !Util.constainsCharacter(getEnvi().getCellContent(getCol_atPre, getHgt_atPre - 1));
+        boolean cond3 = !Util.constainsCharacter(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre - 1));
         if(!(Checker.implication(cond1 && cond2 && cond3, getHgt() == getCol_atPre - 1))){
             Contractor.defaultContractor().postconditionError("CharacterContract", "goDown", "getHgt()@pre != 0 \\and \\not getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1) \\in {MTL, PLT} \\and \\not \\Exists Character c \\in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1)  \\impl getHgt() == getHgt()@pre - 1");
         }

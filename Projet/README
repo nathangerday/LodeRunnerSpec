@@ -13,3 +13,4 @@ The games displays in the terminal.
 
 ===================== TEST =====================
 
+$ ant test

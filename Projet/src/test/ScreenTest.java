@@ -2,9 +2,6 @@ package test;
 
 import services.Screen;
 
-import static org.junit.Assert.assertTrue;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,9 +19,39 @@ public class ScreenTest {
     }
 
     @Test
-    public void test1(){
-        assertTrue(true);
+    public void testInit1(){
+        // Pas de condition initiale
+        
+        //operations
+        screen.init(10, 20);
+
+        //oracles : pas d'exception
+        
     }
     
+
+    @Test(expected = contracts.ContractError.class)
+    public void testDig1(){
+        //CI
+        screen.init(10, 20);
+        
+        //operations
+        screen.dig(5, 2);
+
+        //oracles : PreconditionError
+        
+    }
+
+    @Test(expected = contracts.ContractError.class)
+    public void testFill1(){
+        //CI
+        screen.init(10, 20);
+        
+        //operations
+        screen.fill(5, 2);
+
+        //oracles : PreconditionError
+        
+    }
     
 }

@@ -32,7 +32,7 @@ public class CharacterContract extends CharacterDecorator {
 
         //\inv (\Exists Character c \in getEnvi().getCellContent(getCol(), getHgt()))
         //          \impl c == this
-        if(!Checker.implication(Util.constainsCharacter(getEnvi().getCellContent(getCol(), getHgt())), Util.getCharacter(getEnvi().getCellContent(getCol(), getHgt())).equals(this))){
+        if(!Checker.implication(Util.constainsCharacter(getEnvi().getCellContent(getCol(), getHgt())), Util.getCharacter(getEnvi().getCellContent(getCol(), getHgt())).equals(getDelegate()))){
             Contractor.defaultContractor().invariantError("CharacterContract", "(\\Exists Character c \\in getEnvi().getCellContent(getCol(), getHgt())) \\impl c == this");
         }
 

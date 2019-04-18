@@ -41,10 +41,14 @@
 
       <formatter type="plain"/>
 
-      <test name="test.ScreenTest" outfile="report1"/>
+      <test name="test.ScreenTest" outfile="reportScreen"/>
+      <test name="test.EditableScreenTest" outfile="reportEditableScreen"/>
+      <test name="test.CharacterTest" outfile="reportCharacter"/>
+
 
     </junit>
-  </target>
+</target>
+
 
   <target name="dist" depends="init,clean"
         description="Generer la distribution" >

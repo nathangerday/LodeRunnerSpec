@@ -6,6 +6,7 @@ import data.Cell;
 import data.Status;
 import impl.*;
 import services.*;
+import utils.CommandManager;
 
 public class LodeRunner{
     public static void main(String[] args){
@@ -45,8 +46,8 @@ public class LodeRunner{
         screen.setNature(17, 3, Cell.PLT);
         screen.setNature(18, 3, Cell.PLT);
         // screen.setNature(3, 2, Cell.PLT);
-        
-        engi.init(screen, 5, 2, null, null);
+        CommandManager cm = new CommandManager(Thread.currentThread());
+        engi.init(screen, 5, 2, null, null, cm);
         while(engi.getStatus() == Status.Playing){
             engi.step();
             engi.display();

@@ -62,7 +62,7 @@ public class EngineImpl implements Engine {
         this.holes.add(new Hole(x, y));
     }
 
-    public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures) {
+    public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures, CommandManager cm) {
         // this.envi = new EnvironmentContract(new EnvironmentImpl());
         this.envi.init(screen);
         // this.player = new PlayerImpl();
@@ -71,7 +71,7 @@ public class EngineImpl implements Engine {
         this.status = Status.Playing;
         this.nextCommand = Command.NONE;
         this.holes = new HashSet<>();
-        this.commandManager = new CommandManager(this, Thread.currentThread());
+        this.commandManager = cm;
         // TODO reste (treasures and guards)
     }
 
@@ -80,8 +80,12 @@ public class EngineImpl implements Engine {
         // TODO 1 => Si joueur sur un trésor, trésor disparait
         // TODO 2 => Si plus de trésors, jeu gagné
         // TODO 3 => Si joueur dans la meme case qu'un garde
+        if(this.commandManager != null){
+            this.nextCommand = this.commandManager.receiveCurrentCommand();
+        }else{
+            this.nextCommand = Command.NONE;
+        }
         this.player.step();
-        this.nextCommand = this.commandManager.receiveCurrentCommand();
         Iterator<Hole> holesIter = this.holes.iterator();
         while(holesIter.hasNext()){
             Hole h = holesIter.next();

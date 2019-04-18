@@ -8,6 +8,7 @@ import data.Coord;
 import data.Hole;
 import data.Item;
 import data.Status;
+import utils.CommandManager;
 
 public interface Engine{
     /* Observators */
@@ -30,7 +31,7 @@ public interface Engine{
     //\post getStatus() == Playing
     //\post getNextCommand() == NONE
     //\post getHoles() == {}
-    public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures);
+    public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures, CommandManager cm);
     
     /* Invariants */
     //TODO Synchronisation entre l'environment et personnage

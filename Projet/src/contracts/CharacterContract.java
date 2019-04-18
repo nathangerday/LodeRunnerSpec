@@ -201,7 +201,7 @@ public class CharacterContract extends CharacterDecorator {
         boolean condOR3 = Util.constainsCharacter(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre - 1));
         boolean condAND3 = !Util.constainsCharacter(getCellContent_atPre.get(getCol_atPre - 1).get(getHgt_atPre));
         if(!Checker.implication(condAND1 && condAND2 && (condOR1 || condOR2 || condOR3) && condAND3, getCol() == getCol_atPre)){
-            Contractor.defaultContractor().postconditionError("CharacterContract", "goLeft", "Check if goLeft is possible with all conditions");
+            Contractor.defaultContractor().postconditionError("CharacterContract", "goLeft", "Check if goLeft worked correctly with all conditions");
         }
 
 
@@ -296,7 +296,7 @@ public class CharacterContract extends CharacterDecorator {
         boolean condOR3 = Util.constainsCharacter(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre - 1));
         boolean condAND3 = !Util.constainsCharacter(getCellContent_atPre.get(getCol_atPre + 1).get(getHgt_atPre));
         if(!Checker.implication(condAND1 && condAND2 && (condOR1 || condOR2 || condOR3) && condAND3, getCol() == getCol_atPre)){
-            Contractor.defaultContractor().postconditionError("CharacterContract", "goRight", "Check if goRight is possible with all conditions");
+            Contractor.defaultContractor().postconditionError("CharacterContract", "goRight", "Check if goRight worked correctly with all conditions");
         }
         
         //\post const getEnvi()

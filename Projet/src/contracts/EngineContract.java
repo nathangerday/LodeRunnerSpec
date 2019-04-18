@@ -13,6 +13,7 @@ import services.EditableScreen;
 import services.Engine;
 import services.Environment;
 import services.Player;
+import utils.CommandManager;
 
 public class EngineContract extends EngineDecorator{
 
@@ -57,8 +58,8 @@ public class EngineContract extends EngineDecorator{
 	}
 
 	@Override
-	public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures) {
-		super.init(screen, playerX, playerY, guards, treasures);
+	public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures, CommandManager cm) {
+		super.init(screen, playerX, playerY, guards, treasures, cm);
 	}
 
 	@Override

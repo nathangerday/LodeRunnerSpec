@@ -12,6 +12,7 @@ import services.EditableScreen;
 import services.Engine;
 import services.Environment;
 import services.Player;
+import utils.CommandManager;
 
 public class EngineDecorator implements Engine{
     protected final Engine delegate;
@@ -55,8 +56,8 @@ public class EngineDecorator implements Engine{
 	}
 
 	@Override
-	public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures) {
-		getDelegate().init(screen, playerX, playerY, guards, treasures);
+	public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures, CommandManager cm) {
+		getDelegate().init(screen, playerX, playerY, guards, treasures, cm);
 	}
 
 	@Override

@@ -201,6 +201,11 @@ public class PlayerContract extends PlayerDecorator{
                 Contractor.defaultContractor().postconditionError("PlayerContract", "step", "(\\not falling) \\and getNextCommand()@pre == NONE \\impl this == this@pre");
             }
         }
+
+        //\post const getEnvi()
+        if(!(getEnvi().equals(getEnvi_atPre))){
+            Contractor.defaultContractor().postconditionError("PlayerContract", "step", "const getEnvi()");
+        }
     }
 
     @Override
@@ -824,7 +829,7 @@ public class PlayerContract extends PlayerDecorator{
             }
         }
         
-        resEngine.init(resES, d.getCol(), d.getHgt(), null, null, null);
+        resEngine.init(resES, d.getCol(), d.getHgt(), null, null, null, resEngine);
         res.init(d.getCol(), d.getHgt(), resEngine);
         return res;
     }

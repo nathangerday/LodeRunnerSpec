@@ -1,0 +1,15 @@
+===================== COMPILE =====================
+
+$ ant compile
+
+===================== RUN =====================
+
+$ ant run
+OU
+$ java -cp bin/ main.LodeRunner 
+
+The games displays in the terminal.
+(Enter keyboard input in the small window which pops up)
+
+===================== TEST =====================
+

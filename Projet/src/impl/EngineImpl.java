@@ -62,12 +62,12 @@ public class EngineImpl implements Engine {
         this.holes.add(new Hole(x, y));
     }
 
-    public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures, CommandManager cm) {
+    public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures, CommandManager cm, Engine engineInstance) {
         // this.envi = new EnvironmentContract(new EnvironmentImpl());
         this.envi.init(screen);
         // this.player = new PlayerImpl();
         // this.player = new PlayerContract(new PlayerImpl());
-        this.player.init(playerX, playerY, this);
+        this.player.init(playerX, playerY, engineInstance);
         this.status = Status.Playing;
         this.nextCommand = Command.NONE;
         this.holes = new HashSet<>();

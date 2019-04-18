@@ -1,6 +1,7 @@
 package main;
 
 import contracts.EditableScreenContract;
+import contracts.EngineContract;
 import contracts.EnvironmentContract;
 import contracts.PlayerContract;
 import data.Cell;
@@ -11,7 +12,7 @@ import utils.CommandManager;
 
 public class LodeRunner{
     public static void main(String[] args){
-        Engine engi = new EngineImpl(new PlayerContract(new PlayerImpl()), new EnvironmentContract(new EnvironmentImpl()));
+        Engine engi = new EngineContract(new EngineImpl(new PlayerContract(new PlayerImpl()), new EnvironmentContract(new EnvironmentImpl())));
         EditableScreen screen = new EditableScreenContract(new EditableScreenImpl());
         
         screen.init(8, 20);
@@ -48,7 +49,7 @@ public class LodeRunner{
         screen.setNature(18, 3, Cell.PLT);
         // screen.setNature(3, 2, Cell.PLT);
         CommandManager cm = new CommandManager(Thread.currentThread());
-        engi.init(screen, 5, 2, null, null, cm);
+        engi.init(screen, 5, 2, null, null, cm, engi);
         while(engi.getStatus() == Status.Playing){
             engi.step();
             engi.display();

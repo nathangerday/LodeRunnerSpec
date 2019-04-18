@@ -31,7 +31,7 @@ public interface Engine{
     //\post getStatus() == Playing
     //\post getNextCommand() == NONE
     //\post getHoles() == {}
-    public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures, CommandManager cm);
+    public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures, CommandManager cm, Engine engineInstance);
     
     /* Invariants */
     //TODO Synchronisation entre l'environment et personnage
@@ -56,6 +56,7 @@ public interface Engine{
     //\pre \not \Exists Hole h \in getHoles() \with (h.getX() == x && h.getY() == y)
     //\pre getEnvironment().getCellNature(x, y) == HOL
     //\post getHoles() == getHoles()@pre \Union {h} \with (h.getX() == x \and h.getY() == y)
+    //\post getNextCommand() == getNextCommand()@pre
     //\post getStatus() == getStatus()@pre
     //\post getTreasures() == getTreasures()@pre
     public void addHole(int x, int y);    

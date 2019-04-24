@@ -451,10 +451,11 @@ public class EnvironmentContract extends EnvironmentDecorator{
             Contractor.defaultContractor().preconditionError("EnvironmentContract", "init", "screen != null");
         }
 
-        //\pre screen.isPlayable()
-        if(!(screen.isPlayable())){
-            Contractor.defaultContractor().preconditionError("EnvironmentContract", "init", "screen.isPlayable()");
-        }
+        //TODO Remove
+        // //\pre screen.isPlayable()
+        // if(!(screen.isPlayable())){
+        //     Contractor.defaultContractor().preconditionError("EnvironmentContract", "init", "screen.isPlayable()");
+        // }
 
         super.init(screen);
 

@@ -20,10 +20,13 @@ import services.Engine;
 import services.Environment;
 import services.Guard;
 import services.Player;
+import services.ScreenManager;
 import utils.CommandManager;
+import utils.Factory;
 import utils.Util;
 
 public class EngineImpl implements Engine {
+    private ScreenManager sm;
     private Environment envi;
     private Player player;
     private List<Item> treasures;
@@ -33,11 +36,10 @@ public class EngineImpl implements Engine {
     private Set<Hole> holes;
     private CommandManager commandManager;
     private int nbTreasures;
+    private int currentLevel;
 
-    public EngineImpl(Player player, Environment environment){
-        this.player = player;
-        this.envi = environment;
-    }
+    private Engine engineInstance; // necessary for contracts
+    
 
     public Environment getEnvironment() {
         return this.envi;
@@ -67,39 +69,36 @@ public class EngineImpl implements Engine {
         this.holes.add(new Hole(x, y));
     }
 
-    public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures, CommandManager cm, Engine engineInstance) {
-        // this.envi = new EnvironmentContract(new EnvironmentImpl());
-        this.envi.init(screen);
-        // this.player = new PlayerImpl();
-        // this.player = new PlayerContract(new PlayerImpl());
-        this.player.init(playerX, playerY, engineInstance);
+    public void init(ScreenManager sm, CommandManager cm, Engine engineInstance) {
+        this.currentLevel = 0;
+        this.sm = sm;
+        this.engineInstance = engineInstance;
+        this.envi = Factory.createEnvironment();
+        this.envi.init(sm.getScreen(currentLevel));
+        this.player = Factory.createPlayer();
+        this.player.init(sm.getPlayerFromScreen(currentLevel).getX(), sm.getPlayerFromScreen(currentLevel).getY(), engineInstance);
         this.status = Status.Playing;
         this.nextCommand = Command.NONE;
         this.holes = new HashSet<>();
         this.commandManager = cm;
         this.guards = new ArrayList<>();
         this.treasures = new ArrayList<>();
-        if(guards != null){
-            for(Coord c : guards){
-                Guard tmp = new GuardImpl();
-                tmp.init(this.envi, c.getX(), c.getY(), this.player);
-                this.guards.add(tmp);
-            }
+        for(Coord c : sm.getGuardsFromScreen(currentLevel)){
+            Guard tmp = new GuardImpl();
+            tmp.init(this.envi, c.getX(), c.getY(), this.player);
+            this.guards.add(tmp);
         }
-        if(treasures != null){
-            this.nbTreasures = treasures.size();
-            for(Coord c : treasures){
-                Item tmp = new Item(ItemType.Treasure, c.getX(), c.getY());
-                this.treasures.add(tmp);
-                this.envi.addToCellContent(c.getX(), c.getY(), tmp);
-            }
+        this.nbTreasures = 0;
+        for(Coord c : sm.getItemsFromScreen(currentLevel)){
+            Item tmp = new Item(ItemType.Treasure, c.getX(), c.getY());
+            this.treasures.add(tmp);
+            this.envi.addToCellContent(c.getX(), c.getY(), tmp);
+            this.nbTreasures++;
         }
     }
 
     public void step() {
         // TODO Gestion des autres step
-        // TODO 1 => Si joueur sur un trésor, trésor disparait
-        // TODO 2 => Si plus de trésors, jeu gagné
         // TODO 3 => Si joueur dans la meme case qu'un garde
         if(this.commandManager != null){
             this.nextCommand = this.commandManager.receiveCurrentCommand();
@@ -109,7 +108,30 @@ public class EngineImpl implements Engine {
 
         if(Util.removeTreasure(envi.getCellContent(player.getCol(), player.getHgt()))){
             this.nbTreasures--;
-            if(this.nbTreasures == 0){
+            if(this.nbTreasures == 0 && this.currentLevel < this.sm.getNbScreen() - 1){
+                this.currentLevel++;
+                this.envi = Factory.createEnvironment();
+                this.envi.init(sm.getScreen(currentLevel));
+                this.player = Factory.createPlayer();
+                this.player.init(sm.getPlayerFromScreen(currentLevel).getX(), sm.getPlayerFromScreen(currentLevel).getY(), engineInstance);
+                this.nextCommand = Command.NONE;
+                this.holes = new HashSet<>();
+                this.guards.clear();
+                this.treasures.clear();
+                for(Coord c : sm.getGuardsFromScreen(currentLevel)){
+                    Guard tmp = new GuardImpl();
+                    tmp.init(this.envi, c.getX(), c.getY(), this.player);
+                    this.guards.add(tmp);
+                }
+                this.nbTreasures = 0;
+                for(Coord c : sm.getItemsFromScreen(currentLevel)){
+                    Item tmp = new Item(ItemType.Treasure, c.getX(), c.getY());
+                    this.treasures.add(tmp);
+                    this.envi.addToCellContent(c.getX(), c.getY(), tmp);
+                    this.nbTreasures++;
+                }
+                return;
+            }else if(this.nbTreasures == 0){
                 this.status = Status.Win;
                 return;
             }

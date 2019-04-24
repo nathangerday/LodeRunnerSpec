@@ -22,16 +22,12 @@ public interface Engine{
     public Set<Hole> getHoles();
     
     /* Constructors */
-    //\pre screen.isPlayable()
-    //\pre playerX >= 0
-    //\pre playerY >= 0
-    //\pre playerX < screen.getWidth()
-    //\pre playerY < screen.getHeight()
+    //TODO \pre sm.getNbScreen() >= 1;
     //TODO Guards / Treasures
     //\post getStatus() == Playing
     //\post getNextCommand() == NONE
     //\post getHoles() == {}
-    public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures, CommandManager cm, Engine engineInstance);
+    public void init(ScreenManager sm, CommandManager cm, Engine engineInstance);
     
     /* Invariants */
     //TODO Synchronisation entre l'environment et personnage

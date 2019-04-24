@@ -85,9 +85,12 @@ public class CharacterContract extends CharacterDecorator {
             Contractor.defaultContractor().preconditionError("CharacterContract", "init", "y < s.getHeight()");
         }
 
-        //\pre s.getCellNature(x, y) == EMP
-        if(!(s.getCellNature(x, y) == Cell.EMP)){
-            Contractor.defaultContractor().preconditionError("CharacterContract", "init", "s.getCellNature(x, y) == EMP");
+        //\pre \not s.getCellNature(x, y) \in {MTL, PLT}
+        Set<Cell> MTL_PLT = new HashSet<>();
+        MTL_PLT.add(Cell.MTL);
+        MTL_PLT.add(Cell.PLT);
+        if(!(!MTL_PLT.contains(s.getCellNature(x, y)))){
+            Contractor.defaultContractor().preconditionError("CharacterContract", "init", "\\not s.getCellNature(x, y) \\in {MTL, PLT}");
         }
 
         super.init(s, x, y);

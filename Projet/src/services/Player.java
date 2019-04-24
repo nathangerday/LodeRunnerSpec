@@ -12,7 +12,7 @@ public interface Player extends /* includes */ Character{
     //\pre x < e.getEnvironment().getWidth()
     //\pre y >= 0
     //\pre y < e.getEnvironment().getHeight()
-    //\pre e.getEnvironment().getCellNature(x, y) == EMP
+    //\pre \not s.getCellNature(x, y) \in {MTL, PLT}
     //\post getHgt() == y
     //\post getCol() == x
     //\post getEnvi() == e.getEnvironment()

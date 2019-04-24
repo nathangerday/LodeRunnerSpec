@@ -7,6 +7,7 @@ import java.util.Set;
 
 import data.Cell;
 import data.Command;
+import data.Coord;
 import data.Entity;
 import decorators.PlayerDecorator;
 import impl.EditableScreenImpl;
@@ -17,6 +18,8 @@ import services.EditableScreen;
 import services.Engine;
 import services.Environment;
 import services.Player;
+import services.ScreenManager;
+import utils.Factory;
 import utils.Util;
 
 public class PlayerContract extends PlayerDecorator{
@@ -41,7 +44,7 @@ public class PlayerContract extends PlayerDecorator{
 
     @Override
     public void init(int x, int y, Engine e) {
-    	System.out.println("init");
+        System.out.println("init");
         //\pre e != null
         if(!(e != null)){
             Contractor.defaultContractor().preconditionError("PlayerContract", "init", "e != null");
@@ -67,11 +70,13 @@ public class PlayerContract extends PlayerDecorator{
             Contractor.defaultContractor().preconditionError("PlayerContract", "init", "y < e.getEnvironment().getHeight()");
         }
 
-        //\pre e.getEnvironment().getCellNature(x, y) == EMP
-        if(!(e.getEnvironment().getCellNature(x, y) == Cell.EMP)){
-            Contractor.defaultContractor().preconditionError("PlayerContract", "init", "e.getEnvironment().getCellNature(x, y) == EMP");
+        //\pre \not s.getCellNature(x, y) \in {MTL, PLT}
+        Set<Cell> MTL_PLT = new HashSet<>();
+        MTL_PLT.add(Cell.MTL);
+        MTL_PLT.add(Cell.PLT);
+        if(!(!MTL_PLT.contains(e.getEnvironment().getCellNature(x, y)))){
+            Contractor.defaultContractor().preconditionError("PlayerContract", "init", "\\not s.getCellNature(x, y) \\in {MTL, PLT}");
         }
-
         super.init(x, y, e);
 
         //inv post
@@ -817,9 +822,9 @@ public class PlayerContract extends PlayerDecorator{
     
     
     private Player duplicatePlayer(Player d){
-        Player res = new PlayerImpl();
+        // Player res = new PlayerImpl();
 
-        Engine resEngine = new EngineImpl(res, new EnvironmentImpl());
+        Engine resEngine = new EngineImpl();
         EditableScreen resES = new EditableScreenImpl();
         resES.init(d.getEnvi().getHeight(), d.getEnvi().getWidth());
         
@@ -829,8 +834,10 @@ public class PlayerContract extends PlayerDecorator{
             }
         }
         
-        resEngine.init(resES, d.getCol(), d.getHgt(), null, null, null, resEngine);
-        res.init(d.getCol(), d.getHgt(), resEngine);
+        ScreenManager sm = Factory.createScreenManager();
+        sm.addScreen(resES, null, null, new Coord(d.getCol(), d.getHgt()));
+        resEngine.init(sm, null, resEngine);
+        Player res = resEngine.getPlayer();
         return res;
     }
 

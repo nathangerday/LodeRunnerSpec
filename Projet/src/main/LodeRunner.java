@@ -13,11 +13,12 @@ import data.Status;
 import impl.*;
 import services.*;
 import utils.CommandManager;
+import utils.Factory;
 
 public class LodeRunner{
     public static void main(String[] args){
-        Engine engi = new EngineContract(new EngineImpl(new PlayerContract(new PlayerImpl()), new EnvironmentContract(new EnvironmentImpl())));
-        EditableScreen screen = new EditableScreenContract(new EditableScreenImpl());
+        Engine engi = Factory.createEngine();
+        EditableScreen screen = Factory.createEditableScreen();
         
         screen.init(8, 20);
         for(int i=0; i<screen.getWidth(); i++){
@@ -53,12 +54,38 @@ public class LodeRunner{
         screen.setNature(18, 3, Cell.PLT);
         // screen.setNature(3, 2, Cell.PLT);
         CommandManager cm = new CommandManager(Thread.currentThread());
+        ScreenManager sm = Factory.createScreenManager();
         List<Coord> treasureCoords = new ArrayList<>();
         treasureCoords.add(new Coord(0, 2));
-        treasureCoords.add(new Coord(17, 4));
+        // treasureCoords.add(new Coord(17, 4));
         List<Coord> guardCoords = new ArrayList<>();
         guardCoords.add(new Coord(1, 7));
-        engi.init(screen, 5, 2, guardCoords, treasureCoords, cm, engi);
+        sm.addScreen(screen, guardCoords, treasureCoords, new Coord(5, 2));
+
+
+        EditableScreen screen2 = Factory.createEditableScreen();
+        
+        screen2.init(8, 20);
+        for(int i=0; i<screen2.getWidth(); i++){
+            screen2.setNature(i, 0, Cell.MTL);
+        }
+        for(int i=0; i<screen2.getWidth(); i++){
+            screen2.setNature(i, 1, Cell.PLT);
+        }
+
+        for(int i=2; i<screen2.getHeight(); i++){
+            for(int j=0; j<screen2.getWidth(); j++){
+                screen2.setNature(j, i, Cell.EMP);
+            }
+        }
+        List<Coord> treasureCoords2 = new ArrayList<>();
+        treasureCoords2.add(new Coord(10, 2));
+        List<Coord> guardCoords2 = new ArrayList<>();
+        guardCoords2.add(new Coord(16, 7));
+
+        sm.addScreen(screen2, guardCoords2, treasureCoords2, new Coord(8, 2));
+
+        engi.init(sm, cm, engi);
         while(engi.getStatus() == Status.Playing){
             engi.step();
             engi.display();

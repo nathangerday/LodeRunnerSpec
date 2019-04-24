@@ -16,6 +16,7 @@ import services.EditableScreen;
 import services.Engine;
 import services.Environment;
 import services.Player;
+import services.ScreenManager;
 import utils.CommandManager;
 
 public class EngineContract extends EngineDecorator{
@@ -34,33 +35,11 @@ public class EngineContract extends EngineDecorator{
 	}
 	
 	@Override
-	public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures, CommandManager cm, Engine engineInstance) {
-		//\pre screen.isPlayable()
-		if(!(screen.isPlayable())){
-			Contractor.defaultContractor().preconditionError("EngineContract", "init", "screen.isPlayable()");
-		}
+	public void init(ScreenManager sm, CommandManager cm, Engine engineInstance) {
 
-		//\pre playerX >= 0
-		if(!(playerX >= 0)){
-			Contractor.defaultContractor().preconditionError("EngineContract", "init", "playerX >= 0");
-		}
-
-		//\pre playerY >= 0
-		if(!(playerY >= 0)){
-			Contractor.defaultContractor().preconditionError("EngineContract", "init", "playerY >= 0");
-		}
-
-		//\pre playerX < screen.getWidth()
-		if(!(playerX < screen.getWidth())){
-			Contractor.defaultContractor().preconditionError("EngineContract", "init", "playerX < screen.getWidth()");
-		}
-
-		//\pre playerY < screen.getHeight()
-		if(!(playerY < screen.getHeight())){
-			Contractor.defaultContractor().preconditionError("EngineContract", "init", "playerY < screen.getHeight()");
-		}
-
-		super.init(screen, playerX, playerY, guards, treasures, cm, engineInstance);
+		//TODO pre
+		
+		super.init(sm, cm, engineInstance);
 
 		//inv post
 		checkInvariant();

@@ -56,7 +56,7 @@ public interface Environment extends /* includes */ Screen{
     public Character removeCharacter(int x, int y);
     
     //\pre screen != null
-    //\pre screen.isPlayable()
+    //\pre screen.isPlayable() //TODO put elsewhere
     //\post getHeight() == screen.getHeight()
     //\post getWidth() == screen.getWidht()
     //\post \Forall x in [0, getWidth() - 1]

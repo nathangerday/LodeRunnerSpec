@@ -31,6 +31,7 @@ public class GuardImpl extends CharacterImpl implements Guard {
 
     @Override
     public Command getBehaviour() {
+        //TODO Improve behaviour
         if(getEnvi().getCellNature(x, y) == Cell.LAD && 
             getTarget().getHgt() > getHgt()){
                 return Command.MOVEU;

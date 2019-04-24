@@ -54,7 +54,7 @@
         description="Generer la distribution" >
     <!-- tout mettre dans l'archive -->
     <jar basedir="." jarfile="../ProjetCPS-${nom1}-${DSTAMP}.jar" />
-    <!-- <gzip src="../TME3-FilesPrio-${nom1}-${DSTAMP}.jar" destfile="../TME3-FilesPrio-${nom1}-${DSTAMP}.jar.gz"/> -->
+    <!-- <gzip src="../ProjetCPS-${nom1}-${DSTAMP}.jar" destfile="../ProjetCPS-${nom1}-${DSTAMP}.jar.gz"/> -->
   </target>
 
   <target name="clean"

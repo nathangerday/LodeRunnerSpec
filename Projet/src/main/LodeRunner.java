@@ -1,10 +1,14 @@
 package main;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import contracts.EditableScreenContract;
 import contracts.EngineContract;
 import contracts.EnvironmentContract;
 import contracts.PlayerContract;
 import data.Cell;
+import data.Coord;
 import data.Status;
 import impl.*;
 import services.*;
@@ -49,7 +53,12 @@ public class LodeRunner{
         screen.setNature(18, 3, Cell.PLT);
         // screen.setNature(3, 2, Cell.PLT);
         CommandManager cm = new CommandManager(Thread.currentThread());
-        engi.init(screen, 5, 2, null, null, cm, engi);
+        List<Coord> treasureCoords = new ArrayList<>();
+        treasureCoords.add(new Coord(0, 2));
+        treasureCoords.add(new Coord(17, 4));
+        List<Coord> guardCoords = new ArrayList<>();
+        guardCoords.add(new Coord(1, 7));
+        engi.init(screen, 5, 2, guardCoords, treasureCoords, cm, engi);
         while(engi.getStatus() == Status.Playing){
             engi.step();
             engi.display();

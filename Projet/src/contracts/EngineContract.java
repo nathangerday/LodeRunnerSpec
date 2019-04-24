@@ -83,6 +83,11 @@ public class EngineContract extends EngineDecorator{
 
 	@Override
 	public void step() {
+		//\pre getStatus() == Status.Playing
+		if(!(getStatus() == Status.Playing)){
+			Contractor.defaultContractor().postconditionError("EngineContract", "step", "getStatus() == Status.Playing");
+		}
+		
 		super.step();
 	}
 

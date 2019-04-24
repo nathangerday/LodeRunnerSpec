@@ -1,3 +1,9 @@
+===================== CONTROLS =====================
+MOVING : Z Q S D
+DIG LEFT : A
+DIG RIGHT : E
+
+
 ===================== COMPILE =====================
 
 $ ant compile

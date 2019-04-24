@@ -460,7 +460,7 @@ public class PlayerContract extends PlayerDecorator{
 
         boolean cond1 = !LAD_HDR.contains(getCellNature_atPre[getCol_atPre][getHgt_atPre]);
         boolean cond2 = EMP_HDR_HOL.contains(getCellNature_atPre[getCol_atPre][getHgt_atPre - 1]);
-        boolean cond3 = !Util.constainsCharacter(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre));
+        boolean cond3 = !Util.constainsCharacter(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre - 1));
         return cond1 && cond2 && cond3;
 
     }

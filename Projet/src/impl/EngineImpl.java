@@ -1,5 +1,6 @@
 package impl;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -12,10 +13,12 @@ import data.Command;
 import data.Coord;
 import data.Hole;
 import data.Item;
+import data.ItemType;
 import data.Status;
 import services.EditableScreen;
 import services.Engine;
 import services.Environment;
+import services.Guard;
 import services.Player;
 import utils.CommandManager;
 import utils.Util;
@@ -24,10 +27,12 @@ public class EngineImpl implements Engine {
     private Environment envi;
     private Player player;
     private List<Item> treasures;
+    private List<Guard> guards;
     private Status status;
     private Command nextCommand;
     private Set<Hole> holes;
     private CommandManager commandManager;
+    private int nbTreasures;
 
     public EngineImpl(Player player, Environment environment){
         this.player = player;
@@ -72,7 +77,23 @@ public class EngineImpl implements Engine {
         this.nextCommand = Command.NONE;
         this.holes = new HashSet<>();
         this.commandManager = cm;
-        // TODO reste (treasures and guards)
+        this.guards = new ArrayList<>();
+        this.treasures = new ArrayList<>();
+        if(guards != null){
+            for(Coord c : guards){
+                Guard tmp = new GuardImpl();
+                tmp.init(this.envi, c.getX(), c.getY(), this.player);
+                this.guards.add(tmp);
+            }
+        }
+        if(treasures != null){
+            this.nbTreasures = treasures.size();
+            for(Coord c : treasures){
+                Item tmp = new Item(ItemType.Treasure, c.getX(), c.getY());
+                this.treasures.add(tmp);
+                this.envi.addToCellContent(c.getX(), c.getY(), tmp);
+            }
+        }
     }
 
     public void step() {
@@ -85,7 +106,19 @@ public class EngineImpl implements Engine {
         }else{
             this.nextCommand = Command.NONE;
         }
+
+        if(Util.removeTreasure(envi.getCellContent(player.getCol(), player.getHgt()))){
+            this.nbTreasures--;
+            if(this.nbTreasures == 0){
+                this.status = Status.Win;
+                return;
+            }
+        }
+
         this.player.step();
+        for(Guard g : this.guards){
+            g.step();
+        }
         Iterator<Hole> holesIter = this.holes.iterator();
         while(holesIter.hasNext()){
             Hole h = holesIter.next();
@@ -119,7 +152,14 @@ public class EngineImpl implements Engine {
                 for(int j=0; j < this.envi.getWidth(); j++){
                     Cell c = this.envi.getCellNature(j, i);
                     if(Util.constainsCharacter(envi.getCellContent(j, i))){
-                        System.out.print("J");
+                        if(Util.getCharacter(envi.getCellContent(j, i)) instanceof Player){
+                            System.out.print("J");
+                        }else if(Util.getCharacter(envi.getCellContent(j, i)) instanceof Guard){
+                            System.out.print("G");
+                        }
+                    }else if(Util.containsTreasure(envi.getCellContent(j, i))){
+                        System.out.print("Ø");
+                        
                     }else{
                         switch(c){
                             case PLT:

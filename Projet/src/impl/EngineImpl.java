@@ -73,28 +73,12 @@ public class EngineImpl implements Engine {
         this.currentLevel = 0;
         this.sm = sm;
         this.engineInstance = engineInstance;
-        this.envi = Factory.createEnvironment();
-        this.envi.init(sm.getScreen(currentLevel));
-        this.player = Factory.createPlayer();
-        this.player.init(sm.getPlayerFromScreen(currentLevel).getX(), sm.getPlayerFromScreen(currentLevel).getY(), engineInstance);
         this.status = Status.Playing;
         this.nextCommand = Command.NONE;
-        this.holes = new HashSet<>();
         this.commandManager = cm;
         this.guards = new ArrayList<>();
         this.treasures = new ArrayList<>();
-        for(Coord c : sm.getGuardsFromScreen(currentLevel)){
-            Guard tmp = new GuardImpl();
-            tmp.init(this.envi, c.getX(), c.getY(), this.player);
-            this.guards.add(tmp);
-        }
-        this.nbTreasures = 0;
-        for(Coord c : sm.getItemsFromScreen(currentLevel)){
-            Item tmp = new Item(ItemType.Treasure, c.getX(), c.getY());
-            this.treasures.add(tmp);
-            this.envi.addToCellContent(c.getX(), c.getY(), tmp);
-            this.nbTreasures++;
-        }
+        loadLevel(0);
     }
 
     public void step() {
@@ -110,26 +94,7 @@ public class EngineImpl implements Engine {
             this.nbTreasures--;
             if(this.nbTreasures == 0 && this.currentLevel < this.sm.getNbScreen() - 1){
                 this.currentLevel++;
-                this.envi = Factory.createEnvironment();
-                this.envi.init(sm.getScreen(currentLevel));
-                this.player = Factory.createPlayer();
-                this.player.init(sm.getPlayerFromScreen(currentLevel).getX(), sm.getPlayerFromScreen(currentLevel).getY(), engineInstance);
-                this.nextCommand = Command.NONE;
-                this.holes = new HashSet<>();
-                this.guards.clear();
-                this.treasures.clear();
-                for(Coord c : sm.getGuardsFromScreen(currentLevel)){
-                    Guard tmp = new GuardImpl();
-                    tmp.init(this.envi, c.getX(), c.getY(), this.player);
-                    this.guards.add(tmp);
-                }
-                this.nbTreasures = 0;
-                for(Coord c : sm.getItemsFromScreen(currentLevel)){
-                    Item tmp = new Item(ItemType.Treasure, c.getX(), c.getY());
-                    this.treasures.add(tmp);
-                    this.envi.addToCellContent(c.getX(), c.getY(), tmp);
-                    this.nbTreasures++;
-                }
+                loadLevel(currentLevel);
                 return;
             }else if(this.nbTreasures == 0){
                 this.status = Status.Win;
@@ -211,5 +176,30 @@ public class EngineImpl implements Engine {
             System.out.println("============================");
         }
     }
+
+    private void loadLevel(int i){
+        this.envi = Factory.createEnvironment();
+        this.envi.init(sm.getScreen(currentLevel));
+        this.player = Factory.createPlayer();
+        this.player.init(sm.getPlayerFromScreen(currentLevel).getX(), sm.getPlayerFromScreen(currentLevel).getY(), engineInstance);
+        this.nextCommand = Command.NONE;
+        this.holes = new HashSet<>();
+        this.guards.clear();
+        this.treasures.clear();
+        for(Coord c : sm.getGuardsFromScreen(currentLevel)){
+            Guard tmp = new GuardImpl();
+            tmp.init(this.envi, c.getX(), c.getY(), this.player);
+            this.guards.add(tmp);
+        }
+        this.nbTreasures = 0;
+        for(Coord c : sm.getItemsFromScreen(currentLevel)){
+            Item tmp = new Item(ItemType.Treasure, c.getX(), c.getY());
+            this.treasures.add(tmp);
+            this.envi.addToCellContent(c.getX(), c.getY(), tmp);
+            this.nbTreasures++;
+        }
+    }
+    
+    
 
 }

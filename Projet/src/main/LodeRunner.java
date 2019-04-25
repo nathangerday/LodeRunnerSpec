@@ -57,7 +57,7 @@ public class LodeRunner{
         ScreenManager sm = Factory.createScreenManager();
         List<Coord> treasureCoords = new ArrayList<>();
         treasureCoords.add(new Coord(0, 2));
-        // treasureCoords.add(new Coord(17, 4));
+        treasureCoords.add(new Coord(17, 4));
         List<Coord> guardCoords = new ArrayList<>();
         guardCoords.add(new Coord(1, 7));
         // guardCoords.add(new Coord(10, 3));
@@ -81,6 +81,7 @@ public class LodeRunner{
         }
         List<Coord> treasureCoords2 = new ArrayList<>();
         treasureCoords2.add(new Coord(10, 2));
+        treasureCoords2.add(new Coord(11, 2));
         List<Coord> guardCoords2 = new ArrayList<>();
         guardCoords2.add(new Coord(16, 7));
 

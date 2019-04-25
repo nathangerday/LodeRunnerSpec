@@ -20,6 +20,9 @@ public interface Engine{
     public Status getStatus();
     public Command getNextCommand();
     public Set<Hole> getHoles();
+    public int getNbLifese();
+    public int getScore();
+    public int getScoreAtStartOfLevel();
     
     /* Constructors */
     //TODO \pre sm.getNbScreen() >= 1;

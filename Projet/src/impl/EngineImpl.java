@@ -36,6 +36,9 @@ public class EngineImpl implements Engine {
     private Set<Hole> holes;
     private CommandManager commandManager;
     private int nbTreasures;
+    private int lifes;
+    private int score;
+    private int scoreAtLevelStart;
     private int currentLevel;
 
     private Engine engineInstance; // necessary for contracts
@@ -60,6 +63,18 @@ public class EngineImpl implements Engine {
     public Set<Hole> getHoles() {
         return this.holes;
     }
+    
+    public int getNbLifese(){
+        return this.lifes;
+    }
+
+    public int getScore(){
+        return this.score;
+    }
+    
+    public int getScoreAtStartOfLevel(){
+        return this.scoreAtLevelStart;
+    }
 
     public synchronized Command getNextCommand() {
         return this.nextCommand;
@@ -78,6 +93,8 @@ public class EngineImpl implements Engine {
         this.commandManager = cm;
         this.guards = new ArrayList<>();
         this.treasures = new ArrayList<>();
+        this.lifes = 3;
+        this.score = 0;
         loadLevel(0);
     }
 
@@ -89,13 +106,14 @@ public class EngineImpl implements Engine {
         }
 
         if(Util.containsGuard(envi.getCellContent(player.getCol(), player.getHgt()))){
-            this.status = Status.Loss;
+            death();
             return;
         }
 
 
         if(Util.removeTreasure(envi.getCellContent(player.getCol(), player.getHgt()))){
             this.nbTreasures--;
+            this.score++;
             if(this.nbTreasures == 0 && this.currentLevel < this.sm.getNbScreen() - 1){
                 this.currentLevel++;
                 loadLevel(currentLevel);
@@ -117,7 +135,7 @@ public class EngineImpl implements Engine {
             if(h.getTime() == 15){
                 this.envi.fill(h.getX(), h.getY());
                 if(this.player.getHgt() == h.getY() && this.player.getCol() == h.getX()){
-                    this.status = Status.Loss;
+                    death();
                 }
                 // TODO Gerer le fait de reset les gardes
                 if(Util.containsGuard(envi.getCellContent(h.getX(), h.getY()))){
@@ -134,14 +152,18 @@ public class EngineImpl implements Engine {
         if(this.status == Status.Win){
             System.out.println("============================");
             System.out.println("YOU WIN !!!");
+            System.out.println("Your score is " + this.score);
             System.out.println("============================");
         }
         else if(this.status == Status.Loss){
             System.out.println("============================");
             System.out.println("YOU LOSE ...");
+            System.out.println("Your score is " + this.score);
             System.out.println("============================");
         }else{
             System.out.println("============================");
+            System.out.println("Score : " + this.score);
+            System.out.println("Lifes : " + this.lifes);
             for(int i=this.envi.getHeight()-1; i >= 0; i--){
                 for(int j=0; j < this.envi.getWidth(); j++){
                     Cell c = this.envi.getCellNature(j, i);
@@ -182,6 +204,17 @@ public class EngineImpl implements Engine {
         }
     }
 
+
+    private void death(){
+        this.lifes--;
+        if(lifes == 0){
+            this.status = Status.Loss;
+        }else{
+            this.score = this.scoreAtLevelStart;
+            loadLevel(this.currentLevel);
+        }
+    }
+
     private void loadLevel(int i){
         this.envi = Factory.createEnvironment();
         this.envi.init(sm.getScreen(currentLevel));
@@ -189,6 +222,7 @@ public class EngineImpl implements Engine {
         this.player.init(sm.getPlayerFromScreen(currentLevel).getX(), sm.getPlayerFromScreen(currentLevel).getY(), engineInstance);
         this.nextCommand = Command.NONE;
         this.holes = new HashSet<>();
+        this.scoreAtLevelStart = this.score;
         this.guards.clear();
         this.treasures.clear();
         for(Coord c : sm.getGuardsFromScreen(currentLevel)){

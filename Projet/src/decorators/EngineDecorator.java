@@ -46,6 +46,18 @@ public class EngineDecorator implements Engine{
 		return getDelegate().getStatus();
 	}
 
+	public int getNbLifese(){
+        return getDelegate().getNbLifese();
+    }
+    
+	public int getScore(){
+        return getDelegate().getScore();
+    }
+    
+	public int getScoreAtStartOfLevel(){
+        return getDelegate().getScoreAtStartOfLevel();
+    }
+
 	@Override
 	public Command getNextCommand() {
 		return getDelegate().getNextCommand();

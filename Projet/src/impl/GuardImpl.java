@@ -45,7 +45,7 @@ public class GuardImpl extends CharacterImpl implements Guard {
         PLT_MLT_HDR.add(Cell.PLT);
         PLT_MLT_HDR.add(Cell.LAD);
         
-        if(HOL_HDR.contains(getEnvi().getCellNature(x, y)) || PLT_MLT_HDR.contains(getEnvi().getCellNature(x, y - 1)) || Util.constainsCharacter(getEnvi().getCellContent(x, y - 1))){
+        if(HOL_HDR.contains(getEnvi().getCellNature(x, y)) || PLT_MLT_HDR.contains(getEnvi().getCellNature(x, y - 1)) || Util.containsGuard(getEnvi().getCellContent(x, y - 1))){
             if(target.getCol() < getCol()){
                 return Command.MOVEL;
             }else if(target.getCol() > getCol()){
@@ -55,7 +55,7 @@ public class GuardImpl extends CharacterImpl implements Guard {
             }
         }
 
-        if(getEnvi().getCellNature(x, y) == Cell.LAD && (PLT_MLT_HDR.contains(getEnvi().getCellNature(x, y - 1)) || Util.constainsCharacter(getEnvi().getCellContent(x, y - 1)))){
+        if(getEnvi().getCellNature(x, y) == Cell.LAD && (PLT_MLT_HDR.contains(getEnvi().getCellNature(x, y - 1)) || Util.containsGuard(getEnvi().getCellContent(x, y - 1)))){
             int distanceh = getCol() - target.getCol();
             int distancev = getHgt() - target.getHgt();
 
@@ -95,8 +95,8 @@ public class GuardImpl extends CharacterImpl implements Guard {
         Set<Cell> MTL_PLT = new HashSet<>();
         MTL_PLT.add(Cell.MTL);
         MTL_PLT.add(Cell.PLT);
-        if(getCol() != 0 && !MTL_PLT.contains(envi.getCellNature(x - 1, y + 1)) && !Util.constainsCharacter(envi.getCellContent(x - 1, y + 1))){
-            this.envi.removeCharacter(this.x, this.y);
+        if(getCol() != 0 && !MTL_PLT.contains(envi.getCellNature(x - 1, y + 1)) && !Util.containsGuard(envi.getCellContent(x - 1, y + 1))){
+            this.envi.removeFromCellContent(this.x, this.y, this);
             this.x -= 1;
             this.y += 1;
             this.envi.addToCellContent(this.x, this.y, this);
@@ -108,8 +108,8 @@ public class GuardImpl extends CharacterImpl implements Guard {
         Set<Cell> MTL_PLT = new HashSet<>();
         MTL_PLT.add(Cell.MTL);
         MTL_PLT.add(Cell.PLT);
-        if(getCol() != envi.getWidth() - 1 && !MTL_PLT.contains(envi.getCellNature(x + 1, y + 1)) && !Util.constainsCharacter(envi.getCellContent(x + 1, y + 1))){
-            this.envi.removeCharacter(this.x, this.y);
+        if(getCol() != envi.getWidth() - 1 && !MTL_PLT.contains(envi.getCellNature(x + 1, y + 1)) && !Util.containsGuard(envi.getCellContent(x + 1, y + 1))){
+            this.envi.removeFromCellContent(this.x, this.y, this);
             this.x += 1;
             this.y += 1;
             this.envi.addToCellContent(this.x, this.y, this);
@@ -128,7 +128,7 @@ public class GuardImpl extends CharacterImpl implements Guard {
         LAD_HDR_HOL.add(Cell.HDR);
         LAD_HDR_HOL.add(Cell.HOL);
         if(!LAD_HDR_HOL.contains(this.envi.getCellNature(this.x, this.y)) && EMP_HDR_HOL.contains(this.envi.getCellNature(this.x, this.y - 1)) &&
-        !Util.constainsCharacter(this.envi.getCellContent(this.x, this.y - 1))){
+        !Util.containsGuard(this.envi.getCellContent(this.x, this.y - 1))){
             goDown();
             return;
         }
@@ -176,7 +176,7 @@ public class GuardImpl extends CharacterImpl implements Guard {
 
         boolean cond1 = !LAD_HDR_HOL.contains(getEnvi().getCellNature(x, y ));
         boolean cond2 = EMP_HDR_HOL.contains(getEnvi().getCellNature(x, y - 1));
-        boolean cond3 = !Util.constainsCharacter(getEnvi().getCellContent(x, y - 1));
+        boolean cond3 = !Util.containsGuard(getEnvi().getCellContent(x, y - 1));
         return cond1 && cond2 && cond3;
 
     }    

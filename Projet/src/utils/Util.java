@@ -7,9 +7,10 @@ import data.Item;
 import data.ItemType;
 import services.Character;
 import services.Guard;
+import services.Player;
 
 public class Util {
-    public static boolean constainsGuard(Set<Entity> content){
+    public static boolean containsGuard(Set<Entity> content){
         for(Entity e : content){
             if(e instanceof Guard){
                 return true;
@@ -18,9 +19,9 @@ public class Util {
         return false;
     }
 
-    public static boolean constainsCharacter(Set<Entity> content){
+    public static boolean containsPlayer(Set<Entity> content){
         for(Entity e : content){
-            if(e instanceof Character){
+            if(e instanceof Player){
                 return true;
             }
         }
@@ -31,6 +32,15 @@ public class Util {
         for(Entity e : content){
             if(e instanceof Character){
                 return (Character)e;
+            }
+        }
+        return null;
+    }
+
+    public static Guard getGuard(Set<Entity> content){
+        for(Entity e : content){
+            if(e instanceof Guard){
+                return (Guard)e;
             }
         }
         return null;

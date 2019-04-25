@@ -28,7 +28,7 @@ public class PlayerImpl extends CharacterImpl implements Player {
         LAD_HDR.add(Cell.LAD);
         LAD_HDR.add(Cell.HDR);
         if(!LAD_HDR.contains(this.envi.getCellNature(this.x, this.y)) && EMP_HDR_HOL.contains(this.envi.getCellNature(this.x, this.y - 1)) &&
-        !Util.constainsCharacter(this.envi.getCellContent(this.x, this.y - 1))){
+        !Util.containsGuard(this.envi.getCellContent(this.x, this.y - 1))){
             goDown();
             return;
         }
@@ -75,7 +75,7 @@ public class PlayerImpl extends CharacterImpl implements Player {
         libre.add(Cell.HDR);
         libre.add(Cell.HOL);
 
-        if(this.getCol() != 0 && (MTL_PLT_LAD.contains(this.envi.getCellNature(this.x, this.y - 1)) || Util.constainsCharacter(this.envi.getCellContent(this.x, this.y - 1))) 
+        if(this.getCol() != 0 && (MTL_PLT_LAD.contains(this.envi.getCellNature(this.x, this.y - 1)) || Util.containsGuard(this.envi.getCellContent(this.x, this.y - 1))) 
         && this.envi.getCellNature(this.x - 1, this.y - 1) == Cell.PLT){
             this.envi.dig(this.x - 1, this.y - 1);
             this.engi.addHole(this.x - 1, this.y - 1);
@@ -95,7 +95,7 @@ public class PlayerImpl extends CharacterImpl implements Player {
         libre.add(Cell.HDR);
         libre.add(Cell.HOL);
 
-        if(this.getCol() != this.envi.getWidth() - 1 && (MTL_PLT_LAD.contains(this.envi.getCellNature(this.x, this.y - 1)) || Util.constainsCharacter(this.envi.getCellContent(this.x, this.y - 1))) 
+        if(this.getCol() != this.envi.getWidth() - 1 && (MTL_PLT_LAD.contains(this.envi.getCellNature(this.x, this.y - 1)) || Util.containsGuard(this.envi.getCellContent(this.x, this.y - 1))) 
         && this.envi.getCellNature(this.x + 1, this.y - 1) == Cell.PLT){
             this.envi.dig(this.x + 1, this.y - 1);
             this.engi.addHole(this.x + 1, this.y - 1);

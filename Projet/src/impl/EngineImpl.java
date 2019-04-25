@@ -82,13 +82,17 @@ public class EngineImpl implements Engine {
     }
 
     public void step() {
-        // TODO Gestion des autres step
-        // TODO 3 => Si joueur dans la meme case qu'un garde
         if(this.commandManager != null){
             this.nextCommand = this.commandManager.receiveCurrentCommand();
         }else{
             this.nextCommand = Command.NONE;
         }
+
+        if(Util.containsGuard(envi.getCellContent(player.getCol(), player.getHgt()))){
+            this.status = Status.Loss;
+            return;
+        }
+
 
         if(Util.removeTreasure(envi.getCellContent(player.getCol(), player.getHgt()))){
             this.nbTreasures--;
@@ -138,12 +142,10 @@ public class EngineImpl implements Engine {
             for(int i=this.envi.getHeight()-1; i >= 0; i--){
                 for(int j=0; j < this.envi.getWidth(); j++){
                     Cell c = this.envi.getCellNature(j, i);
-                    if(Util.constainsCharacter(envi.getCellContent(j, i))){
-                        if(Util.getCharacter(envi.getCellContent(j, i)) instanceof Player){
-                            System.out.print("J");
-                        }else if(Util.getCharacter(envi.getCellContent(j, i)) instanceof Guard){
-                            System.out.print("G");
-                        }
+                    if(Util.containsPlayer(envi.getCellContent(j, i))){
+                        System.out.print("J");
+                    }else if(Util.containsGuard(envi.getCellContent(j, i))){
+                        System.out.print("G");
                     }else if(Util.containsTreasure(envi.getCellContent(j, i))){
                         System.out.print("Ø");
                         

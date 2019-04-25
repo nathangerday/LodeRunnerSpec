@@ -27,7 +27,9 @@ public interface Character extends Entity{
     /* Invariants */
 
     //\inv getEnvi().getCellNature(getCol(), getHgt()) \in {EMP, HOL, LAD, HDR}
-    //\inv (\Exists Character c \in getEnvi().getCellContent(getCol(), getHgt()))
+
+    //TODO This one is wrong now
+    // \inv (\Exists Character c \in getEnvi().getCellContent(getCol(), getHgt()))
     //          \impl c == this
 
 
@@ -38,15 +40,15 @@ public interface Character extends Entity{
     //\post (getEnvi().getCellNature(getCol()@pre - 1, getHgt()@pre) \in {MTL, PLT}) \impl getCol() == getCol()@pre
     //\post \not (getEnvi().getCellNature(getCol()@pre, getHgt()@pre) \in {LAD, HDR})
     //      \and \not getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1) \in {PLT, MTL, LAD}
-    //      \and \not \Exists Character c \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1)
+    //      \and \not \Exists Guard c \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1)
     //      \impl getCol() == getCol()@pre()
-    //\post \Exists Character c \in getEnvi().getCellContent(getCol()@pre - 1, getHgt()@pre) \impl getCol() == getCol()@pre
+    //\post \Exists Guard c \in getEnvi().getCellContent(getCol()@pre - 1, getHgt()@pre) \impl getCol() == getCol()@pre
     //\post getCol()@pre != 0
     //      \and \not getEnvi().getCellNature()(getCol()@pre - 1, getHgt()@pre) \in {MTL, PLT}
     //      \and (getEnvi().getCellNature(getCol()@pre, getHgt()@pre) \in {LAD, HDR} 
     //           \or getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1) \in {PLT, MTL, LAD}
-    //           \or \Exists Character c \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1))
-    //      \and \not \Exists Character c \in getEnvi().getCellContent(getCol()@pre - 1, getHgt()@pre)
+    //           \or \Exists Guard c \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1))
+    //      \and \not \Exists Guard c \in getEnvi().getCellContent(getCol()@pre - 1, getHgt()@pre)
     //      \impl getCol() == getCol()@pre - 1
     public void goLeft();
 

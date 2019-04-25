@@ -33,11 +33,6 @@ public class EnvironmentDecorator extends ScreenDecorator implements Environment
     }
 
     @Override
-    public Character removeCharacter(int x, int y) {
-        return getDelegate().removeCharacter(x, y);
-    }
-
-    @Override
     public void init(EditableScreen screen) {
         getDelegate().init(screen);
     }

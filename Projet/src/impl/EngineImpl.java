@@ -170,7 +170,12 @@ public class EngineImpl implements Engine {
                     if(Util.containsPlayer(envi.getCellContent(j, i))){
                         System.out.print("J");
                     }else if(Util.containsGuard(envi.getCellContent(j, i))){
-                        System.out.print("G");
+                        Guard g = Util.getGuard(envi.getCellContent(j, i));
+                        if(g.isCarryingTreasure()){
+                            System.out.print("T");
+                        }else{
+                            System.out.print("G");
+                        }
                     }else if(Util.containsTreasure(envi.getCellContent(j, i))){
                         System.out.print("Ø");
                         

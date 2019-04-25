@@ -5,6 +5,8 @@ import data.Coord;
 
 public interface Guard extends Character{
     public int getId();
+    
+    public boolean isCarryingTreasure();
 
     public void init(Environment s, int x, int y, Character target);
 

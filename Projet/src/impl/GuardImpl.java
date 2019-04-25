@@ -6,6 +6,8 @@ import java.util.Set;
 import data.Cell;
 import data.Command;
 import data.Coord;
+import data.Item;
+import data.ItemType;
 import services.Character;
 import services.Environment;
 import services.Guard;
@@ -18,6 +20,7 @@ public class GuardImpl extends CharacterImpl implements Guard {
     private Character target;
     private int timeInHole;
     private Coord initCoords;
+    private boolean carryingTreasure;
 
     public void init(Environment s, int x, int y, Character target){
         super.init(s, x, y);
@@ -25,6 +28,7 @@ public class GuardImpl extends CharacterImpl implements Guard {
         this.target = target;
         this.timeInHole = 0;
         this.initCoords = new Coord(x, y);
+        this.carryingTreasure = false;
     }
 
     @Override
@@ -35,6 +39,11 @@ public class GuardImpl extends CharacterImpl implements Guard {
     @Override
     public Coord getInitCoords(){
         return this.initCoords;
+    }
+
+    @Override
+    public boolean isCarryingTreasure(){
+        return this.carryingTreasure;
     }
 
     @Override
@@ -140,6 +149,12 @@ public class GuardImpl extends CharacterImpl implements Guard {
 
     @Override
     public void step() {
+        if(Util.containsTreasure(this.envi.getCellContent(x, y)) && !this.carryingTreasure){
+            Util.removeTreasure(this.envi.getCellContent(x, y));
+            this.carryingTreasure = true;
+        }
+
+
         Set<Cell> EMP_HDR_HOL = new HashSet<>();
         EMP_HDR_HOL.add(Cell.EMP);
         EMP_HDR_HOL.add(Cell.HDR);
@@ -151,6 +166,10 @@ public class GuardImpl extends CharacterImpl implements Guard {
         LAD_HDR_HOL.add(Cell.HOL);
         if(!LAD_HDR_HOL.contains(this.envi.getCellNature(this.x, this.y)) && EMP_HDR_HOL.contains(this.envi.getCellNature(this.x, this.y - 1)) &&
         !Util.containsGuard(this.envi.getCellContent(this.x, this.y - 1))){
+            if(this.carryingTreasure && this.envi.getCellNature(this.x, this.y - 1) == Cell.HOL){
+                this.carryingTreasure = false;
+                this.envi.addToCellContent(this.x, this.y, new Item(ItemType.Treasure, this.x, this.y));
+            }
             goDown();
             return;
         }

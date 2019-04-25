@@ -120,6 +120,9 @@ public class EngineImpl implements Engine {
                     this.status = Status.Loss;
                 }
                 // TODO Gerer le fait de reset les gardes
+                if(Util.containsGuard(envi.getCellContent(h.getX(), h.getY()))){
+                    Util.getGuard(envi.getCellContent(h.getX(), h.getY())).moveToInitCoords();
+                }
                 holesIter.remove();
             }
         }

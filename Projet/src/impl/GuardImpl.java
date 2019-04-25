@@ -5,6 +5,7 @@ import java.util.Set;
 
 import data.Cell;
 import data.Command;
+import data.Coord;
 import services.Character;
 import services.Environment;
 import services.Guard;
@@ -16,17 +17,24 @@ public class GuardImpl extends CharacterImpl implements Guard {
     private int id;
     private Character target;
     private int timeInHole;
+    private Coord initCoords;
 
     public void init(Environment s, int x, int y, Character target){
         super.init(s, x, y);
         this.id = count++;
         this.target = target;
         this.timeInHole = 0;
+        this.initCoords = new Coord(x, y);
     }
 
     @Override
     public int getId() {
         return this.id;
+    }
+
+    @Override
+    public Coord getInitCoords(){
+        return this.initCoords;
     }
 
     @Override
@@ -97,7 +105,9 @@ public class GuardImpl extends CharacterImpl implements Guard {
         MTL_PLT.add(Cell.PLT);
         if(getCol() != 0 && !MTL_PLT.contains(envi.getCellNature(x - 1, y + 1)) && !Util.containsGuard(envi.getCellContent(x - 1, y + 1))){
             this.envi.removeFromCellContent(this.x, this.y, this);
-            this.x -= 1;
+            if(!Util.containsPlayer(envi.getCellContent(x, y + 1))){ //if player above, stops on the player
+                this.x -= 1;
+            }
             this.y += 1;
             this.envi.addToCellContent(this.x, this.y, this);
         }
@@ -110,10 +120,22 @@ public class GuardImpl extends CharacterImpl implements Guard {
         MTL_PLT.add(Cell.PLT);
         if(getCol() != envi.getWidth() - 1 && !MTL_PLT.contains(envi.getCellNature(x + 1, y + 1)) && !Util.containsGuard(envi.getCellContent(x + 1, y + 1))){
             this.envi.removeFromCellContent(this.x, this.y, this);
-            this.x += 1;
+            if(!Util.containsPlayer(envi.getCellContent(x, y + 1))){
+                this.x += 1;
+            }
             this.y += 1;
             this.envi.addToCellContent(this.x, this.y, this);
         }
+    }
+
+    @Override
+    public void moveToInitCoords(){
+        //TODO Handle if already a guard in init position
+        this.envi.removeFromCellContent(this.x, this.y, this);
+        this.x = this.initCoords.getX();
+        this.y = this.initCoords.getY();
+        this.envi.addToCellContent(this.x, this.y, this);
+        this.timeInHole = 0;
     }
 
     @Override

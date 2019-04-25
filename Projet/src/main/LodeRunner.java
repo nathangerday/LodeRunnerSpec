@@ -60,7 +60,7 @@ public class LodeRunner{
         // treasureCoords.add(new Coord(17, 4));
         List<Coord> guardCoords = new ArrayList<>();
         guardCoords.add(new Coord(1, 7));
-        guardCoords.add(new Coord(10, 3));
+        // guardCoords.add(new Coord(10, 3));
         sm.addScreen(screen, guardCoords, treasureCoords, new Coord(5, 2));
 
 

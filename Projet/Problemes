@@ -31,3 +31,5 @@
 1) Verifier que pas de changements dans cellNature pour les goX de Player et Character
 
 2) Verifier qu'on a seulement les changements qu'on veut dans getCellContent pour goX de Player et Character
+
+3) Verifier qu'on est pas sur la case la plus basse avant d'appeler certains getCellNature

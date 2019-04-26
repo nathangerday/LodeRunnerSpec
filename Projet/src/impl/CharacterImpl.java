@@ -12,7 +12,6 @@ public class CharacterImpl implements Character{
     protected int x,y;
     protected Environment envi;
 
-    //TODO Veut-on directement un environment ici ? Dans le sujet on donne un Screen, sauf qu'on veut que getEnvi renvoi un environment. Il faut peut etre créer ici l'environement a partir du screen...
     public void init(Environment s, int x, int y){
         this.x = x;
         this.y = y;
@@ -49,9 +48,9 @@ public class CharacterImpl implements Character{
         MTL_PLT_LAD.add(Cell.PLT);
         MTL_PLT_LAD.add(Cell.LAD);
         if(this.x != 0 && !MTL_PLT.contains(this.envi.getCellNature(this.x - 1, this.y)) && 
-            (LAD_HDR.contains(this.envi.getCellNature(this.x, this.y)) || MTL_PLT_LAD.contains(this.envi.getCellNature(this.x, this.y - 1)) || Util.constainsCharacter(this.envi.getCellContent(this.x, this.y - 1)))
-           && !Util.constainsCharacter(this.envi.getCellContent(this.x - 1, this.y))){
-                this.envi.removeCharacter(this.x, this.y);
+            (LAD_HDR.contains(this.envi.getCellNature(this.x, this.y)) || MTL_PLT_LAD.contains(this.envi.getCellNature(this.x, this.y - 1)) || Util.containsGuard(this.envi.getCellContent(this.x, this.y - 1)))
+           && !Util.containsGuard(this.envi.getCellContent(this.x - 1, this.y))){
+                this.envi.removeFromCellContent(this.x, this.y, this);
                 this.x = this.x - 1; 
                 this.envi.addToCellContent(this.x, this.y, this);
                 
@@ -73,16 +72,10 @@ public class CharacterImpl implements Character{
         MTL_PLT_LAD.add(Cell.MTL);
         MTL_PLT_LAD.add(Cell.PLT);
         MTL_PLT_LAD.add(Cell.LAD);
-        boolean cond1 = this.x != this.envi.getWidth() - 1;
-        boolean cond2 = !MTL_PLT.contains(this.envi.getCellNature(this.x + 1, this.y));
-        boolean cond3 = LAD_HDR.contains(this.envi.getCellNature(this.x, this.y));
-        boolean cond4 = MTL_PLT_LAD.contains(this.envi.getCellNature(this.x, this.y - 1));
-        boolean cond5 = Util.constainsCharacter(this.envi.getCellContent(this.x, this.y - 1));
-        boolean cond6 = !Util.constainsCharacter(this.envi.getCellContent(this.x + 1, this.y));
         if(this.x != this.envi.getWidth() - 1 && !MTL_PLT.contains(this.envi.getCellNature(this.x + 1, this.y)) && 
-            (LAD_HDR.contains(this.envi.getCellNature(this.x, this.y)) || MTL_PLT_LAD.contains(this.envi.getCellNature(this.x, this.y - 1)) || Util.constainsCharacter(this.envi.getCellContent(this.x, this.y - 1)))
-           && !Util.constainsCharacter(this.envi.getCellContent(this.x + 1, this.y))){
-                this.envi.removeCharacter(this.x, this.y);
+            (LAD_HDR.contains(this.envi.getCellNature(this.x, this.y)) || MTL_PLT_LAD.contains(this.envi.getCellNature(this.x, this.y - 1)) || Util.containsGuard(this.envi.getCellContent(this.x, this.y - 1)))
+           && !Util.containsGuard(this.envi.getCellContent(this.x + 1, this.y))){
+                this.envi.removeFromCellContent(this.x, this.y, this);
                 this.x = this.x + 1; 
                 this.envi.addToCellContent(this.x, this.y, this);
                 
@@ -91,15 +84,14 @@ public class CharacterImpl implements Character{
     
     @Override
     public void goDown() {
-        //TODO Gerer s'il y a un Character en dessous
         Set<Cell> libre = new HashSet<>();
         libre.add(Cell.EMP);
         libre.add(Cell.LAD);
         libre.add(Cell.HDR);
         libre.add(Cell.HOL);
 
-        if(this.y != 0 && libre.contains(this.envi.getCellNature(this.x, this.y - 1))){
-            this.envi.removeCharacter(this.x, this.y);
+        if(this.y != 0 && libre.contains(this.envi.getCellNature(this.x, this.y - 1)) && !Util.containsGuard(this.envi.getCellContent(this.x, this.y - 1))){
+            this.envi.removeFromCellContent(this.x, this.y, this);
             this.y = this.y - 1;
             this.envi.addToCellContent(this.x, this.y, this);
         }
@@ -107,15 +99,15 @@ public class CharacterImpl implements Character{
 
     @Override
     public void goUp() {
-        //TODO Gerer s'il y a un Character en au dessus
         Set<Cell> libre = new HashSet<>();
         libre.add(Cell.EMP);
         libre.add(Cell.LAD);
         libre.add(Cell.HDR);
         libre.add(Cell.HOL);
 
-        if(this.y != this.envi.getHeight() - 1 && this.envi.getCellNature(this.x, this.y) == Cell.LAD && libre.contains(this.envi.getCellNature(this.x, this.y + 1))){
-            this.envi.removeCharacter(this.x, this.y);
+        if(this.y != this.envi.getHeight() - 1 && this.envi.getCellNature(this.x, this.y) == Cell.LAD && libre.contains(this.envi.getCellNature(this.x, this.y + 1))
+            && !Util.containsGuard(this.envi.getCellContent(this.x, this.y + 1)) ){
+            this.envi.removeFromCellContent(this.x, this.y, this);
             this.y = this.y + 1;
             this.envi.addToCellContent(this.x, this.y, this);
         }

@@ -20,7 +20,7 @@ public interface Environment extends /* includes */ Screen{
     //\pre 0 <= x
     //\pre x < getWidth()
     //\pre e != null
-    //\pre (\Exists Character c \in getCellContent(x, y)) \impl (\not (e \is Character)) //TODO On veut potentiellement supprimer ca
+    //\pre (\Exists Guard c \in getCellContent(x, y)) \impl (\not (e \is Guard))
     //\post getCellContent(x, y) == getCellContent(x, y)@pre \Union {e}
     //\post \Forall i in [0, getWidth() - 1]
     //          \Forall j in [0, getHeight() - 1]
@@ -42,21 +42,8 @@ public interface Environment extends /* includes */ Screen{
     public void removeFromCellContent(int x, int y, Entity e);
 
 
-    //\pre 0 <= y
-    //\pre y < getHeight()
-    //\pre 0 <= x
-    //\pre x < getWidth()
-    //\pre \Exists Character c \in getCellContent(x, y)
-    //\post \Exists Character c \in getCellContent(x, y)@pre 
-    //          \impl getCellContent(x, y) == getCellContent(x, y)@pre \ {c}
-    //\post \Forall i in [0, getWidth() - 1]
-    //          \Forall j in [0, getHeight() - 1]
-    //              i != x || j != y \impl getCellContent(i, j) == getCellContent(i, j)@pre
-    //              getCellNature(i, j) == getCellNature(i, j)@pre
-    public Character removeCharacter(int x, int y);
-    
     //\pre screen != null
-    //\pre screen.isPlayable()
+    //\pre screen.isPlayable() //TODO put elsewhere
     //\post getHeight() == screen.getHeight()
     //\post getWidth() == screen.getWidht()
     //\post \Forall x in [0, getWidth() - 1]
@@ -69,13 +56,8 @@ public interface Environment extends /* includes */ Screen{
     /* Invariants */
 
     //\inv \Forall x in [0, getWidth() - 1]
-    //         \Forall y in [0, getHeight() - 1]
-    //              \Forall Character c1, c2 \in getCellContent(x, y)
-    //                  c1 == c2
-
-    //\inv \Forall x in [0, getWidth() - 1]
     //          \Forall y in [0, getHeight() - 1]
-    //              (getCellNature(x, y) \in {MTL, PLR}) \impl getCellContent(x, y) == {}
+    //              (getCellNature(x, y) \in {MTL, PLT}) \impl getCellContent(x, y) == {}
     
     //\inv \Forall x in [0, getWidth() - 1]
     //          \Forall y in [0, getHeight() - 1]

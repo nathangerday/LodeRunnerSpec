@@ -44,18 +44,4 @@ public class EnvironmentImpl extends ScreenImpl implements Environment {
     public void removeFromCellContent(int x, int y, Entity e) {
         this.content.get(x).get(y).remove(e);
     }
-
-    public Character removeCharacter(int x, int y) {
-        Entity toRemove = null;
-        for(Entity e : this.getCellContent(x, y)){
-            if(e instanceof Character){
-                toRemove = e;
-            }
-        }
-
-        this.content.get(x).get(y).remove(toRemove);
-        return (Character)toRemove;
-
-    }
-
 }

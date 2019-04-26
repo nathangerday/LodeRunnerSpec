@@ -12,6 +12,8 @@ import services.EditableScreen;
 import services.Engine;
 import services.Environment;
 import services.Player;
+import services.ScreenManager;
+import utils.CommandManager;
 
 public class EngineDecorator implements Engine{
     protected final Engine delegate;
@@ -21,7 +23,7 @@ public class EngineDecorator implements Engine{
     }
 
     protected Engine getDelegate(){
-        return getDelegate();
+        return this.delegate;
     }
 
 	@Override
@@ -44,6 +46,18 @@ public class EngineDecorator implements Engine{
 		return getDelegate().getStatus();
 	}
 
+	public int getNbLifese(){
+        return getDelegate().getNbLifese();
+    }
+    
+	public int getScore(){
+        return getDelegate().getScore();
+    }
+    
+	public int getScoreAtStartOfLevel(){
+        return getDelegate().getScoreAtStartOfLevel();
+    }
+
 	@Override
 	public Command getNextCommand() {
 		return getDelegate().getNextCommand();
@@ -55,8 +69,8 @@ public class EngineDecorator implements Engine{
 	}
 
 	@Override
-	public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures) {
-		getDelegate().init(screen, playerX, playerY, guards, treasures);
+	public void init(ScreenManager sm, CommandManager cm, Engine engineInstance) {
+		getDelegate().init(sm, cm, engineInstance);
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import data.Coord;
 import data.Hole;
 import data.Item;
 import data.Status;
+import utils.CommandManager;
 
 public interface Engine{
     /* Observators */
@@ -19,18 +20,17 @@ public interface Engine{
     public Status getStatus();
     public Command getNextCommand();
     public Set<Hole> getHoles();
+    public int getNbLifese();
+    public int getScore();
+    public int getScoreAtStartOfLevel();
     
     /* Constructors */
-    //\pre screen.isPlayable()
-    //\pre playerX >= 0
-    //\pre playerY >= 0
-    //\pre playerX < screen.getWidth()
-    //\pre playerY < screen.getHeight()
+    //TODO \pre sm.getNbScreen() >= 1;
     //TODO Guards / Treasures
     //\post getStatus() == Playing
     //\post getNextCommand() == NONE
     //\post getHoles() == {}
-    public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures);
+    public void init(ScreenManager sm, CommandManager cm, Engine engineInstance);
     
     /* Invariants */
     //TODO Synchronisation entre l'environment et personnage
@@ -55,6 +55,7 @@ public interface Engine{
     //\pre \not \Exists Hole h \in getHoles() \with (h.getX() == x && h.getY() == y)
     //\pre getEnvironment().getCellNature(x, y) == HOL
     //\post getHoles() == getHoles()@pre \Union {h} \with (h.getX() == x \and h.getY() == y)
+    //\post getNextCommand() == getNextCommand()@pre
     //\post getStatus() == getStatus()@pre
     //\post getTreasures() == getTreasures()@pre
     public void addHole(int x, int y);    

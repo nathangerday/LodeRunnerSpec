@@ -5,35 +5,56 @@
   <!-- set global properties for this build -->
   <property name="src" location="src"/>
   <property name="build" location="bin"/>
+  <property name="jars" location="jars"/>
 
   <!-- METTRE ICI LE NOM DU BINOME -->
   <property name="nom1" value="GERDAY"/>
-  <property name="nom2" value="YYYYY"/>
 
   <target name="init">
     <!-- Create the time stamp -->
     <tstamp/>
     <!-- Create the build directory structure used by compile -->
+    <delete dir="${build}"/>
     <mkdir dir="${build}"/>
   </target>
 
   <target name="compile" depends="init"
         description="compile the source " >
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac debug="true" srcdir="${src}" excludes="" destdir="${build}" includeantruntime="false" />
+    <javac debug="true" srcdir="${src}" classpath="${jars}/junit.jar" excludes="" destdir="${build}" includeantruntime="false" />
   </target>
 
   <target name="run" depends="compile"
           description="run examples">
-    <java classname="todo" classpath="${build}">
+    <java classname="main.LodeRunner" classpath="${build}">
     </java>
   </target>
+
+ <target name="test" depends="compile"
+          description="test of first implementation">
+    <echo>================ Run first test ================</echo>
+    <junit printsummary="yes">
+      <classpath>
+        <pathelement location="${build}"/>
+        <pathelement location="${jars}/junit.jar"/>
+      </classpath>
+
+      <formatter type="plain"/>
+
+      <test name="test.ScreenTest" outfile="reportScreen"/>
+      <test name="test.EditableScreenTest" outfile="reportEditableScreen"/>
+      <test name="test.CharacterTest" outfile="reportCharacter"/>
+
+
+    </junit>
+</target>
+
 
   <target name="dist" depends="init,clean"
         description="Generer la distribution" >
     <!-- tout mettre dans l'archive -->
-    <jar basedir="." jarfile="../Projet-${nom1}-${nom2}-${DSTAMP}.jar" />
-    <!-- <gzip src="../TME3-FilesPrio-${nom1}-${nom2}-${DSTAMP}.jar" destfile="../TME3-FilesPrio-${nom1}-${nom2}-${DSTAMP}.jar.gz"/> -->
+    <jar basedir="." jarfile="../ProjetCPS-${nom1}-${DSTAMP}.jar" />
+    <!-- <gzip src="../ProjetCPS-${nom1}-${DSTAMP}.jar" destfile="../ProjetCPS-${nom1}-${DSTAMP}.jar.gz"/> -->
   </target>
 
   <target name="clean"

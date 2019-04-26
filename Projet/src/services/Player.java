@@ -12,7 +12,7 @@ public interface Player extends /* includes */ Character{
     //\pre x < e.getEnvironment().getWidth()
     //\pre y >= 0
     //\pre y < e.getEnvironment().getHeight()
-    //\pre e.getEnvironment().getCellNature(x, y) == EMP
+    //\pre \not s.getCellNature(x, y) \in {MTL, PLT}
     //\post getHgt() == y
     //\post getCol() == x
     //\post getEnvi() == e.getEnvironment()
@@ -25,7 +25,7 @@ public interface Player extends /* includes */ Character{
 
     //\def falling = \not getEnvi().getCellNature(getCol(), getHgt())@pre \in {LAD, HDR}
     //               \and getEnvi().getCellNature(getCol(), getHgt() - 1)@pre \in {EMP, HDR, HOL}
-    //               \and \not \Exists Character c \in getEnvi().getCellContent(getCol(), getHgt() - 1)@pre
+    //               \and \not \Exists Guard c \in getEnvi().getCellContent(getCol(), getHgt() - 1)@pre
 
     //\post falling \impl step() == this@pre.goDown()
     //\post (\not falling) \and getNextCommand()@pre == MOVEL \impl step() == this@pre.goLeft()
@@ -46,14 +46,14 @@ public interface Player extends /* includes */ Character{
     //\post getHgt() == getHgt()@pre
     //\post getCol() == getCol()@pre
     //\post \not getEnvi().getCellNature(getCol(), getHgt() - 1)@pre \in {MTL, PLT, LAD}
-    //      \and \not \Exists Character c \in getEnvi().getCellContent(getCol(), getHgt() - 1)@pre
+    //      \and \not \Exists Guard c \in getEnvi().getCellContent(getCol(), getHgt() - 1)@pre
     //      \impl noCellNatureChanged
     //\post \not getEnvi().getCellNature(getCol() - 1, getHgt())@pre \in {EMP, HOL, LAD, HDR}
     //      \impl noCellNatureChanged
     //\post getEnvi().getCellNature(getCol() - 1, getHgt() - 1)@pre != PLT
     //      \impl noCellNatureChanged
     //\post (getEnvi().getCellNature(getCol(), getHgt() - 1)@pre \in {MTL, PLT, LAD}
-    //          \or \Exists Character c \in getEnvi().getCellContent(getCol(), getHgt() - 1)@pre)
+    //          \or \Exists Guard c \in getEnvi().getCellContent(getCol(), getHgt() - 1)@pre)
     //      \and getEnvi().getCellNature(getCol() - 1, getHgt())@pre \in {EMP, HOL, LAD, HDR}
     //      \and getEnvi().getCellNature(getCol() - 1, getHgt() - 1)@pre == PLT
     //      \impl getEnvi().getCellNature(getCol() - 1, getHgt() - 1) == HOL
@@ -66,14 +66,14 @@ public interface Player extends /* includes */ Character{
     //\post getHgt() == getHgt()@pre
     //\post getCol() == getCol()@pre
     //\post \not getEnvi().getCellNature(getCol(), getHgt() - 1)@pre \in {MTL, PLT, LAD}
-    //      \and \not \Exists Character c \in getEnvi().getCellContent(getCol(), getHgt() - 1)@pre
+    //      \and \not \Exists Guard c \in getEnvi().getCellContent(getCol(), getHgt() - 1)@pre
     //      \impl noCellNatureChanged
     //\post \not getEnvi().getCellNature(getCol() + 1, getHgt())@pre \in {EMP, HOL, LAD, HDR}
     //      \impl noCellNatureChanged
     //\post getEnvi().getCellNature(getCol() + 1, getHgt() - 1)@pre != PLT
     //      \impl noCellNatureChanged
     //\post (getEnvi().getCellNature(getCol(), getHgt() - 1)@pre \in {MTL, PLT, LAD}
-    //          \or \Exists Character c \in getEnvi().getCellContent(getCol(), getHgt() - 1)@pre)
+    //          \or \Exists Guard c \in getEnvi().getCellContent(getCol(), getHgt() - 1)@pre)
     //      \and getEnvi().getCellNature(getCol() + 1, getHgt())@pre \in {EMP, HOL, LAD, HDR}
     //      \and getEnvi().getCellNature(getCol() + 1, getHgt() - 1)@pre == PLT
     //      \impl getEnvi().getCellNature(getCol() + 1, getHgt() - 1) == HOL

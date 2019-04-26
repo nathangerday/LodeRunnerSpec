@@ -1,8 +1,11 @@
 package contracts;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import data.Cell;
 import data.Command;
 import data.Coord;
 import data.Hole;
@@ -13,6 +16,8 @@ import services.EditableScreen;
 import services.Engine;
 import services.Environment;
 import services.Player;
+import services.ScreenManager;
+import utils.CommandManager;
 
 public class EngineContract extends EngineDecorator{
 
@@ -20,60 +25,143 @@ public class EngineContract extends EngineDecorator{
         super(delegate);
     }
 
+    public void checkInvariant(){
+
+    }
+
     @Override
 	public Environment getEnvironment() {
-        Environment res = super.getEnvironment();
-        return res;
+		return super.getEnvironment();
 	}
-
+	
 	@Override
-	public Player getPlayer() {
-        Player res = super.getPlayer();
-        return res;
-	}
+	public void init(ScreenManager sm, CommandManager cm, Engine engineInstance) {
 
-	@Override
-	public List<Item> getTreasures() {
-        List<Item> res = super.getTreasures();
-        return res;
-	}
+		//TODO pre
+		
+		super.init(sm, cm, engineInstance);
 
-	@Override
-	public Status getStatus() {
-        Status res = super.getStatus();
-        return res;
-	}
+		//inv post
+		checkInvariant();
 
-	@Override
-	public Command getNextCommand() {
-        Command res = super.getNextCommand();
-        return res;
-	}
+		//\post getStatus() == Playing
+		if(!(getStatus() == Status.Playing)){
+			Contractor.defaultContractor().postconditionError("EngineContract", "init", "getStatus() == Playing");
+		}
 
-	@Override
-	public Set<Hole> getHoles() {
-        Set<Hole> res = super.getHoles();
-        return res;
-	}
+		//\post getNextCommand() == NONE
+		if(!(getNextCommand() == Command.NONE)){
+			Contractor.defaultContractor().postconditionError("EngineContract", "init", "getNextCommand() == NONE");
+		}
 
-	@Override
-	public void init(EditableScreen screen, int playerX, int playerY, List<Coord> guards, List<Coord> treasures) {
-		super.init(screen, playerX, playerY, guards, treasures);
+		//\post getHoles() == {}
+		if(!(getHoles().size() == 0)){
+			Contractor.defaultContractor().postconditionError("EngineContract", "init", "getHoles() == {}");
+		}
 	}
 
 	@Override
 	public void step() {
+		//\pre getStatus() == Status.Playing
+		if(!(getStatus() == Status.Playing)){
+			Contractor.defaultContractor().postconditionError("EngineContract", "step", "getStatus() == Status.Playing");
+		}
+		
 		super.step();
 	}
 
 	@Override
 	public void addHole(int x, int y) {
+		//\pre \not \Exists Hole h \in getHoles() \with (h.getX() == x && h.getY() == y)
+		for(Hole h : getHoles()){
+			if(h.getX() == x && h.getY() == y){
+				Contractor.defaultContractor().preconditionError("EngineContract", "addHole", "\\not \\Exists Hole h \\in getHoles() \\with (h.getX() == x && h.getY() == y)");
+			}
+		}
+
+		//\pre getEnvironment().getCellNature(x, y) == HOL
+		if(!(getEnvironment().getCellNature(x, y) == Cell.HOL)){
+			Contractor.defaultContractor().preconditionError("EngineContract", "addHole", "getEnvironment().getCellNature(x, y) == HOL");
+		}
+
+		//captures
+		Set<Hole> getHoles_atPre = new HashSet<>(getHoles());
+		Status getStatus_atPre = getStatus();
+		// List<Item> getTreasures_atPre = new ArrayList<>(getTreasures());
+		Environment getEnvironment_atPre = getEnvironment();
+		Player getPlayer_atPre = getPlayer();
+		Command getNextCommand_atPre = getNextCommand();
+
+		//inv pre
+		checkInvariant();
+		
 		super.addHole(x, y);
+
+		//inv post
+		checkInvariant();
+		
+		// \post getHoles() == getHoles()@pre \Union {h} \with (h.getX() == x \and h.getY() == y)
+		Set<Hole> oldHoles = new HashSet<>(getHoles_atPre);
+		oldHoles.add(new Hole(x, y));		
+		for(Hole h : getHoles()) {
+			if(!(oldHoles.contains(h))) {
+				Contractor.defaultContractor().postconditionError("EngineContract", "addHole", "getHoles() == getHoles()@pre \\Union {h} \\with (h.getX() == x \\and h.getY() == y)");
+				break;
+			}
+		}
+
+		//\post getStatus() == getStatus()@pre
+		if(!(getStatus_atPre == getStatus())){
+			Contractor.defaultContractor().postconditionError("EngineContract", "addHole", "getStatus() == getStatus()@pre");
+		}
+		//\post getNextCommand() == getNextCommand()@pre
+		if(!(getNextCommand() == getNextCommand_atPre)){
+			Contractor.defaultContractor().postconditionError("EngineContract", "addHole", "getNextCommand() == getNextCommand()@pre");
+		}
+		
+		//\post getTreasures() == getTreasures()@pre
 	}
 
 	@Override
 	public void display() {
+
+		//captures
+		Set<Hole> getHoles_atPre = new HashSet<>(getHoles());
+		Status getStatus_atPre = getStatus();
+		// List<Item> getTreasures_atPre = new ArrayList<>(getTreasures());
+		Environment getEnvironment_atPre = getEnvironment();
+		Player getPlayer_atPre = getPlayer();
+		Command getNextCommand_atPre = getNextCommand();
+
+		//inv pre
+		checkInvariant();
+		
 		super.display();
+
+		//inv post
+		checkInvariant();
+
+
+		// \post getHoles() == getHoles()@pre \Union {h} \with (h.getX() == x \and h.getY() == y)
+		Set<Hole> oldHoles = new HashSet<>(getHoles_atPre);
+		for(Hole h : getHoles()) {
+			if(!(oldHoles.contains(h))) {
+				Contractor.defaultContractor().postconditionError("EngineContract", "display", "getHoles() == getHoles()@pre \\Union {h} \\with (h.getX() == x \\and h.getY() == y)");
+				break;
+			}
+		}
+
+		//\post getStatus() == getStatus()@pre
+		if(!(getStatus_atPre == getStatus())){
+			Contractor.defaultContractor().postconditionError("EngineContract", "display", "getStatus() == getStatus()@pre");
+		}
+		//\post getNextCommand() == getNextCommand()@pre
+		if(!(getNextCommand() == getNextCommand_atPre)){
+			Contractor.defaultContractor().postconditionError("EngineContract", "display", "getNextCommand() == getNextCommand()@pre");
+		}
+		
+		//\post getTreasures() == getTreasures()@pre
+		
 	}
     
 }

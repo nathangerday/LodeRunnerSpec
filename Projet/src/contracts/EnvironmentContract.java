@@ -11,6 +11,7 @@ import decorators.EnvironmentDecorator;
 import services.Character;
 import services.EditableScreen;
 import services.Environment;
+import services.Guard;
 import utils.Util;
 
 public class EnvironmentContract extends EnvironmentDecorator{
@@ -209,9 +210,9 @@ public class EnvironmentContract extends EnvironmentDecorator{
             Contractor.defaultContractor().preconditionError("EnvironmentContract", "addToCellContent", "e != null");
         }
 
-        //\pre (\Exists Character c \in getCellContent(x, y)) \impl (\not (e \is Character))
-        if(!(Checker.implication(Util.constainsCharacter(getCellContent(x, y)), !(e instanceof Character)))){
-            Contractor.defaultContractor().preconditionError("EnvironmentContract", "addToCellContent", "(\\Exists Character c \\in getCellContent(x, y)) \\impl (\\not (e \\is Character))");
+        //\pre //\pre (\Exists Guard c \in getCellContent(x, y)) \impl (\not (e \is Guard))
+        if(!(Checker.implication(Util.containsGuard(getCellContent(x, y)), !(e instanceof Guard)))){
+            Contractor.defaultContractor().preconditionError("EnvironmentContract", "addToCellContent", "(\\Exists Guard c \\in getCellContent(x, y)) \\impl (\\not (e \\is Guard))");
         }
 
         //captures
@@ -249,7 +250,7 @@ public class EnvironmentContract extends EnvironmentDecorator{
         //              getCellNature(i, j) == getCellNature(i, j)@pre
         for(int i = 0; i < getWidth(); i++){
             for(int j = 0; j < getHeight(); j++){
-                if(!Checker.implication(i != x || j != y, getCellContent(i, j).equals(getCellContent_atPre.get(x).get(y)))){
+                if(!Checker.implication(i != x || j != y, getCellContent(i, j).equals(getCellContent_atPre.get(i).get(j)))){
                     Contractor.defaultContractor().postconditionError("EnvironmentContract", "addToCellContent", "\\Forall i in [0, getWidth() - 1] \\Forall j in [0, getHeight() - 1] i != x || j != y \\impl getCellContent(i,j) == getCellContent(i, j)@pre");
                 }
                 if(!(getCellNature(i, j) == getCellNature_atPre[i][j])){
@@ -335,7 +336,7 @@ public class EnvironmentContract extends EnvironmentDecorator{
         //              getCellNature(i, j) == getCellNature(i, j)@pre
         for(int i = 0; i < getWidth(); i++){
             for(int j = 0; j < getHeight(); j++){
-                if(!Checker.implication(i != x || j != y, getCellContent(i, j).equals(getCellContent_atPre.get(x).get(y)))){
+                if(!Checker.implication(i != x || j != y, getCellContent(i, j).equals(getCellContent_atPre.get(i).get(j)))){
                     Contractor.defaultContractor().postconditionError("EnvironmentContract", "removeFromCellContent", "\\Forall i in [0, getWidth() - 1] \\Forall j in [0, getHeight() - 1] i != x || j != y \\impl getCellContent(i,j) == getCellContent(i, j)@pre");
                 }
                 if(!(getCellNature(i, j) == getCellNature_atPre[i][j])){
@@ -356,105 +357,17 @@ public class EnvironmentContract extends EnvironmentDecorator{
     }
 
     @Override
-    public Character removeCharacter(int x, int y) {
-         //\pre 0 <= y 
-         if(!(0 <= y )){
-            Contractor.defaultContractor().preconditionError("EnvironmentContract", "removeCharacter", "0 <= y ");
-        }
-
-        //\pre y < getHeight()
-        if(!(y < getHeight())){
-            Contractor.defaultContractor().preconditionError("EnvironmentContract", "removeCharacter", "y < getHeight()");
-        }
-
-        //\pre 0 <= x
-        if(!(0 <= x)){
-            Contractor.defaultContractor().preconditionError("EnvironmentContract", "removeCharacter", "0 <= x");
-        }
-
-        //\pre x < getWidth()
-        if(!(x < getWidth())){
-            Contractor.defaultContractor().preconditionError("EnvironmentContract", "removeCharacter", "x < getWidth()");
-        }
-
-        //\pre \Exists Character c \in getCellContent(x, y)
-        if(!(Util.constainsCharacter(getCellContent(x, y)))){
-            Contractor.defaultContractor().preconditionError("EnvironmentContract", "removeCharacter", "\\Exists Character c \\in getCellContent(x, y)");
-            
-        }
-
-        //captures
-        Cell[][] getCellNature_atPre = new Cell[getWidth()][getHeight()];
-        List<List<Set<Entity>>> getCellContent_atPre = new ArrayList<>();
-        for(int u = 0; u < getWidth(); u++){
-            getCellContent_atPre.add(new ArrayList<>());
-            for(int v = 0; v < getHeight(); v++){
-                getCellNature_atPre[u][v] = getCellNature(u, v);
-                getCellContent_atPre.get(u).add(new HashSet<>(getCellContent(u, v)));
-            }
-        }
-        int getHeight_atPre = getHeight();
-        int getWidth_atPre = getWidth();
-
-
-        //inv pre
-        checkInvariant();
-
-        Character res = super.removeCharacter(x, y);
-
-        //inv post
-        checkInvariant();
-
-        //\post \Exists Character c \in getCellContent(x, y)@pre 
-        //          \impl getCellContent(x, y) == getCellContent(x, y)@pre \ {c}
-        Set<Entity> getCellContent_X_Y_atPre_Without_c = new HashSet<>(getCellContent_atPre.get(x).get(y));
-        Character c = Util.getCharacter(getCellContent_X_Y_atPre_Without_c);
-        getCellContent_X_Y_atPre_Without_c.remove(c);
-        if(!(getCellContent(x, y).equals(getCellContent_X_Y_atPre_Without_c))){
-            Contractor.defaultContractor().postconditionError("EnvironmentContract", "removeCharacter", "Exists Character c \\in getCellContent(x, y)@pre \\impl getCellContent(x, y) == getCellContent(x, y)@pre \\ {c}");
-        }
-
-
-        //\post \Forall i in [0, getWidth() - 1]
-        //          \Forall j in [0, getHeight() - 1]
-        //              i != x || j != y \impl getCellContent(i, j) == getCellContent(i, j)@pre
-        //              getCellNature(i, j) == getCellNature(i, j)@pre
-        for(int i = 0; i < getWidth(); i++){
-            for(int j = 0; j < getHeight(); j++){
-                if(!Checker.implication(i != x || j != y, getCellContent(i, j).equals(getCellContent_atPre.get(i).get(j)))){
-                    Contractor.defaultContractor().postconditionError("EnvironmentContract", "removeCharacter", "\\Forall i in [0, getWidth() - 1] \\Forall j in [0, getHeight() - 1] i != x || j != y \\impl getCellContent(i,j) == getCellContent(i, j)@pre");
-                }
-                if(!(getCellNature(i, j) == getCellNature_atPre[i][j])){
-                    Contractor.defaultContractor().postconditionError("EnvironmentContract", "removeCharacter", "\\Forall i in [0, getWidth() - 1] \\Forall j in [0, getHeight() - 1] getCellNature(i, j) == getCellNature(i, j)@pre");
-                }
-            }
-        }
-
-        //\post const getHeight()
-        if(!(getHeight_atPre == getHeight())){
-            Contractor.defaultContractor().postconditionError("EnvironmentContract", "removeCharacter", "const getHeight()");
-        }
-
-        //\post const getWidth()
-        if(!(getWidth_atPre == getWidth())){
-            Contractor.defaultContractor().postconditionError("EnvironmentContract", "removeCharacter", "const getWidth()");
-        }
-        
-
-        return res;
-    }
-
-    @Override
     public void init(EditableScreen screen) {
         //\pre screen != null
         if(!(screen != null)){
             Contractor.defaultContractor().preconditionError("EnvironmentContract", "init", "screen != null");
         }
 
-        //\pre screen.isPlayable()
-        if(!(screen.isPlayable())){
-            Contractor.defaultContractor().preconditionError("EnvironmentContract", "init", "screen.isPlayable()");
-        }
+        //TODO Remove
+        // //\pre screen.isPlayable()
+        // if(!(screen.isPlayable())){
+        //     Contractor.defaultContractor().preconditionError("EnvironmentContract", "init", "screen.isPlayable()");
+        // }
 
         super.init(screen);
 

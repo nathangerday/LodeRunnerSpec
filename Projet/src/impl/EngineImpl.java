@@ -48,12 +48,20 @@ public class EngineImpl implements Engine {
         return this.envi;
     }
 
+    public ScreenManager getScreenManager(){
+        return this.sm;
+    }
+
     public Player getPlayer() {
         return this.player;
     }
 
     public List<Item> getTreasures() {
         return this.treasures;
+    }
+    
+    public List<Guard> getGuards(){
+        return this.guards;
     }
 
     public Status getStatus() {
@@ -64,7 +72,7 @@ public class EngineImpl implements Engine {
         return this.holes;
     }
     
-    public int getNbLifese(){
+    public int getNbLifes(){
         return this.lifes;
     }
 
@@ -110,8 +118,9 @@ public class EngineImpl implements Engine {
             return;
         }
 
-
-        if(Util.removeTreasure(envi.getCellContent(player.getCol(), player.getHgt()))){
+        Item t;
+        if((t = Util.removeTreasure(envi.getCellContent(player.getCol(), player.getHgt()))) != null){
+            this.treasures.remove(t);
             this.nbTreasures--;
             this.score++;
             if(this.nbTreasures == 0 && this.currentLevel < this.sm.getNbScreen() - 1){
@@ -137,7 +146,6 @@ public class EngineImpl implements Engine {
                 if(this.player.getHgt() == h.getY() && this.player.getCol() == h.getX()){
                     death();
                 }
-                // TODO Gerer le fait de reset les gardes
                 if(Util.containsGuard(envi.getCellContent(h.getX(), h.getY()))){
                     Util.getGuard(envi.getCellContent(h.getX(), h.getY())).moveToInitCoords();
                 }
@@ -147,7 +155,6 @@ public class EngineImpl implements Engine {
     }
 
     public void display() {
-        //TODO Separer affichage dans une autre classe
 
         if(this.status == Status.Win){
             System.out.println("============================");
@@ -232,7 +239,7 @@ public class EngineImpl implements Engine {
         this.treasures.clear();
         for(Coord c : sm.getGuardsFromScreen(currentLevel)){
             Guard tmp = new GuardImpl();
-            tmp.init(this.envi, c.getX(), c.getY(), this.player);
+            tmp.init(this, c.getX(), c.getY(), this.player);
             this.guards.add(tmp);
         }
         this.nbTreasures = 0;

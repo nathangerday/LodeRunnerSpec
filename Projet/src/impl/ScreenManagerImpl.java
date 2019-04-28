@@ -4,17 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import data.Coord;
+import data.CoordGuard;
+import data.CoordItem;
 import data.LevelSetup;
 import services.EditableScreen;
 import services.ScreenManager;
 
 public class ScreenManagerImpl implements ScreenManager {
 
-    private List<LevelSetup> levels = new ArrayList<>();
+    private List<LevelSetup> levels;
+
+    @Override
+    public void init(){
+        this.levels = new ArrayList<>();
+    }
+    
 
     @Override
     public int getNbScreen() {
         return levels.size();
+    }
+
+    @Override
+    public LevelSetup getLevelSetup(int i){
+        return levels.get(i);
     }
 
     @Override
@@ -23,12 +36,12 @@ public class ScreenManagerImpl implements ScreenManager {
     }
 
     @Override
-    public List<Coord> getGuardsFromScreen(int i) {
+    public List<CoordGuard> getGuardsFromScreen(int i) {
         return levels.get(i).getGuards();
     }
 
     @Override
-    public List<Coord> getItemsFromScreen(int i) {
+    public List<CoordItem> getItemsFromScreen(int i) {
         return levels.get(i).getItems();
     }
 
@@ -38,7 +51,7 @@ public class ScreenManagerImpl implements ScreenManager {
     }
 
     @Override
-    public void addScreen(EditableScreen screen, List<Coord> guards, List<Coord> items, Coord player) {
+    public void addScreen(EditableScreen screen, List<CoordGuard> guards, List<CoordItem> items, Coord player) {
         if(guards == null){
             guards = new ArrayList<>();
         }

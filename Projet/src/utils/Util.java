@@ -46,15 +46,15 @@ public class Util {
         return false;
     }
 
-    public static boolean removeTreasure(Set<Entity> content){
+    public static Item removeTreasure(Set<Entity> content){
         Item toDelete = null;
         for(Entity e : content){
             if(e instanceof Item && ((Item)e).getNature() == ItemType.Treasure){
                 toDelete = (Item)e;
             }
         }
-
-        return content.remove(toDelete);
+        content.remove(toDelete);
+        return toDelete;
     }
     
 }

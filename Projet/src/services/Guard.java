@@ -2,16 +2,20 @@ package services;
 
 import data.Command;
 import data.Coord;
+import data.GuardType;
 
 public interface Guard extends Character{
     public int getId();
+    public Engine getEngine();
+    public GuardType getNature();
     
     public boolean isCarryingTreasure();
 
-    public void init(Environment s, int x, int y, Character target);
+    public void init(Engine e, int x, int y, Character target);
 
     public Coord getInitCoords();
 
+    //TODO pre / post
     public Command getBehaviour();
 
     public Character getTarget();

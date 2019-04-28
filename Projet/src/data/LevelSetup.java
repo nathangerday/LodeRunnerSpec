@@ -11,11 +11,11 @@ import services.Player;
 
 public class LevelSetup{
     private EditableScreen screen;
-    private List<Coord> guards;
-    private List<Coord> items;
+    private List<CoordGuard> guards;
+    private List<CoordItem> items;
     private Coord player;
 
-    public LevelSetup(EditableScreen screen, List<Coord> guards, List<Coord> items, Coord player){
+    public LevelSetup(EditableScreen screen, List<CoordGuard> guards, List<CoordItem> items, Coord player){
         this.screen = screen;
         this.guards = guards;
         this.items = items;
@@ -26,10 +26,10 @@ public class LevelSetup{
         return this.screen;
     }
 
-    public List<Coord> getGuards(){
+    public List<CoordGuard> getGuards(){
         return this.guards;
     }
-    public List<Coord> getItems(){
+    public List<CoordItem> getItems(){
         return this.items;
     }
 

@@ -41,6 +41,11 @@ public class GuardImpl extends CharacterImpl implements Guard {
     }
 
     @Override
+    public int getIdCounter(){
+        return count;
+    }
+
+    @Override
     public Coord getInitCoords(){
         return this.initCoords;
     }
@@ -131,7 +136,7 @@ public class GuardImpl extends CharacterImpl implements Guard {
             if(!Util.containsPlayer(envi.getCellContent(x, y + 1))){ //if player above, stops on the player
                 this.x -= 1;
             }
-            this.y += 1;
+            this.y += 3;
             this.envi.addToCellContent(this.x, this.y, this);
         }
     }

@@ -30,13 +30,13 @@ public class Factory{
         // return new EngineImpl();
     }
     public static Guard createGuard(){
-        return new GuardImpl();
+        return new GuardContract(new GuardImpl());
     }
     public static Screen createScreen(){
         return new ScreenContract(new ScreenImpl());
         // return new ScreenImpl();
     }
     public static ScreenManager createScreenManager(){
-        return new ScreenManagerImpl();
+        return new ScreenManagerContract(new ScreenManagerImpl());
     }
 }

@@ -61,7 +61,7 @@ public interface ScreenManager {
     //\pre i < getNbScreen()
     //\pre i >= 0
     //\post getNbScreen() == getNbScreen()@pre - 1
-    //\post \Forall v \in [0, getNbScreen()]
+    //\post \Forall v \in [0, getNbScreen() - 1]
     //          v < i \impl getLevelSetup(v) == getLevelSetup(v)@pre
     //          v >= i \impl getLevelSetup(v) == getLevelSetup(v + 1)@pre
     public void removeScreen(int i);

@@ -238,7 +238,7 @@ public class EngineImpl implements Engine {
         this.guards.clear();
         this.treasures.clear();
         for(Coord c : sm.getGuardsFromScreen(currentLevel)){
-            Guard tmp = new GuardImpl();
+            Guard tmp = Factory.createGuard();
             tmp.init(this, c.getX(), c.getY(), this.player);
             this.guards.add(tmp);
         }

@@ -91,7 +91,7 @@ public class LodeRunner{
         guardCoords2.add(new CoordGuard(16, 7, GuardType.NORMAL));
 
         sm.addScreen(screen2, guardCoords2, treasureCoords2, new Coord(8, 2));
-
+        sm.removeScreen(0);
         engi.init(sm, cm, engi);
         while(engi.getStatus() == Status.Playing){
             engi.step();

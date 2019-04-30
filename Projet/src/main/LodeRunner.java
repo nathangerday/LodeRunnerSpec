@@ -9,6 +9,10 @@ import contracts.EnvironmentContract;
 import contracts.PlayerContract;
 import data.Cell;
 import data.Coord;
+import data.CoordGuard;
+import data.CoordItem;
+import data.GuardType;
+import data.ItemType;
 import data.Status;
 import impl.*;
 import services.*;
@@ -55,11 +59,12 @@ public class LodeRunner{
         // screen.setNature(3, 2, Cell.PLT);
         CommandManager cm = new CommandManager(Thread.currentThread());
         ScreenManager sm = Factory.createScreenManager();
-        List<Coord> treasureCoords = new ArrayList<>();
-        treasureCoords.add(new Coord(0, 2));
-        treasureCoords.add(new Coord(17, 4));
-        List<Coord> guardCoords = new ArrayList<>();
-        guardCoords.add(new Coord(1, 7));
+        sm.init();
+        List<CoordItem> treasureCoords = new ArrayList<>();
+        treasureCoords.add(new CoordItem(0, 2, ItemType.Treasure));
+        treasureCoords.add(new CoordItem(17, 4, ItemType.Treasure));
+        List<CoordGuard> guardCoords = new ArrayList<>();
+        guardCoords.add(new CoordGuard(1, 7, GuardType.NORMAL));
         // guardCoords.add(new Coord(10, 3));
         sm.addScreen(screen, guardCoords, treasureCoords, new Coord(5, 2));
 
@@ -79,14 +84,14 @@ public class LodeRunner{
                 screen2.setNature(j, i, Cell.EMP);
             }
         }
-        List<Coord> treasureCoords2 = new ArrayList<>();
-        treasureCoords2.add(new Coord(10, 2));
-        treasureCoords2.add(new Coord(11, 2));
-        List<Coord> guardCoords2 = new ArrayList<>();
-        guardCoords2.add(new Coord(16, 7));
+        List<CoordItem> treasureCoords2 = new ArrayList<>();
+        treasureCoords2.add(new CoordItem(10, 2, ItemType.Treasure));
+        treasureCoords2.add(new CoordItem(11, 2, ItemType.Treasure));
+        List<CoordGuard> guardCoords2 = new ArrayList<>();
+        guardCoords2.add(new CoordGuard(16, 7, GuardType.NORMAL));
 
         sm.addScreen(screen2, guardCoords2, treasureCoords2, new Coord(8, 2));
-
+        sm.removeScreen(0);
         engi.init(sm, cm, engi);
         while(engi.getStatus() == Status.Playing){
             engi.step();

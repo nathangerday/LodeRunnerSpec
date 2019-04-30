@@ -6,9 +6,11 @@ import java.util.Set;
 import data.Cell;
 import data.Command;
 import data.Coord;
+import data.GuardType;
 import data.Item;
 import data.ItemType;
 import services.Character;
+import services.Engine;
 import services.Environment;
 import services.Guard;
 import utils.Util;
@@ -21,9 +23,11 @@ public class GuardImpl extends CharacterImpl implements Guard {
     private int timeInHole;
     private Coord initCoords;
     private boolean carryingTreasure;
+    private Engine engi;
 
-    public void init(Environment s, int x, int y, Character target){
-        super.init(s, x, y);
+    public void init(Engine e, int x, int y, Character target){
+        super.init(e.getEnvironment(), x, y);
+        this.engi = e;
         this.id = count++;
         this.target = target;
         this.timeInHole = 0;
@@ -37,6 +41,11 @@ public class GuardImpl extends CharacterImpl implements Guard {
     }
 
     @Override
+    public int getIdCounter(){
+        return count;
+    }
+
+    @Override
     public Coord getInitCoords(){
         return this.initCoords;
     }
@@ -44,6 +53,16 @@ public class GuardImpl extends CharacterImpl implements Guard {
     @Override
     public boolean isCarryingTreasure(){
         return this.carryingTreasure;
+    }
+
+    @Override
+    public Engine getEngine(){
+        return this.engi;
+    }
+
+    @Override
+    public GuardType getNature(){
+        return GuardType.NORMAL;
     }
 
     @Override
@@ -117,7 +136,7 @@ public class GuardImpl extends CharacterImpl implements Guard {
             if(!Util.containsPlayer(envi.getCellContent(x, y + 1))){ //if player above, stops on the player
                 this.x -= 1;
             }
-            this.y += 1;
+            this.y += 3;
             this.envi.addToCellContent(this.x, this.y, this);
         }
     }
@@ -150,7 +169,8 @@ public class GuardImpl extends CharacterImpl implements Guard {
     @Override
     public void step() {
         if(Util.containsTreasure(this.envi.getCellContent(x, y)) && !this.carryingTreasure){
-            Util.removeTreasure(this.envi.getCellContent(x, y));
+            Item t = Util.removeTreasure(this.envi.getCellContent(x, y));
+            this.engi.getTreasures().remove(t);
             this.carryingTreasure = true;
         }
 
@@ -168,7 +188,9 @@ public class GuardImpl extends CharacterImpl implements Guard {
         !Util.containsGuard(this.envi.getCellContent(this.x, this.y - 1))){
             if(this.carryingTreasure && this.envi.getCellNature(this.x, this.y - 1) == Cell.HOL){
                 this.carryingTreasure = false;
-                this.envi.addToCellContent(this.x, this.y, new Item(ItemType.Treasure, this.x, this.y));
+                Item t = new Item(ItemType.Treasure, this.x, this.y);
+                this.envi.addToCellContent(this.x, this.y, t);
+                this.engi.getTreasures().add(t);
             }
             goDown();
             return;

@@ -15,21 +15,37 @@ public interface Engine{
 
     public Environment getEnvironment();
     public Player getPlayer();
-    // public List<Guard> getGuards();
+    public List<Guard> getGuards();
     public List<Item> getTreasures();
     public Status getStatus();
     public Command getNextCommand();
     public Set<Hole> getHoles();
-    public int getNbLifese();
+    public int getNbLifes();
     public int getScore();
     public int getScoreAtStartOfLevel();
-    
+    public ScreenManager getScreenManager(); 
+
     /* Constructors */
-    //TODO \pre sm.getNbScreen() >= 1;
-    //TODO Guards / Treasures
+    //\pre sm.getNbScreen() >= 1;
+    //\post getEnvironment().getHeight() == sm.getScreen(0).getHeight()
+    //\post getEnvironment().getWidth() == sm.getScreen(0).getWidth()
+    //\post \Forall i in |0, getEnvironment().getWidth() - 1]
+    //          \Forall j in [0, getEnvironment().getHeight() - 1]
+    //              sm.getScreen(0).getCellNature(i, j) == getEnvironment().getCellNature(i, j))
+    //\post getPlayer().getCol() == sm.getPlayerFromScreen(0).getX();
+    //\post getPlayer().getHgt() == sm.getPlayerFromScreen(0).getY();
+    //\post getPlayer().getEngine() == engineInstance
+    //\post \Forall CoordItem c \in sm.getItemsFromScreen(0)
+    //          \Exists Item i \in getTreasures() \with (i.getHgt() == c.getY() && i.getCol() == c.getX() && i.getNature() == c.getType())
+    //\post \Forall CoordGuard c \ in sm.getGuardsFromScreen(0)
+    //          \Exists Guard g \in getGuards() \with (g.getHgt() == c.getY() && g.getCol() == g.getX() && g.getNature() == c.getType())
     //\post getStatus() == Playing
     //\post getNextCommand() == NONE
     //\post getHoles() == {}
+    //\post getNbLifes() == 3
+    //\post getScore() == 0
+    //\post getScoreAtStartOfLevel == 0
+    //\post getScreenManager() == sm
     public void init(ScreenManager sm, CommandManager cm, Engine engineInstance);
     
     /* Invariants */
@@ -39,6 +55,7 @@ public interface Engine{
     
     /* Operators */
 
+    //TODO pre / post
     //\pre getStatus() == Status.Playing
     //\post getPlayer() == getPlayer()@pre.step()
     //\post \Forall Hole h \in getHoles()@pre
@@ -55,15 +72,29 @@ public interface Engine{
     //\pre \not \Exists Hole h \in getHoles() \with (h.getX() == x && h.getY() == y)
     //\pre getEnvironment().getCellNature(x, y) == HOL
     //\post getHoles() == getHoles()@pre \Union {h} \with (h.getX() == x \and h.getY() == y)
-    //\post getNextCommand() == getNextCommand()@pre
-    //\post getStatus() == getStatus()@pre
+    //\post getEnvironment() == getEnvironment()@pre
+    //\post getPlayer() == getPlayer()@pre
+    //\post getGuards() == getGuards()@pre
     //\post getTreasures() == getTreasures()@pre
+    //\post getStatus() == getStatus()@pre
+    //\post getNextCommand() == getNextCommand()@pre
+    //\post getNbLifes() == getNbLifes()@pre
+    //\post getScore() == getScore()@pre
+    //\post getScoreAtStartOfLevel() == getScoreAtStartOfLevel()@pre
+    //\post getScreenManager() == getScreenManager()@pre
     public void addHole(int x, int y);    
     
+    //\post getEnvironment() == getEnvironment()@pre
+    //\post getPlayer() == getPlayer()@pre
+    //\post getGuards() == getGuards()@pre
     //\post getTreasures() == getTreasures()@pre
     //\post getStatus() == getStatus()@pre
     //\post getNextCommand() == getNextCommand()@pre
     //\post getHoles() == getHoles()@pre
+    //\post getNbLifes() == getNbLifes()@pre
+    //\post getScore() == getScore()@pre
+    //\post getScoreAtStartOfLevel() == getScoreAtStartOfLevel()@pre
+    //\post getScreenManager() == getScreenManager()@pre
     public void display();
     
 

@@ -11,6 +11,7 @@ import data.Status;
 import services.EditableScreen;
 import services.Engine;
 import services.Environment;
+import services.Guard;
 import services.Player;
 import services.ScreenManager;
 import utils.CommandManager;
@@ -32,6 +33,11 @@ public class EngineDecorator implements Engine{
 	}
 
 	@Override
+	public ScreenManager getScreenManager(){
+		return getDelegate().getScreenManager();
+	}
+
+	@Override
 	public Player getPlayer() {
 		return getDelegate().getPlayer();
 	}
@@ -40,14 +46,19 @@ public class EngineDecorator implements Engine{
 	public List<Item> getTreasures() {
 		return getDelegate().getTreasures();
 	}
+	
+	@Override
+	public List<Guard> getGuards(){
+		return getDelegate().getGuards();
+	}
 
 	@Override
 	public Status getStatus() {
 		return getDelegate().getStatus();
 	}
 
-	public int getNbLifese(){
-        return getDelegate().getNbLifese();
+	public int getNbLifes(){
+        return getDelegate().getNbLifes();
     }
     
 	public int getScore(){

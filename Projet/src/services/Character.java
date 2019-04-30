@@ -17,7 +17,6 @@ public interface Character extends Entity{
     //\pre y >= 0
     //\pre y < s.getHeight()
     //\pre \not s.getCellNature(x, y) \in {MTL, PLT}
-    //TODO Surement ajouter une precondition pour le fait qu'on ne veut qu'un seul personnage par case (Ou pas en fait, a la fin du sujet on dit qu'on peut avoir plusieurs character sur la meme case pour detecter une partie perdu)
     //\post getHgt() == y
     //\post getCol() == x
     //\post getEnvi() == s

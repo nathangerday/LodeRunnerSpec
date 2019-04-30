@@ -32,16 +32,6 @@ public class PlayerContract extends PlayerDecorator{
         
     }
 
-    public boolean equals(PlayerContract other){
-        return getDelegate().equals(other.getDelegate());
-    }
-
-    @Override
-    public Engine getEngine() {
-        Engine res = super.getEngine();
-        return res;
-    }
-
     @Override
     public void init(int x, int y, Engine e) {
         System.out.println("init");
@@ -835,6 +825,7 @@ public class PlayerContract extends PlayerDecorator{
         }
         
         ScreenManager sm = Factory.createScreenManager();
+        sm.init();
         sm.addScreen(resES, null, null, new Coord(d.getCol(), d.getHgt()));
         resEngine.init(sm, null, resEngine);
         Player res = resEngine.getPlayer();

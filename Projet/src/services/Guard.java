@@ -85,6 +85,44 @@ public interface Guard extends Character{
     //\post getIdCounter() == getIdCounter()@pre
     public void moveToInitCoords();
 
+    
+    //\def isFalling == \not getEnvi().getCellNature(getCol()@pre, getHgt()@pre) \in {LAD, HDR, HOL} \and
+    //                  getEnvi().getCellContent(getCol()@pre, getHgt()@pre) \in {EMP, HDR, HOL} \and
+    //                  \not \Exists Guard g \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)
+
+    //\post \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)@pre \and \not isCarryingTreasure()@pre 
+    //      \impl isCarryingTreasure() \and \not \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)
+    //\post \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)@pre \and isCarryingTreasure()@pre 
+    //      \impl isCarryingTreasure() \and \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)
+    //\post \not \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)@pre \and \not isCarryingTreasure()@pre
+    //      \impl \not isCarryingTreasure() \and \not \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)
+    //\post \not \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)@pre
+    //      \and isCarryingTreasure()@pre
+    //      \and getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1)@pre == HOL
+    //      \and \not getEnvi().getCellNature(getCol()@pre, getHgt()@pre)@pre \in {LAD, HDR, HOL}
+    //      \and \not \Exists Guard g \ in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1)@pre
+    //      \impl \not isCarryingTreasure() \and  \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)
+    //\post \not \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)@pre
+    //      \and isCarryingTreasure()@pre
+    //      \and getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1)@pre != HOL
+    //          \or \getEnvi().getCellNature(getCol()@pre, getHgt()@pre)@pre \in {LAD, HDR, HOL}
+    //          \or \Exists Guard g \ in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1)@pre
+    //      \impl isCarryingTreasure() \and \not \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)
+    //\post getEnvi().getCellNature(getCol()@pre, getHgt()@pre) \and getTimeInHole()@pre < 5 \impl getTimeInHole() == getTimeInHole()@pre + 1
+    //\post getEnvi().getCellNature(getCol()@pre, getHgt()@pre) 
+    //      \and getTimeInHole()@pre >= 5 
+    //      \and getBehaviour()@pre == MOVEL 
+    //      \impl getTimeInHole() == 0 \and climbLeft()
+    //\post getEnvi().getCellNature(getCol()@pre, getHgt()@pre) 
+    //      \and getTimeInHole()@pre >= 5 
+    //      \and getBehaviour()@pre == MOVER
+    //      \impl getTimeInHole() == 0 \and climbRight()
+    //\post isFalling \impl goDown()
+    //\post \not isFalling \and getEnvi().getCellnature() != HOL \and getBehaviour() == MOVEL \impl goLeft()
+    //\post \not isFalling \and getEnvi().getCellnature() != HOL \and getBehaviour() == MOVER \impl goRight()
+    //\post \not isFalling \and getEnvi().getCellnature() != HOL \and getBehaviour() == MOVEU \impl goUp()
+    //\post \not isFalling \and getEnvi().getCellnature() != HOL \and getBehaviour() == MOVED \impl goDown()
+    //\post getIdCounter() == getIdCounter()@pre
     public void step();
 
 }

@@ -174,7 +174,6 @@ public class GuardImpl extends CharacterImpl implements Guard {
             this.carryingTreasure = true;
         }
 
-
         Set<Cell> EMP_HDR_HOL = new HashSet<>();
         EMP_HDR_HOL.add(Cell.EMP);
         EMP_HDR_HOL.add(Cell.HDR);

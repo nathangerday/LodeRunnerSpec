@@ -16,7 +16,6 @@ public class EnvironmentImpl extends ScreenImpl implements Environment {
     private List<List<Set<Entity>>> content;
 
     public Set<Entity> getCellContent(int x, int y) {
-        //TODO Ici on retourne la collection, on pourrait donc la modifier en dehors de la classe, c'est pas génial...
         return content.get(x).get(y);
     }
 

@@ -26,7 +26,7 @@ public interface Engine{
     public ScreenManager getScreenManager(); 
 
     /* Constructors */
-    //\pre sm.getNbScreen() >= 1;
+    //\pre sm.getNbScreen() >= 1
     //\post getEnvironment().getHeight() == sm.getScreen(0).getHeight()
     //\post getEnvironment().getWidth() == sm.getScreen(0).getWidth()
     //\post \Forall i in |0, getEnvironment().getWidth() - 1]
@@ -36,7 +36,7 @@ public interface Engine{
     //\post getPlayer().getHgt() == sm.getPlayerFromScreen(0).getY();
     //\post getPlayer().getEngine() == engineInstance
     //\post \Forall CoordItem c \in sm.getItemsFromScreen(0)
-    //          \Exists Item i \in getTreasures() \with (i.getHgt() == c.getY() && i.getCol() == c.getX() && i.getNature() == c.getType())
+    //          \Exists Item i \in getTreasures() \with (i.getHgt() == c.getY() && i.getCol() == c.getX() && i.getNature() == c.getItemType())
     //\post \Forall CoordGuard c \ in sm.getGuardsFromScreen(0)
     //          \Exists Guard g \in getGuards() \with (g.getHgt() == c.getY() && g.getCol() == g.getX() && g.getNature() == c.getType())
     //\post getStatus() == Playing
@@ -44,7 +44,7 @@ public interface Engine{
     //\post getHoles() == {}
     //\post getNbLifes() == 3
     //\post getScore() == 0
-    //\post getScoreAtStartOfLevel == 0
+    //\post getScoreAtStartOfLevel() == 0
     //\post getScreenManager() == sm
     public void init(ScreenManager sm, CommandManager cm, Engine engineInstance);
     

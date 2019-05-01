@@ -34,7 +34,6 @@ public class PlayerContract extends PlayerDecorator{
 
     @Override
     public void init(int x, int y, Engine e) {
-        System.out.println("init");
         //\pre e != null
         if(!(e != null)){
             Contractor.defaultContractor().preconditionError("PlayerContract", "init", "e != null");

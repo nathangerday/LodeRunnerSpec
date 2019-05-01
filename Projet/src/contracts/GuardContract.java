@@ -1,10 +1,13 @@
 package contracts;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import data.Cell;
 import data.Coord;
+import data.Entity;
 import data.GuardType;
 import decorators.GuardDecorator;
 import services.Character;
@@ -411,6 +414,9 @@ public class GuardContract extends GuardDecorator {
 
     @Override
     public void step() {
+
+        //captures
+        
         //inv pre 
         checkInvariant();
         
@@ -418,6 +424,390 @@ public class GuardContract extends GuardDecorator {
 
         //inv post
         checkInvariant();
+
+        //\post \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)@pre \and \not isCarryingTreasure()@pre 
+        //      \impl isCarryingTreasure() \and \not \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)
+        //\post \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)@pre \and isCarryingTreasure()@pre 
+        //      \impl isCarryingTreasure() \and \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)
+        //\post \not \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)@pre \and \not isCarryingTreasure()@pre
+        //      \impl \not isCarryingTreasure() \and \not \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)
+        //\post \not \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)@pre
+        //      \and isCarryingTreasure()@pre
+        //      \and getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1)@pre == HOL
+        //      \and \not getEnvi().getCellNature(getCol()@pre, getHgt()@pre)@pre \in {LAD, HDR, HOL}
+        //      \and \not \Exists Guard g \ in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1)@pre
+        //      \impl \not isCarryingTreasure() \and  \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)
+        //\post \not \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)@pre
+        //      \and isCarryingTreasure()@pre
+        //      \and getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1)@pre != HOL
+        //          \or \getEnvi().getCellNature(getCol()@pre, getHgt()@pre)@pre \in {LAD, HDR, HOL}
+        //          \or \Exists Guard g \ in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1)@pre
+        //      \impl isCarryingTreasure() \and \not \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)
+        //\post getEnvi().getCellNature(getCol()@pre, getHgt()@pre) \and getTimeInHole()@pre < 5 \impl getTimeInHole() == getTimeInHole()@pre + 1
+        //\post getEnvi().getCellNature(getCol()@pre, getHgt()@pre) 
+        //      \and getTimeInHole()@pre >= 5 
+        //      \and getBehaviour()@pre == MOVEL 
+        //      \impl getTimeInHole() == 0 \and climbLeft()
+        //\post getEnvi().getCellNature(getCol()@pre, getHgt()@pre) 
+        //      \and getTimeInHole()@pre >= 5 
+        //      \and getBehaviour()@pre == MOVER
+        //      \impl getTimeInHole() == 0 \and climbRight()
+        //\post isFalling \impl goDown()
+        //\post \not isFalling \and getEnvi().getCellnature() != HOL \and getBehaviour() == MOVEL \impl goLeft()
+        //\post \not isFalling \and getEnvi().getCellnature() != HOL \and getBehaviour() == MOVER \impl goRight()
+        //\post \not isFalling \and getEnvi().getCellnature() != HOL \and getBehaviour() == MOVEU \impl goUp()
+        //\post \not isFalling \and getEnvi().getCellnature() != HOL \and getBehaviour() == MOVED \impl goDown()
+        //\post getIdCounter() == getIdCounter()@pre
+        
+    }
+
+    @Override
+    public void goLeft() {
+        //captures
+        Cell[][] getCellNature_atPre = new Cell[getEnvi().getWidth()][getEnvi().getHeight()];
+        List<List<Set<Entity>>> getCellContent_atPre = new ArrayList<>();
+        for(int u = 0; u < getEnvi().getWidth(); u++){
+            getCellContent_atPre.add(new ArrayList<>());
+            for(int v = 0; v < getEnvi().getHeight(); v++){
+                getCellNature_atPre[u][v] = getEnvi().getCellNature(u, v);
+                getCellContent_atPre.get(u).add(new HashSet<>(getEnvi().getCellContent(u, v)));
+            }
+        }
+        int getHgt_atPre = getHgt();
+        int getCol_atPre = getCol();
+        Environment getEnvi_atPre = getEnvi();
+
+        //inv pre
+        checkInvariant();
+        
+        super.goLeft();
+
+        //inv post
+        checkInvariant();
+
+        //\post getHgt() == getHgt()@pre
+        if(!(getHgt() == getHgt_atPre)){
+            Contractor.defaultContractor().postconditionError("GuardContract", "goLeft", "getHgt() == getHgt()@pre");
+        }
+
+
+        //\post getCol()@pre == 0 \impl getCol() == getCol()@pre
+        if(!(Checker.implication(getCol_atPre == 0, getCol() == getCol_atPre))){
+            Contractor.defaultContractor().postconditionError("GuardContract", "goLeft", "getCol()@pre == 0 \\impl getCol() == getCol()@pre");
+        }
+
+
+        //\post (getEnvi().getCellNature(getCol()@pre - 1, getHgt()@pre) \in {MTL, PLT}) \impl getCol() == getCol()@pre
+        Set<Cell> MTL_PLT = new HashSet<>();
+        MTL_PLT.add(Cell.MTL);
+        MTL_PLT.add(Cell.PLT);
+        if(!(getCol_atPre == 0)){
+            if(!(Checker.implication(MTL_PLT.contains(getEnvi().getCellNature(getCol_atPre - 1, getHgt_atPre)), getCol() == getCol_atPre))){
+                Contractor.defaultContractor().postconditionError("GuardContract", "goLeft", "(getEnvi().getCellNature(getCol()@pre - 1, getHgt()@pre) \\in {MTL, PLT}) \\impl getCol() == getCol()@pre");
+            }
+        }
+
+
+        //\post \not (getEnvi().getCellNature(getCol()@pre, getHgt()@pre) \in {LAD, HDR})
+        //      \and \not getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1) \in {PLT, MTL, LAD}
+        //      \and \not \Exists Guard c \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1)
+        //      \impl getCol() == getCol()@pre()
+        Set<Cell> LAD_HDR = new HashSet<>();
+        LAD_HDR.add(Cell.LAD);
+        LAD_HDR.add(Cell.HDR);
+        Set<Cell> PLT_MTL_LAD = new HashSet<>();
+        PLT_MTL_LAD.add(Cell.PLT);
+        PLT_MTL_LAD.add(Cell.MTL);
+        PLT_MTL_LAD.add(Cell.LAD);
+
+        boolean cond1 = !(LAD_HDR.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre)));
+        boolean cond2 = !(PLT_MTL_LAD.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre - 1)));
+        boolean cond3 = !Util.containsGuard(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre - 1));
+        if(!(Checker.implication(cond1 && cond2 && cond3, getCol_atPre == getCol()))){
+            Contractor.defaultContractor().postconditionError("GuardContract", "goLeft", "\\not (getEnvi().getCellNature(getCol()@pre, getHgt()@pre) \\in {LAD, HDR}) \\and \\not getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1) \\in {PLT, MTL, LAD} \\and \\not \\Exists Guard c \\in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1) \\impl getCol() == getCol()@pre()");
+        }
+
+
+        
+        //\post \Exists Guard c \in getEnvi().getCellContent(getCol()@pre - 1, getHgt()@pre) \impl getCol() == getCol()@pre
+        if(!(getCol_atPre == 0)){
+            if(!(Checker.implication(Util.containsGuard(getCellContent_atPre.get(getCol_atPre - 1).get(getHgt_atPre)), getCol_atPre == getCol()))){
+                Contractor.defaultContractor().postconditionError("GuardContract", "goLeft", "\\Exists Guard c \\in getEnvi().getCellContent(getCol()@pre - 1, getHgt()@pre) \\impl getCol() == getCol()@pre");
+            }
+        }
+
+
+        //\post getCol()@pre != 0
+        //      \and \not getEnvi().getCellNature()(getCol()@pre - 1, getHgt()@pre) \in {MTL, PLT}
+        //      \and (getEnvi().getCellNature(getCol()@pre, getHgt()@pre) \in {LAD, HDR} 
+        //           \or getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1) \in {PLT, MTL, LAD}
+        //           \or \Exists Guard c \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1))
+        //      \and \not \Exists Guard c \in getEnvi().getCellContent(getCol()@pre - 1, getHgt()@pre)
+        //      \impl getCol() == getCol()@pre - 1
+        if(!(getCol_atPre == 0)){
+            boolean condAND1 = getCol_atPre != 0;
+            boolean condAND2 = !MTL_PLT.contains(getEnvi().getCellNature(getCol_atPre - 1, getHgt_atPre));
+            boolean condOR1 = (LAD_HDR.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre)));
+            boolean condOR2 = (PLT_MTL_LAD.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre - 1)));
+            boolean condOR3 = Util.containsGuard(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre - 1));
+            boolean condAND3 = !Util.containsGuard(getCellContent_atPre.get(getCol_atPre - 1).get(getHgt_atPre));
+            if(!Checker.implication(condAND1 && condAND2 && (condOR1 || condOR2 || condOR3) && condAND3, getCol() == getCol_atPre - 1)){
+                Contractor.defaultContractor().postconditionError("GuardContract", "goLeft", "Check if goLeft worked correctly with all conditions");
+            }
+        }
+
+        //\post const getEnvi()
+        if(!(getEnvi_atPre == getEnvi())){
+            Contractor.defaultContractor().postconditionError("GuardContract", "goLeft", "const getEnvi()");
+        }
+        
+        
+    }
+
+    @Override
+    public void goRight() {
+        //captures
+        Cell[][] getCellNature_atPre = new Cell[getEnvi().getWidth()][getEnvi().getHeight()];
+        List<List<Set<Entity>>> getCellContent_atPre = new ArrayList<>();
+        for(int u = 0; u < getEnvi().getWidth(); u++){
+            getCellContent_atPre.add(new ArrayList<>());
+            for(int v = 0; v < getEnvi().getHeight(); v++){
+                getCellNature_atPre[u][v] = getEnvi().getCellNature(u, v);
+                getCellContent_atPre.get(u).add(new HashSet<>(getEnvi().getCellContent(u, v)));
+            }
+        }
+        int getHgt_atPre = getHgt();
+        int getCol_atPre = getCol();
+        Environment getEnvi_atPre = getEnvi();
+
+
+        //inv pre
+        checkInvariant();
+        
+        super.goRight();
+
+        //inv post
+        checkInvariant();
+
+        //\post getHgt() == getHgt()@pre
+        if(!(getHgt() == getHgt_atPre)){
+            Contractor.defaultContractor().postconditionError("GuardContract", "goRight", "getHgt() == getHgt()@pre");
+        }
+
+        //\post getCol()@pre == getEnvi().getWidth() - 1 \impl getCol() == getCol()@pre
+        if(!(Checker.implication(getCol_atPre == getEnvi().getWidth() - 1, getCol() == getCol_atPre))){
+            Contractor.defaultContractor().postconditionError("GuardContract", "goRight", "getCol()@pre == getEnvi().getWidth() - 1 \\impl getCol() == getCol()@pre");
+        }
+        
+        //\post (getEnvi().getCellNature(getCol()@pre + 1, getHgt()@pre) \in {MTL, PLT}) \impl getCol() == getCol()@pre
+        Set<Cell> MTL_PLT = new HashSet<>();
+        MTL_PLT.add(Cell.MTL);
+        MTL_PLT.add(Cell.PLT);
+        if(getCol_atPre != getEnvi().getWidth() - 1){
+            if(!(Checker.implication(MTL_PLT.contains(getEnvi().getCellNature(getCol_atPre + 1, getHgt_atPre)), getCol() == getCol_atPre))){
+                Contractor.defaultContractor().postconditionError("GuardContract", "goRight", "(getEnvi().getCellNature(getCol()@pre + 1, getHgt()@pre) \\in {MTL, PLT}) \\impl getCol() == getCol()@pre");
+            }
+        }
+        
+        //\post \not (getEnvi().getCellNature(getCol()@pre, getHgt()@pre) \in {LAD, HDR})
+        //      \and \not getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1) \in {PLT, MTL, LAD}
+        //      \and \not \Exists Guard c \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1)
+        //      \impl getCol() == getCol()@pre()
+        Set<Cell> LAD_HDR = new HashSet<>();
+        LAD_HDR.add(Cell.LAD);
+        LAD_HDR.add(Cell.HDR);
+        Set<Cell> PLT_MTL_LAD = new HashSet<>();
+        PLT_MTL_LAD.add(Cell.PLT);
+        PLT_MTL_LAD.add(Cell.MTL);
+        PLT_MTL_LAD.add(Cell.LAD);
+
+        boolean cond1 = !(LAD_HDR.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre)));
+        boolean cond2 = !(PLT_MTL_LAD.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre - 1)));
+        boolean cond3 = !Util.containsGuard(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre - 1));
+        if(!(Checker.implication(cond1 && cond2 && cond3, getCol_atPre == getCol()))){
+            Contractor.defaultContractor().postconditionError("GuardContract", "goRight", "\\not (getEnvi().getCellNature(getCol()@pre, getHgt()@pre) \\in {LAD, HDR}) \\and \\not getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1) \\in {PLT, MTL, LAD} \\and \\not \\Exists Guard c \\in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1) \\impl getCol() == getCol()@pre()");
+        }
+        
+        //\post \Exists Guard c \in getEnvi().getCellContent(getCol()@pre + 1, getHgt()@pre) \impl getCol() == getCol()@pre
+        
+        if(getCol_atPre != getEnvi().getWidth() - 1){        
+            if(!(Checker.implication(Util.containsGuard(getCellContent_atPre.get(getCol_atPre + 1).get(getHgt_atPre)), getCol_atPre == getCol()))){
+                Contractor.defaultContractor().postconditionError("GuardContract", "goRight", "\\Exists Guard c \\in getEnvi().getCellContent(getCol()@pre + 1, getHgt()@pre) \\impl getCol() == getCol()@pre");
+            }
+        }
+        
+        
+        //\post getCol()@pre != getEnvi().getWidth() - 1
+        //      \and \not getEnvi().getCellNature()(getCol()@pre + 1, getHgt()@pre) \in {MTL, PLT}
+        //      \and (getEnvi().getCellNature(getCol()@pre, getHgt()@pre) \in {LAD, HDR} 
+        //           \or getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1) \in {PLT, MTL, LAD}
+        //           \or \Exists Guard c \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1))
+        //      \and \not \Exists Guard c \in getEnvi().getCellContent(getCol()@pre + 1, getHgt()@pre)
+        //      \impl getCol() == getCol()@pre + 1
+        if(getCol_atPre != getEnvi().getWidth() - 1){        
+            boolean condAND1 = getCol_atPre != getEnvi().getWidth() - 1;
+            boolean condAND2 = !MTL_PLT.contains(getEnvi().getCellNature(getCol_atPre + 1, getHgt_atPre));
+            boolean condOR1 = (LAD_HDR.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre)));
+            boolean condOR2 = (PLT_MTL_LAD.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre - 1)));
+            boolean condOR3 = Util.containsGuard(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre - 1));
+            boolean condAND3 = !Util.containsGuard(getCellContent_atPre.get(getCol_atPre + 1).get(getHgt_atPre));
+            if(!Checker.implication(condAND1 && condAND2 && (condOR1 || condOR2 || condOR3) && condAND3, getCol() == getCol_atPre + 1)){
+                Contractor.defaultContractor().postconditionError("GuardContract", "goRight", "Check if goRight worked correctly with all conditions");
+            }
+        }
+
+        //\post const getEnvi()
+        if(!(getEnvi_atPre == getEnvi())){
+            Contractor.defaultContractor().postconditionError("GuardContract", "goRight", "const getEnvi()");
+        }
+
+    }
+
+    @Override
+    public void goUp() {
+        //captures
+        Cell[][] getCellNature_atPre = new Cell[getEnvi().getWidth()][getEnvi().getHeight()];
+        List<List<Set<Entity>>> getCellContent_atPre = new ArrayList<>();
+        for(int u = 0; u < getEnvi().getWidth(); u++){
+            getCellContent_atPre.add(new ArrayList<>());
+            for(int v = 0; v < getEnvi().getHeight(); v++){
+                getCellNature_atPre[u][v] = getEnvi().getCellNature(u, v);
+                getCellContent_atPre.get(u).add(new HashSet<>(getEnvi().getCellContent(u, v)));
+            }
+        }
+        int getHgt_atPre = getHgt();
+        int getCol_atPre = getCol();
+        Environment getEnvi_atPre = getEnvi();
+
+        //inv pre
+        checkInvariant();
+        
+        super.goUp();
+
+        //inv post
+        checkInvariant();
+
+        //\post getCol() == getCol()@pre
+        if(!(getCol() == getCol_atPre)){
+            Contractor.defaultContractor().postconditionError("GuardContract", "goUp", "getCol() == getCol()@pre");
+        }
+
+        //\post getHgt()@pre == getEnvi().getHeight() - 1 \impl getHgt() == getHgt()@pre
+        if(!Checker.implication(getHgt_atPre == getEnvi().getHeight() - 1, getHgt() == getHgt_atPre)){
+            Contractor.defaultContractor().postconditionError("GuardContract", "goUp", "getHgt()@pre == getEnvi().getHeight() - 1 \\impl getHgt() == getHgt()@pre");
+        }
+
+        //\post (getEnvi().getCellNature(getCol()@pre, getHgt()@pre + 1) \in {MTL, PLT} \impl getHgt() == getHgt()@pre
+        Set<Cell> MTL_PLT = new HashSet<>();
+        MTL_PLT.add(Cell.MTL);
+        MTL_PLT.add(Cell.PLT);
+        if(getHgt_atPre != getEnvi().getHeight() - 1){
+            if(!(Checker.implication(MTL_PLT.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre + 1)), getHgt() == getHgt_atPre))){
+                Contractor.defaultContractor().postconditionError("GuardContract", "goUp", "(getEnvi().getCellNature(getCol()@pre, getHgt()@pre + 1) \\in {MTL, PLT} \\impl getHgt() == getHgt()@pre");
+            }
+        }
+        //\post getEnvi().getCellNature(getCol()@pre, getHgt()@pre) != LAD \impl getHgt() == getHgt()@pre
+        if(!Checker.implication(getEnvi().getCellNature(getCol_atPre, getHgt_atPre) != Cell.LAD, getHgt() == getHgt_atPre)){
+            Contractor.defaultContractor().postconditionError("GuardContract", "goUp", "getEnvi().getCellNature(getCol()@pre, getHgt()@pre) != LAD \\impl getHgt() == getHgt()@pre");
+        }
+
+        //\post \Exists Guard c \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre + 1) \impl getHgt() == getHgt()@pre
+        if(getHgt_atPre != getEnvi().getHeight() - 1){
+            if(!Checker.implication(Util.containsGuard(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre + 1)), getHgt() == getHgt_atPre)){
+                Contractor.defaultContractor().postconditionError("GuardContract", "goUp", "\\Exists Guard c \\in getEnvi().getCellContent(getCol()@pre, getHgt()@pre + 1) \\impl getHgt() == getHgt()@pre");
+            }
+        }
+
+        //\post getHgt()@pre != getEnvi().getHeight() - 1 
+        //      \and \not getEnvi().getCellNature(getCol()@pre, getHgt()@pre + 1 \in {MTL, PLT}
+        //      \and getEnvi().getCellNature(getCol()@pre, getHgt()@pre) == LAD
+        //      \and \not \Exists Guard c \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre + 1)
+        //      \impl getHgt() == getHgt()@pre + 1
+        if(getHgt_atPre != getEnvi().getHeight() - 1){
+            boolean cond1 = getHgt_atPre != getEnvi().getHeight() - 1;
+            boolean cond2 = !MTL_PLT.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre + 1));
+            boolean cond3 = getEnvi().getCellNature(getCol_atPre, getHgt_atPre) == Cell.LAD;
+            boolean cond4 = !Util.containsGuard(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre + 1));
+            if(!Checker.implication(cond1 && cond2 && cond3 && cond4, getHgt() == getHgt_atPre + 1)){
+                Contractor.defaultContractor().postconditionError("GuardContract", "goUp", "getHgt()@pre != getEnvi().getHeight() - 1  \\and \\not getEnvi().getCellNature(getCol()@pre, getHgt()@pre + 1 \\in {MTL, PLT} \\and getEnvi().getCellNature(getCol()@pre, getHgt()@pre) == LAD \\and \\not \\Exists Guard c \\in getEnvi().getCellContent(getCol()@pre, getHgt()@pre + 1) \\impl getHgt() == getHgt()@pre + 1");
+            }
+        }
+        
+        //\post const getEnvi()
+        if(!(getEnvi_atPre == getEnvi())){
+            Contractor.defaultContractor().postconditionError("GuardContract", "goUp", "const getEnvi()");
+        }
+        
+    }
+
+    @Override
+    public void goDown() {
+        //captures
+        Cell[][] getCellNature_atPre = new Cell[getEnvi().getWidth()][getEnvi().getHeight()];
+        List<List<Set<Entity>>> getCellContent_atPre = new ArrayList<>();
+        for(int u = 0; u < getEnvi().getWidth(); u++){
+            getCellContent_atPre.add(new ArrayList<>());
+            for(int v = 0; v < getEnvi().getHeight(); v++){
+                getCellNature_atPre[u][v] = getEnvi().getCellNature(u, v);
+                getCellContent_atPre.get(u).add(new HashSet<>(getEnvi().getCellContent(u, v)));
+            }
+        }
+        int getHgt_atPre = getHgt();
+        int getCol_atPre = getCol();
+        Environment getEnvi_atPre = getEnvi();
+
+        //inv pre
+        checkInvariant();
+        
+        super.goDown();
+
+        //inv post
+        checkInvariant();
+
+        //\post getCol() == getCol()@pre
+        if(!(getCol() == getCol_atPre)){
+            Contractor.defaultContractor().postconditionError("GuardContract", "goDown", "getCol() == getCol()@pre");
+        }
+        
+        //\post getHgt()@pre == 0 \impl getHgt() == getHgt()@pre
+        if(!(Checker.implication(getHgt_atPre == 0, getHgt() == getHgt_atPre))){
+            Contractor.defaultContractor().postconditionError("GuardContract", "goDown", "getHgt()@pre == 0 \\impl getHgt() == getHgt()@pre");
+        }
+        
+        //\post getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1) \in {MTL, PLT} \impl getHgt() == getHgt()@pre
+        Set<Cell> MTL_PLT = new HashSet<>();
+        MTL_PLT.add(Cell.MTL);
+        MTL_PLT.add(Cell.PLT);
+        if(getHgt_atPre != 0){
+            if(!(Checker.implication(MTL_PLT.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre - 1)), getHgt() == getHgt_atPre))){
+                Contractor.defaultContractor().postconditionError("GuardContract", "goDown", "getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1) \\in {MTL, PLT} \\impl getHgt() == getHgt()@pre");
+            }
+        }
+        
+        //\post \Exists Guard c \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1) \impl getHgt() == getHgt()@pre
+        if(getHgt_atPre != 0){
+            if(!(Checker.implication(Util.containsGuard(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre - 1)), getHgt() == getHgt_atPre))){
+                Contractor.defaultContractor().postconditionError("GuardContract", "goDown", "\\Exists Guard c \\in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1) \\impl getHgt() == getHgt()@pre");
+            }
+        }
+        
+        //\post getHgt()@pre != 0
+        //      \and \not getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1) \in {MTL, PLT}
+        //      \and \not \Exists Guard c \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1) 
+        //      \impl getHgt() == getHgt()@pre - 1
+        if(getHgt_atPre != 0){
+            boolean cond1 = getHgt_atPre != 0;
+            boolean cond2 = !MTL_PLT.contains(getEnvi().getCellNature(getCol_atPre, getHgt_atPre - 1));
+            boolean cond3 = !Util.containsGuard(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre - 1));
+            if(!(Checker.implication(cond1 && cond2 && cond3, getHgt() == getHgt_atPre - 1))){
+                Contractor.defaultContractor().postconditionError("GuardContract", "goDown", "getHgt()@pre != 0 \\and \\not getEnvi().getCellNature(getCol()@pre, getHgt()@pre - 1) \\in {MTL, PLT} \\and \\not \\Exists Guard c \\in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1)  \\impl getHgt() == getHgt()@pre - 1");
+            }
+        }
+
+        //\post const getEnvi()
+        if(!(getEnvi_atPre == getEnvi())){
+            Contractor.defaultContractor().postconditionError("GuardContract", "goDown", "const getEnvi()");
+        }
         
     }
 }

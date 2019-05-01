@@ -1,5 +1,6 @@
 package decorators;
 
+import data.Item;
 import services.Engine;
 import services.Player;
 
@@ -36,5 +37,25 @@ public class PlayerDecorator extends CharacterDecorator implements Player {
     @Override
     public void digRight() {
         getDelegate().digRight();
+    }
+
+    @Override
+    public boolean isFacingRight() {
+        return getDelegate().isFacingRight();
+    }
+
+    @Override
+    public Item getCurrentlyHeldItem() {
+        return getDelegate().getCurrentlyHeldItem();
+    }
+
+    @Override
+    public int getNumberOfUsagesLeftForCurrentItem() {
+        return getDelegate().getNumberOfUsagesLeftForCurrentItem();
+    }
+
+    @Override
+    public void useItem() {
+        getDelegate().useItem();
     }
 }

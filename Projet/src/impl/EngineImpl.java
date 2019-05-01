@@ -171,11 +171,17 @@ public class EngineImpl implements Engine {
             System.out.println("============================");
             System.out.println("Score : " + this.score);
             System.out.println("Lifes : " + this.lifes);
+            System.out.println("Item : " + (this.player.getCurrentlyHeldItem()!=null? this.player.getCurrentlyHeldItem().toString() : "None"));
             for(int i=this.envi.getHeight()-1; i >= 0; i--){
                 for(int j=0; j < this.envi.getWidth(); j++){
                     Cell c = this.envi.getCellNature(j, i);
                     if(Util.containsPlayer(envi.getCellContent(j, i))){
-                        System.out.print("J");
+                        Player p = Util.getPlayer(envi.getCellContent(j, i));
+                        if(p.isFacingRight()){
+                            System.out.print("p");
+                        }else{
+                            System.out.print("q");
+                        }
                     }else if(Util.containsGuard(envi.getCellContent(j, i))){
                         Guard g = Util.getGuard(envi.getCellContent(j, i));
                         if(g.isCarryingTreasure()){

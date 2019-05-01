@@ -1,10 +1,14 @@
 package services;
 
+import data.Item;
+
 public interface Player extends /* includes */ Character{
     /* Observators */
     
     public Engine getEngine();
-    
+    public boolean isFacingRight();
+    public Item getCurrentlyHeldItem();
+    public int getNumberOfUsagesLeftForCurrentItem();
 
     /* Constructors */
     //\pre e != null
@@ -36,6 +40,9 @@ public interface Player extends /* includes */ Character{
     //\post (\not falling) \and getNextCommand()@pre == DIGR \impl step() == this@pre.digRight()
     //\post (\not falling) \and getNextCommand()@pre == NONE \impl this == this@pre
     public void step();
+
+    //TODO pre / post
+    public void useItem();
 
     //\def noCellNatureChanged = \Forall i in [0, getEnvi().getWidth() - 1]
     //                              \Forall j in [0, getEnvi().getHeight() - 1]

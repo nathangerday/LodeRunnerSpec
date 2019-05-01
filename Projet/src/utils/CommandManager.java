@@ -41,25 +41,6 @@ public class CommandManager extends Thread{
 	
 	}
 
-	private Command getNextUserCommandInput(){
-		String input = scanner.next();
-		switch(input){
-		case "q": 
-			return Command.MOVEL;
-		case "d":
-			return Command.MOVER;
-		case "z":
-			return Command.MOVEU;
-		case "s":
-			return Command.MOVED;
-		case "a":
-			return Command.DIGL;
-		case "e":
-			return Command.DIGR;
-		default:
-			return Command.NONE;
-		}
-    }
     class MyKeyListener extends KeyAdapter {
         public void keyPressed(KeyEvent evt) {
             // if (evt.getKeyChar() == 'a') {
@@ -83,7 +64,10 @@ public class CommandManager extends Thread{
                     break;
                 case 'e':
                     currentCommand =  Command.DIGR;
-                    break;
+					break;
+				case ' ':
+					currentCommand = Command.USEITEM;
+					break;
             }
         }
     }

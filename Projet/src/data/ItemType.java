@@ -1,5 +1,5 @@
 package data;
 
 public enum ItemType{
-    Treasure;
+    Treasure, Gun, Sword, Flash, Key;
 }

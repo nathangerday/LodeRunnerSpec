@@ -37,6 +37,15 @@ public class Util {
         return null;
     }
 
+    public static Player getPlayer(Set<Entity> content){
+        for(Entity e : content){
+            if(e instanceof Player){
+                return (Player)e;
+            }
+        }
+        return null;
+    }
+
     public static boolean containsTreasure(Set<Entity> content){
         for(Entity e : content){
             if(e instanceof Item && ((Item)e).getNature() == ItemType.Treasure){

@@ -24,6 +24,7 @@ public class GuardImpl extends CharacterImpl implements Guard {
     private Coord initCoords;
     private boolean carryingTreasure;
     private Engine engi;
+    private int timeLeftParalyzed;
 
     public void init(Engine e, int x, int y, Character target){
         super.init(e.getEnvironment(), x, y);
@@ -33,6 +34,7 @@ public class GuardImpl extends CharacterImpl implements Guard {
         this.timeInHole = 0;
         this.initCoords = new Coord(x, y);
         this.carryingTreasure = false;
+        this.timeLeftParalyzed = 0;
     }
 
     @Override
@@ -167,6 +169,11 @@ public class GuardImpl extends CharacterImpl implements Guard {
     }
 
     @Override
+    public void paralyze(){
+        this.timeLeftParalyzed = 10;
+    }
+
+    @Override
     public void step() {
         if(Util.containsTreasure(this.envi.getCellContent(x, y)) && !this.carryingTreasure){
             Item t = Util.removeTreasure(this.envi.getCellContent(x, y));
@@ -194,6 +201,12 @@ public class GuardImpl extends CharacterImpl implements Guard {
             goDown();
             return;
         }
+
+        if(this.timeLeftParalyzed > 0){
+            this.timeLeftParalyzed--;
+            return;
+        }
+
 
         if(getEnvi().getCellNature(x, y) == Cell.HOL){
             if(this.timeInHole < 5){

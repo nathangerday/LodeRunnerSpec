@@ -86,5 +86,10 @@ public class GuardDecorator extends CharacterDecorator implements Guard {
         getDelegate().step();
     }
 
+    @Override
+    public void paralyze() {
+        getDelegate().paralyze();
+    }
+
 
 }

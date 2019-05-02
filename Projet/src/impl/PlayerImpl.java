@@ -6,7 +6,9 @@ import java.util.Set;
 import data.Cell;
 import data.Command;
 import data.Item;
+import data.ItemType;
 import services.Engine;
+import services.Guard;
 import services.Player;
 import utils.Util;
 
@@ -71,8 +73,8 @@ public class PlayerImpl extends CharacterImpl implements Player {
     public void init(int x, int y, Engine e) {
         super.init(e.getEnvironment(), x, y);
         this.engi = e;
-        this.currentlyHeldItem = null;
-        this.numberOfUsagesLeftForCurrentItem = 0;
+        this.currentlyHeldItem = new Item(ItemType.Flash, 0, 0);
+        this.numberOfUsagesLeftForCurrentItem = 1;
         this.facingRight = true;
     }
 
@@ -149,6 +151,72 @@ public class PlayerImpl extends CharacterImpl implements Player {
 
     @Override
     public void useItem() {
-        System.out.println("HEY I'M USING AN ITEM");
+        if(getCurrentlyHeldItem() == null || getNumberOfUsagesLeftForCurrentItem() == 0){
+            return;
+        }
+
+        Set<Cell> MTL_PLT = new HashSet<>();
+        MTL_PLT.add(Cell.MTL);
+        MTL_PLT.add(Cell.PLT);
+
+        switch(getCurrentlyHeldItem().getNature()){
+            case Gun:
+                if(isFacingRight()){
+                    for(int i = this.x + 1; i<getEnvi().getWidth(); i++){
+                        if(Util.containsGuard(getEnvi().getCellContent(i, y))){
+                            Util.getGuard(getEnvi().getCellContent(i, y)).moveToInitCoords();
+                        }
+
+                        if(MTL_PLT.contains(getEnvi().getCellNature(i, y))){
+                            break;
+                        }
+                    }
+                }else{
+                    for(int i = this.x - 1; i>=0; i--){
+                        if(Util.containsGuard(getEnvi().getCellContent(i, y))){
+                            Util.getGuard(getEnvi().getCellContent(i, y)).moveToInitCoords();
+                        }
+
+                        if(MTL_PLT.contains(getEnvi().getCellNature(i, y))){
+                            break;
+                        }
+                    }
+                }
+                break;
+            case Sword:
+                if(this.x - 2 > 0){
+                    if(Util.containsGuard(getEnvi().getCellContent(this.x - 2, this.y))){
+                        Util.getGuard(getEnvi().getCellContent(this.x - 2, this.y)).moveToInitCoords();
+                    }
+                }
+                if(this.x - 1 > 0){
+                    if(Util.containsGuard(getEnvi().getCellContent(this.x - 1, this.y))){
+                        Util.getGuard(getEnvi().getCellContent(this.x - 1, this.y)).moveToInitCoords();
+                    }
+                }
+                if(this.x + 2 < getEnvi().getWidth()){
+                    if(Util.containsGuard(getEnvi().getCellContent(this.x + 2, this.y))){
+                        Util.getGuard(getEnvi().getCellContent(this.x + 2, this.y)).moveToInitCoords();
+                    }
+                }
+                if(this.x + 1 < getEnvi().getWidth()){
+                    if(Util.containsGuard(getEnvi().getCellContent(this.x + 1, this.y))){
+                        Util.getGuard(getEnvi().getCellContent(this.x + 1, this.y)).moveToInitCoords();
+                    }
+                }
+                break;
+            case Flash:
+                for(Guard g : getEngine().getGuards()){
+                    g.paralyze();
+                }
+                break;
+            case Key:
+                break;
+        }
+
+         this.numberOfUsagesLeftForCurrentItem--;
+         if(this.numberOfUsagesLeftForCurrentItem == 0){
+             this.currentlyHeldItem = null;
+         }
     }
 }

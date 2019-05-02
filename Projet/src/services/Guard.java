@@ -85,6 +85,9 @@ public interface Guard extends Character{
     //\post getIdCounter() == getIdCounter()@pre
     public void moveToInitCoords();
 
+    //TODO pre / post
+    public void paralyze();
+
     
     //\def isFalling == \not getEnvi().getCellNature(getCol()@pre, getHgt()@pre) \in {LAD, HDR, HOL} \and
     //                  getEnvi().getCellContent(getCol()@pre, getHgt()@pre) \in {EMP, HDR, HOL} \and

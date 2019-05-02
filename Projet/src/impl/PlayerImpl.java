@@ -73,7 +73,7 @@ public class PlayerImpl extends CharacterImpl implements Player {
     public void init(int x, int y, Engine e) {
         super.init(e.getEnvironment(), x, y);
         this.engi = e;
-        this.currentlyHeldItem = new Item(ItemType.Flash, 0, 0);
+        this.currentlyHeldItem = new Item(ItemType.Key, 0, 0);
         this.numberOfUsagesLeftForCurrentItem = 1;
         this.facingRight = true;
     }
@@ -211,6 +211,15 @@ public class PlayerImpl extends CharacterImpl implements Player {
                 }
                 break;
             case Key:
+                if(isFacingRight() && this.x < getEnvi().getWidth() - 1){
+                    if(getEnvi().getCellNature(this.x + 1, this.y) == Cell.DOR){
+                        getEnvi().openDoor(this.x + 1, this.y);
+                    }
+                }else if(!isFacingRight() && this.x > 0){
+                    if(getEnvi().getCellNature(this.x - 1, this.y) == Cell.DOR){
+                        getEnvi().openDoor(this.x - 1, this.y);
+                    }
+                }
                 break;
         }
 

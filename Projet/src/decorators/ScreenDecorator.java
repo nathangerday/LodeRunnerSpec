@@ -44,5 +44,15 @@ public class ScreenDecorator implements Screen {
     public void fill(int x, int y) {
         getDelegate().fill(x, y);
     }
+
+    @Override
+    public void openDoor(int x, int y) {
+        getDelegate().openDoor(x, y);
+    }
+
+    @Override
+    public void revealTrap(int x, int y) {
+        getDelegate().revealTrap(x, y);
+    }
     
 }

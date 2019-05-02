@@ -34,16 +34,22 @@ public class ScreenImpl implements Screen{
 
     @Override
     public void dig(int x, int y) {
-        if(this.natures[x][y] == Cell.PLT){
-            this.natures[x][y] = Cell.HOL;
-        }
+        this.natures[x][y] = Cell.HOL;
     }
 
     @Override
     public void fill(int x, int y) {
-        if(this.natures[x][y] == Cell.HOL){
-            this.natures[x][y] = Cell.PLT;
-        }
+        this.natures[x][y] = Cell.PLT;
+    }
+
+    @Override
+    public void openDoor(int x, int y){
+        this.natures[x][y] = Cell.EMP;
+    }
+    
+    @Override
+    public void revealTrap(int x, int y){
+        this.natures[x][y] = Cell.EMP;
     }
 
     

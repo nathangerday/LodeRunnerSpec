@@ -46,6 +46,10 @@ public interface Screen {
     public void fill(int x, int y);
 
 
+    public void openDoor(int x, int y);
+
+    public void revealTrap(int x, int y);
+
 
     
     

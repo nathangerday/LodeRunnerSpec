@@ -133,6 +133,10 @@ public class EngineImpl implements Engine {
             }
         }
 
+        if(this.envi.getCellNature(this.player.getCol(), this.player.getHgt() - 1) == Cell.TRP){
+            this.envi.revealTrap(this.player.getCol(), this.player.getHgt() - 1);
+        }
+
         this.player.step();
         for(Guard g : this.guards){
             g.step();
@@ -218,7 +222,12 @@ public class EngineImpl implements Engine {
                             case HOL:
                                 System.out.print("U");
                                 break;
-                                
+                            case DOR:
+                                System.out.print("I");
+                                break;
+                            case TRP:
+                                System.out.print("≡");
+                                break;
                         }
                     }
                 }

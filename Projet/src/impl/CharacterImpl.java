@@ -35,20 +35,22 @@ public class CharacterImpl implements Character{
 
     @Override
     public void goLeft() {
-        Set<Cell> MTL_PLT = new HashSet<>();
-        MTL_PLT.add(Cell.MTL);
-        MTL_PLT.add(Cell.PLT);
+        Set<Cell> MTL_PLT_DOR = new HashSet<>();
+        MTL_PLT_DOR.add(Cell.MTL);
+        MTL_PLT_DOR.add(Cell.PLT);
+        MTL_PLT_DOR.add(Cell.DOR);
         
         Set<Cell> LAD_HDR = new HashSet<>();
         LAD_HDR.add(Cell.LAD);
         LAD_HDR.add(Cell.HDR);
 
-        Set<Cell> MTL_PLT_LAD = new HashSet<>();
-        MTL_PLT_LAD.add(Cell.MTL);
-        MTL_PLT_LAD.add(Cell.PLT);
-        MTL_PLT_LAD.add(Cell.LAD);
-        if(this.x != 0 && !MTL_PLT.contains(this.envi.getCellNature(this.x - 1, this.y)) && 
-            (LAD_HDR.contains(this.envi.getCellNature(this.x, this.y)) || MTL_PLT_LAD.contains(this.envi.getCellNature(this.x, this.y - 1)) || Util.containsGuard(this.envi.getCellContent(this.x, this.y - 1)))
+        Set<Cell> MTL_PLT_LAD_DOR = new HashSet<>();
+        MTL_PLT_LAD_DOR.add(Cell.MTL);
+        MTL_PLT_LAD_DOR.add(Cell.PLT);
+        MTL_PLT_LAD_DOR.add(Cell.LAD);
+        MTL_PLT_LAD_DOR.add(Cell.DOR);
+        if(this.x != 0 && !MTL_PLT_DOR.contains(this.envi.getCellNature(this.x - 1, this.y)) && 
+            (LAD_HDR.contains(this.envi.getCellNature(this.x, this.y)) || MTL_PLT_LAD_DOR.contains(this.envi.getCellNature(this.x, this.y - 1)) || Util.containsGuard(this.envi.getCellContent(this.x, this.y - 1)))
            && !Util.containsGuard(this.envi.getCellContent(this.x - 1, this.y))){
                 this.envi.removeFromCellContent(this.x, this.y, this);
                 this.x = this.x - 1; 
@@ -60,20 +62,22 @@ public class CharacterImpl implements Character{
 
     @Override
     public void goRight() {
-        Set<Cell> MTL_PLT = new HashSet<>();
-        MTL_PLT.add(Cell.MTL);
-        MTL_PLT.add(Cell.PLT);
+        Set<Cell> MTL_PLT_DOR = new HashSet<>();
+        MTL_PLT_DOR.add(Cell.MTL);
+        MTL_PLT_DOR.add(Cell.PLT);
+        MTL_PLT_DOR.add(Cell.DOR);
         
         Set<Cell> LAD_HDR = new HashSet<>();
         LAD_HDR.add(Cell.LAD);
         LAD_HDR.add(Cell.HDR);
 
-        Set<Cell> MTL_PLT_LAD = new HashSet<>();
-        MTL_PLT_LAD.add(Cell.MTL);
-        MTL_PLT_LAD.add(Cell.PLT);
-        MTL_PLT_LAD.add(Cell.LAD);
-        if(this.x != this.envi.getWidth() - 1 && !MTL_PLT.contains(this.envi.getCellNature(this.x + 1, this.y)) && 
-            (LAD_HDR.contains(this.envi.getCellNature(this.x, this.y)) || MTL_PLT_LAD.contains(this.envi.getCellNature(this.x, this.y - 1)) || Util.containsGuard(this.envi.getCellContent(this.x, this.y - 1)))
+        Set<Cell> MTL_PLT_LAD_DOR = new HashSet<>();
+        MTL_PLT_LAD_DOR.add(Cell.MTL);
+        MTL_PLT_LAD_DOR.add(Cell.PLT);
+        MTL_PLT_LAD_DOR.add(Cell.LAD);
+        MTL_PLT_LAD_DOR.add(Cell.DOR);
+        if(this.x != this.envi.getWidth() - 1 && !MTL_PLT_DOR.contains(this.envi.getCellNature(this.x + 1, this.y)) && 
+            (LAD_HDR.contains(this.envi.getCellNature(this.x, this.y)) || MTL_PLT_LAD_DOR.contains(this.envi.getCellNature(this.x, this.y - 1)) || Util.containsGuard(this.envi.getCellContent(this.x, this.y - 1)))
            && !Util.containsGuard(this.envi.getCellContent(this.x + 1, this.y))){
                 this.envi.removeFromCellContent(this.x, this.y, this);
                 this.x = this.x + 1; 

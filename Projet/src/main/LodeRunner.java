@@ -84,6 +84,9 @@ public class LodeRunner{
                 screen2.setNature(j, i, Cell.EMP);
             }
         }
+
+        screen2.setNature(4, 2, Cell.DOR);
+        screen2.setNature(1, 1, Cell.TRP);
         List<CoordItem> treasureCoords2 = new ArrayList<>();
         treasureCoords2.add(new CoordItem(10, 2, ItemType.Treasure));
         treasureCoords2.add(new CoordItem(11, 2, ItemType.Treasure));

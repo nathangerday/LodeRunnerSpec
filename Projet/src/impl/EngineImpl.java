@@ -228,6 +228,12 @@ public class EngineImpl implements Engine {
                             case TRP:
                                 System.out.print("≡");
                                 break;
+                            case NGU:
+                                System.out.print("#");                            
+                                break;
+                            case NPL:
+                                System.out.print("%");
+                                break;
                         }
                     }
                 }

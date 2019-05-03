@@ -123,18 +123,6 @@ public class PlayerImpl extends CharacterImpl implements Player {
     }
 
     @Override
-    public void goRight(){
-        super.goRight();
-        this.facingRight = true;
-    }
-
-    @Override
-    public void goLeft(){
-        super.goLeft();
-        this.facingRight = false;
-    }
-
-    @Override
     public boolean isFacingRight() {
         return this.facingRight;
     }
@@ -227,5 +215,35 @@ public class PlayerImpl extends CharacterImpl implements Player {
          if(this.numberOfUsagesLeftForCurrentItem == 0){
              this.currentlyHeldItem = null;
          }
+    }
+
+    @Override
+    public void goLeft() {
+        this.facingRight = false;
+        if(this.x != 0 && this.envi.getCellNature(this.x - 1, this.y) != Cell.NPL){ 
+            super.goLeft();
+        }
+    }
+
+    @Override
+    public void goRight() {
+        this.facingRight = true;
+        if(this.x != this.envi.getWidth() - 1 && this.envi.getCellNature(this.x + 1, this.y) != Cell.NPL){ 
+            super.goRight();
+        }
+    }
+    
+    @Override
+    public void goDown() {
+        if(this.y != 0 && this.envi.getCellNature(this.x, this.y - 1) != Cell.NPL){ 
+            super.goDown();
+        }
+    }
+
+    @Override
+    public void goUp() {
+        if(this.x != this.envi.getHeight() - 1 && this.envi.getCellNature(this.x, this.y + 1) != Cell.NPL){ 
+            super.goUp();
+        }
     }
 }

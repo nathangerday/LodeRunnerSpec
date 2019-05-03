@@ -235,24 +235,32 @@ public class GuardImpl extends CharacterImpl implements Guard {
 
 
     }
+
+    @Override
+    public void goLeft() {
+        if(this.x != 0 && this.envi.getCellNature(this.x - 1, this.y) != Cell.NGU){ 
+            super.goLeft();
+        }
+    }
+
+    @Override
+    public void goRight() {
+        if(this.x != this.envi.getWidth() - 1 && this.envi.getCellNature(this.x + 1, this.y) != Cell.NGU){ 
+            super.goRight();
+        }
+    }
     
-    private boolean isFalling(){
-        Set<Cell> LAD_HDR_HOL = new HashSet<>();
-        LAD_HDR_HOL.add(Cell.LAD);
-        LAD_HDR_HOL.add(Cell.HDR);
+    @Override
+    public void goDown() {
+        if(this.y != 0 && this.envi.getCellNature(this.x, this.y - 1) != Cell.NGU){ 
+            super.goDown();
+        }
+    }
 
-
-        Set<Cell> EMP_HDR_HOL = new HashSet<>();
-        EMP_HDR_HOL.add(Cell.EMP);
-        EMP_HDR_HOL.add(Cell.HDR);
-        EMP_HDR_HOL.add(Cell.HOL);
-
-        
-
-        boolean cond1 = !LAD_HDR_HOL.contains(getEnvi().getCellNature(x, y ));
-        boolean cond2 = EMP_HDR_HOL.contains(getEnvi().getCellNature(x, y - 1));
-        boolean cond3 = !Util.containsGuard(getEnvi().getCellContent(x, y - 1));
-        return cond1 && cond2 && cond3;
-
-    }    
+    @Override
+    public void goUp() {
+        if(this.x != this.envi.getHeight() - 1 && this.envi.getCellNature(this.x, this.y + 1) != Cell.NGU){ 
+            super.goUp();
+        }
+    }
 }

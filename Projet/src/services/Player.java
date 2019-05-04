@@ -77,10 +77,9 @@ public interface Player extends /* includes */ Character{
     public void pickupItem(ItemType type);
 
 
-    //TODO pre / post
-    //\post getCurrentlyHeldItem() != null \and getNumberOfUsagesLeftForCurrentItem() == 1 
+    //\post getCurrentlyHeldItem()@pre != null \and getNumberOfUsagesLeftForCurrentItem()@pre == 1 
     //      \impl getCurrentlyHeldItem() == null \and getNumberOfUsagesLeftForCurrentItem() == 0
-    //\post getCurrentlyHeldItem() != null \and getNumberOfUsagesLeftForCurrentItem() > 1 
+    //\post getCurrentlyHeldItem()@pre != null \and getNumberOfUsagesLeftForCurrentItem()@pre > 1 
     //      \impl getCurrentlyHeldItem() == getCurrentlyHeldItem()@pre \and getNumberOfUsagesLeftForCurrentItem() == getNumberOfUsagesLeftForCurrentItem()@pre - 1
     //\post isFacingRight() == isFacingRight()@pre
     public void useItem();

@@ -329,6 +329,37 @@ public class PlayerContract extends PlayerDecorator{
 
     }
 
+
+    @Override
+    public void useItem(){
+        //captures
+        Item getCurrentlyHeldItem_atPre = getCurrentlyHeldItem();
+        int getNumberOfUsagesLeftForCurrentItem_atPre = getNumberOfUsagesLeftForCurrentItem();
+        boolean isFacingRight_atPre = isFacingRight();
+
+        //inv pre 
+        checkInvariant();
+
+        super.useItem();
+
+        //inv post
+        checkInvariant();
+
+        //\post getCurrentlyHeldItem()@pre != null \and getNumberOfUsagesLeftForCurrentItem()@pre == 1 
+        //      \impl getCurrentlyHeldItem() == null \and getNumberOfUsagesLeftForCurrentItem() == 0
+        if(!(Checker.implication(getCurrentlyHeldItem_atPre != null && getNumberOfUsagesLeftForCurrentItem_atPre == 1, getCurrentlyHeldItem() == null && getNumberOfUsagesLeftForCurrentItem() == 0))){
+            Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "getCurrentlyHeldItem()@pre != null \\and getNumberOfUsagesLeftForCurrentItem()@pre == 1 \\impl getCurrentlyHeldItem() == null \\and getNumberOfUsagesLeftForCurrentItem() == 0");
+        }
+        
+        //\post getCurrentlyHeldItem()@pre != null \and getNumberOfUsagesLeftForCurrentItem()@pre > 1 
+        //      \impl getCurrentlyHeldItem() == getCurrentlyHeldItem()@pre \and getNumberOfUsagesLeftForCurrentItem() == getNumberOfUsagesLeftForCurrentItem()@pre - 1
+        if(!(Checker.implication(getCurrentlyHeldItem_atPre != null && getNumberOfUsagesLeftForCurrentItem_atPre > 1, getCurrentlyHeldItem() == getCurrentlyHeldItem_atPre && getNumberOfUsagesLeftForCurrentItem() == getNumberOfUsagesLeftForCurrentItem_atPre - 1))){
+            Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "getCurrentlyHeldItem()@pre != null \\and getNumberOfUsagesLeftForCurrentItem()@pre > 1 \\impl getCurrentlyHeldItem() == getCurrentlyHeldItem()@pre \\and getNumberOfUsagesLeftForCurrentItem() == getNumberOfUsagesLeftForCurrentItem()@pre - 1");
+        }
+        
+        //\post isFacingRight() == isFacingRight()@pre
+    }
+
     @Override
     public void digLeft() {
         //captures

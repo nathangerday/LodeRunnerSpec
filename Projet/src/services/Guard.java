@@ -51,17 +51,17 @@ public interface Guard extends Character{
 
     //\pre getEngine().getEnvironment().getCellNature(getCol(), getHgt()) == Cell.HOL
     //\post getCol()@pre == 0 \impl getCol() == getCol()@pre && getHgt() == getHgt()@pre
-    //\post getEnvi().getCellNature(getCol()@pre - 1, getHgt()@pre + 1) \in {MTL, PLT, DOR, NGU} \impl getCol() == getCol()@pre && getHgt() == getHgt()@pre
-    //\post \Exists Guard c \in getEnvi().getCellContent(getCol()@pre - 1, getHgt()@pre + 1) \impl getCol() == getCol()@pre && getHgt() == getHgt()@pre
+    //\post getEnvi().getCellNature(getCol()@pre - 1, getHgt()@pre + 1)@pre \in {MTL, PLT, DOR, NGU} \impl getCol() == getCol()@pre && getHgt() == getHgt()@pre
+    //\post \Exists Guard c \in getEnvi().getCellContent(getCol()@pre - 1, getHgt()@pre + 1)@pre \impl getCol() == getCol()@pre && getHgt() == getHgt()@pre
     //\post getCol()@pre != 0 && 
-    //      \not getEnvi().getCellNature(getCol()@pre - 1, getHgt()@pre + 1) \in {MTL, PLT, DOR, NGU} &&
-    //      \not \Exists Guard c \in getEnvi().getCellContent(getCol()@pre - 1, getHgt()@pre + 1) &&
-    //      \Exists Player p \in getEnvi().getCellContent(getCol()pre, getHgt()@pre + 1)
+    //      \not getEnvi().getCellNature(getCol()@pre - 1, getHgt()@pre + 1)@pre \in {MTL, PLT, DOR, NGU} &&
+    //      \not \Exists Guard c \in getEnvi().getCellContent(getCol()@pre - 1, getHgt()@pre + 1)@pre &&
+    //      \Exists Player p \in getEnvi().getCellContent(getCol()pre, getHgt()@pre + 1)@pre
     //      \impl getCol() == getCol()@pre && getHgt() == getHgt()@pre + 1
     //\post getCol()@pre != 0 && 
-    //      \not getEnvi().getCellNature(getCol()@pre - 1, getHgt()@pre + 1) \in {MTL, PLT, DOR, NGU} &&
-    //      \not \Exists Guard c \in getEnvi().getCellContent(getCol()@pre - 1, getHgt()@pre + 1) &&
-    //      \not \Exists Player p \in getEnvi().getCellContent(getCol()pre, getHgt()@pre + 1)
+    //      \not getEnvi().getCellNature(getCol()@pre - 1, getHgt()@pre + 1)@pre \in {MTL, PLT, DOR, NGU} &&
+    //      \not \Exists Guard c \in getEnvi().getCellContent(getCol()@pre - 1, getHgt()@pre + 1)@pre &&
+    //      \not \Exists Player p \in getEnvi().getCellContent(getCol()pre, getHgt()@pre + 1)@pre
     //      \impl getCol() == getCol()@pre - 1 && getHgt() == getHgt()@pre + 1
     //\post isCarryingTreasure() == isCarryingTreasure()@pre
     //\post getTimeInHole() == getTimeInHole()@pre
@@ -72,17 +72,17 @@ public interface Guard extends Character{
     
     //\pre getEngine().getEnvironment().getCellNature(getCol(), getHgt()) == Cell.HOL
     //\post getCol()@pre == getEnvi().getWidth() - 1 \impl getCol() == getCol()@pre && getHgt() == getHgt()@pre
-    //\post getEnvi().getCellNature(getCol()@pre + 1, getHgt()@pre + 1) \in {MTL, PLT, DOR, NGU} \impl getCol() == getCol()@pre && getHgt() == getHgt()@pre
-    //\post \Exists Guard c \in getEnvi().getCellContent(getCol()@pre + 1, getHgt()@pre + 1) \impl getCol() == getCol()@pre && getHgt() == getHgt()@pre
+    //\post getEnvi().getCellNature(getCol()@pre + 1, getHgt()@pre + 1)@pre \in {MTL, PLT, DOR, NGU} \impl getCol() == getCol()@pre && getHgt() == getHgt()@pre
+    //\post \Exists Guard c \in getEnvi().getCellContent(getCol()@pre + 1, getHgt()@pre + 1)@pre \impl getCol() == getCol()@pre && getHgt() == getHgt()@pre
     //\post getCol()@pre != getEnvi().getWidth() - 1 && 
-    //      \not getEnvi().getCellNature(getCol()@pre + 1, getHgt()@pre + 1) \in {MTL, PLT, DOR, NGU} &&
-    //      \not \Exists Guard c \in getEnvi().getCellContent(getCol()@pre + 1, getHgt()@pre + 1) &&
-    //      \Exists Player p \in getEnvi().getCellContent(getCol()pre, getHgt()@pre + 1)
+    //      \not getEnvi().getCellNature(getCol()@pre + 1, getHgt()@pre + 1)@pre \in {MTL, PLT, DOR, NGU} &&
+    //      \not \Exists Guard c \in getEnvi().getCellContent(getCol()@pre + 1, getHgt()@pre + 1)@pre &&
+    //      \Exists Player p \in getEnvi().getCellContent(getCol()pre, getHgt()@pre + 1)@pre
     //      \impl getCol() == getCol()@pre && getHgt() == getHgt()@pre + 1
     //\post getCol()@pre != getEnvi().getWidth() - 1 && 
-    //      \not getEnvi().getCellNature(getCol()@pre + 1, getHgt()@pre + 1) \in {MTL, PLT, DOR, NGU} &&
-    //      \not \Exists Guard c \in getEnvi().getCellContent(getCol()@pre + 1, getHgt()@pre + 1) &&
-    //      \not \Exists Player p \in getEnvi().getCellContent(getCol()pre, getHgt()@pre + 1)
+    //      \not getEnvi().getCellNature(getCol()@pre + 1, getHgt()@pre + 1)@pre \in {MTL, PLT, DOR, NGU} &&
+    //      \not \Exists Guard c \in getEnvi().getCellContent(getCol()@pre + 1, getHgt()@pre + 1)@pre &&
+    //      \not \Exists Player p \in getEnvi().getCellContent(getCol()pre, getHgt()@pre + 1)@pre
     //      \impl getCol() == getCol()@pre + 1 && getHgt() == getHgt()@pre + 1
     //\post isCarryingTreasure() == isCarryingTreasure()@pre
     //\post getTimeInHole() == getTimeInHole()@pre
@@ -109,7 +109,7 @@ public interface Guard extends Character{
 
     
     //\def isFalling == \not getEnvi().getCellNature(getCol()@pre, getHgt()@pre) \in {LAD, HDR, HOL} \and
-    //                  getEnvi().getCellContent(getCol()@pre, getHgt()@pre) \in {EMP, HDR, HOL} \and
+    //                  getEnvi().getCellContent(getCol()@pre, getHgt()@pre) \in {EMP, HDR, HOL, NPL} \and
     //                  \not \Exists Guard g \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)
 
     //\post getTimeLeftParalyzed()@pre == 0 \impl getTimeLeftParalyzed() == 0
@@ -133,20 +133,20 @@ public interface Guard extends Character{
     //          \or \getEnvi().getCellNature(getCol()@pre, getHgt()@pre)@pre \in {LAD, HDR, HOL}
     //          \or \Exists Guard g \ in getEnvi().getCellContent(getCol()@pre, getHgt()@pre - 1)@pre
     //      \impl isCarryingTreasure() \and \not \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)
-    //\post getTimeLeftParalyzed()@pre == 0 \and getEnvi().getCellNature(getCol()@pre, getHgt()@pre) \and getTimeInHole()@pre < 5 \impl getTimeInHole() == getTimeInHole()@pre + 1
-    //\post getTimeLeftParalyzed()@pre == 0 \and getEnvi().getCellNature(getCol()@pre, getHgt()@pre) 
+    //\post getTimeLeftParalyzed()@pre == 0 \and getEnvi().getCellNature(getCol()@pre, getHgt()@pre) == HOL \and getTimeInHole()@pre < 5 \impl getTimeInHole() == getTimeInHole()@pre + 1
+    //\post getTimeLeftParalyzed()@pre == 0 \and getEnvi().getCellNature(getCol()@pre, getHgt()@pre) == HOL 
     //      \and getTimeInHole()@pre >= 5 
     //      \and getBehaviour()@pre == MOVEL 
     //      \impl getTimeInHole() == 0 \and climbLeft()
-    //\post getTimeLeftParalyzed()@pre == 0 \and getEnvi().getCellNature(getCol()@pre, getHgt()@pre) 
+    //\post getTimeLeftParalyzed()@pre == 0 \and getEnvi().getCellNature(getCol()@pre, getHgt()@pre) == HOL 
     //      \and getTimeInHole()@pre >= 5 
     //      \and getBehaviour()@pre == MOVER
     //      \impl getTimeInHole() == 0 \and climbRight()
     //\post isFalling \impl goDown()
-    //\post getTimeLeftParalyzed()@pre == 0 \and \not isFalling \and getEnvi().getCellnature() != HOL \and getBehaviour() == MOVEL \impl goLeft()
-    //\post getTimeLeftParalyzed()@pre == 0 \and \not isFalling \and getEnvi().getCellnature() != HOL \and getBehaviour() == MOVER \impl goRight()
-    //\post getTimeLeftParalyzed()@pre == 0 \and \not isFalling \and getEnvi().getCellnature() != HOL \and getBehaviour() == MOVEU \impl goUp()
-    //\post getTimeLeftParalyzed()@pre == 0 \and \not isFalling \and getEnvi().getCellnature() != HOL \and getBehaviour() == MOVED \impl goDown()
+    //\post getTimeLeftParalyzed()@pre == 0 \and \not isFalling \and getEnvi().getCellnature()@pre != HOL \and getBehaviour()@pre == MOVEL \impl goLeft()
+    //\post getTimeLeftParalyzed()@pre == 0 \and \not isFalling \and getEnvi().getCellnature()@pre != HOL \and getBehaviour()@pre == MOVER \impl goRight()
+    //\post getTimeLeftParalyzed()@pre == 0 \and \not isFalling \and getEnvi().getCellnature()@pre != HOL \and getBehaviour()@pre == MOVEU \impl goUp()
+    //\post getTimeLeftParalyzed()@pre == 0 \and \not isFalling \and getEnvi().getCellnature()@pre != HOL \and getBehaviour()@pre == MOVED \impl goDown()
     //\post getIdCounter() == getIdCounter()@pre
     public void step();
     
@@ -221,5 +221,7 @@ public interface Guard extends Character{
     //\post getIdCounter() == getIdCounter()@pre
     //\post getTimeLeftParalyzed() == getTimeLeftParalyzed()@pre
     public void goDown();
+
+    public Guard copy(Engine e);
 
 }

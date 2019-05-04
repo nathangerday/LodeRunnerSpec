@@ -26,6 +26,22 @@ public class GuardImpl extends CharacterImpl implements Guard {
     private Engine engi;
     private int timeLeftParalyzed;
 
+    public Guard copy(Engine e){
+        GuardImpl copy = new GuardImpl();
+        copy.x = this.x;
+        copy.y = this.y;
+        copy.engi = e;
+        copy.envi = e.getEnvironment();
+        copy.target = e.getPlayer();
+        copy.timeInHole = this.timeInHole;
+        copy.id = this.id;
+        copy.initCoords = this.initCoords;
+        copy.carryingTreasure = this.carryingTreasure;
+        copy.timeLeftParalyzed = this.timeLeftParalyzed;
+        return copy;
+    }
+    
+
     public void init(Engine e, int x, int y, Character target){
         super.init(e.getEnvironment(), x, y);
         this.engi = e;
@@ -87,6 +103,11 @@ public class GuardImpl extends CharacterImpl implements Guard {
         PLT_MLT_HDR.add(Cell.PLT);
         PLT_MLT_HDR.add(Cell.PLT);
         PLT_MLT_HDR.add(Cell.LAD);
+
+        if(getEnvi().getCellNature(x, y) == Cell.HOL && this.target.getCol() == this.getCol() && this.target.getHgt() == this.getHgt() + 1){
+            return Command.MOVER;
+        }
+
         
         if(HOL_HDR.contains(getEnvi().getCellNature(x, y)) || PLT_MLT_HDR.contains(getEnvi().getCellNature(x, y - 1)) || Util.containsGuard(getEnvi().getCellContent(x, y - 1))){
             if(target.getCol() < getCol()){

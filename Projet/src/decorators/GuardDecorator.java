@@ -12,7 +12,7 @@ public class GuardDecorator extends CharacterDecorator implements Guard {
         super(delegate);
     }
 
-    protected Guard getDelegate() {
+    public Guard getDelegate() {
         return (Guard) super.getDelegate();
     }
 
@@ -94,6 +94,16 @@ public class GuardDecorator extends CharacterDecorator implements Guard {
     @Override
     public int getTimeLeftParalyzed() {
         return getDelegate().getTimeLeftParalyzed();
+    }
+
+    @Override
+    public Character copy() {
+        return null;
+    }
+
+    @Override
+    public Guard copy(Engine e) {
+        return getDelegate().copy(e);
     }
 
 }

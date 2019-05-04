@@ -599,7 +599,7 @@ public class PlayerContract extends PlayerDecorator{
 
     private boolean isFalling(int getCol_atPre, int getHgt_atPre, Cell[][] getCellNature_atPre,  List<List<Set<Entity>>> getCellContent_atPre){
         //\def falling = \not getEnvi().getCellNature(getCol(), getHgt())@pre \in {LAD, HDR}
-        //               \and getEnvi().getCellNature(getCol(), getHgt() - 1)@pre \in {EMP, HDR, HOL}
+        //               \and getEnvi().getCellNature(getCol(), getHgt() - 1)@pre \in {EMP, HDR, HOL, NGU}
         //               \and \not \Exists Guard c \in getEnvi().getCellContent(getCol(), getHgt() - 1)@pre
 
         Set<Cell> LAD_HDR = new HashSet<>();
@@ -607,15 +607,16 @@ public class PlayerContract extends PlayerDecorator{
         LAD_HDR.add(Cell.HDR);
 
 
-        Set<Cell> EMP_HDR_HOL = new HashSet<>();
-        EMP_HDR_HOL.add(Cell.EMP);
-        EMP_HDR_HOL.add(Cell.HDR);
-        EMP_HDR_HOL.add(Cell.HOL);
+        Set<Cell> EMP_HDR_HOL_NGU = new HashSet<>();
+        EMP_HDR_HOL_NGU.add(Cell.EMP);
+        EMP_HDR_HOL_NGU.add(Cell.HDR);
+        EMP_HDR_HOL_NGU.add(Cell.HOL);
+        EMP_HDR_HOL_NGU.add(Cell.NGU);
 
         
 
         boolean cond1 = !LAD_HDR.contains(getCellNature_atPre[getCol_atPre][getHgt_atPre]);
-        boolean cond2 = EMP_HDR_HOL.contains(getCellNature_atPre[getCol_atPre][getHgt_atPre - 1]);
+        boolean cond2 = EMP_HDR_HOL_NGU.contains(getCellNature_atPre[getCol_atPre][getHgt_atPre - 1]);
         boolean cond3 = !Util.containsGuard(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre - 1));
         return cond1 && cond2 && cond3;
 
@@ -1059,29 +1060,12 @@ public class PlayerContract extends PlayerDecorator{
     
     
     private Player duplicatePlayer(Player d){
-        // Player res = new PlayerImpl();
-
-        Engine resEngine = new EngineImpl();
-        EditableScreen resES = new EditableScreenImpl();
-        resES.init(d.getEnvi().getHeight(), d.getEnvi().getWidth());
-        
-        for(int i=0; i<resES.getHeight(); i++){
-            for(int j=0; j<resES.getWidth(); j++){
-                resES.setNature(j, i, d.getEnvi().getCellNature(j, i));
-            }
-        }
-        
-        ScreenManager sm = Factory.createScreenManager();
-        sm.init();
-        sm.addScreen(resES, null, null, new Coord(d.getCol(), d.getHgt()));
-        resEngine.init(sm, null, resEngine);
-        Player res = resEngine.getPlayer();
-        return res;
+        return d.getEngine().copy().getPlayer();
     }
 
     private boolean isEqual(PlayerContract pc){
         //TODO define this method
-        return true;
+        return this.getCol() == pc.getCol() && this.getHgt() == pc.getHgt();
     }
     
 }

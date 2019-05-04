@@ -98,4 +98,9 @@ public class EngineDecorator implements Engine{
 	public void display() {
 		getDelegate().display();
 	}
+
+	@Override
+	public Engine copy() {
+        return getDelegate().copy();
+	}
 }

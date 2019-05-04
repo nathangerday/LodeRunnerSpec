@@ -62,5 +62,5 @@ public interface Environment extends /* includes */ Screen{
     //          \Forall y in [0, getHeight() - 1]
     //          (\Exists Treasure t \in getCellContent(x, y)) \impl (getCellNature(x, y) == Cell.EMP \and getCellNature(x, y-1) \in {PLT, MTL})
 
-
+    public Environment copy();
 }

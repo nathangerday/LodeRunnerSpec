@@ -2,7 +2,7 @@ package services;
 
 import data.*;
 
-public interface Screen {
+public interface Screen{
     /* Observators */
 
     public int getHeight();
@@ -62,6 +62,6 @@ public interface Screen {
     public void revealTrap(int x, int y);
 
 
-    
+    public Screen copy();
     
 }

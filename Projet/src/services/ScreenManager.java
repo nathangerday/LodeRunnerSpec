@@ -7,7 +7,7 @@ import data.CoordGuard;
 import data.CoordItem;
 import data.LevelSetup;
 
-public interface ScreenManager {
+public interface ScreenManager{
 
     /* Observators */
 
@@ -67,5 +67,5 @@ public interface ScreenManager {
     public void removeScreen(int i);
 
     
-
+    public ScreenManager copy();
 }

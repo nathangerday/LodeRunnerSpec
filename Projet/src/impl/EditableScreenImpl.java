@@ -23,4 +23,12 @@ public class EditableScreenImpl extends ScreenImpl implements EditableScreen {
         this.natures[x][y] = type;
     }
 
+    @Override
+    public EditableScreen copy(){
+        EditableScreenImpl copy = new EditableScreenImpl();
+        copy.height = this.height;
+        copy.width = this.width;
+        copy.natures = this.natures.clone();
+        return copy;
+    }
 }

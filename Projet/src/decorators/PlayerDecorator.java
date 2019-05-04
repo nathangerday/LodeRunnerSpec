@@ -2,6 +2,7 @@ package decorators;
 
 import data.Item;
 import data.ItemType;
+import services.Character;
 import services.Engine;
 import services.Player;
 
@@ -11,7 +12,7 @@ public class PlayerDecorator extends CharacterDecorator implements Player {
         super(delegate);
     }
 
-    protected Player getDelegate() {
+    public Player getDelegate() {
         return (Player) super.getDelegate();
     }
 
@@ -63,5 +64,10 @@ public class PlayerDecorator extends CharacterDecorator implements Player {
     @Override
     public void pickupItem(ItemType type) {
         getDelegate().pickupItem(type);
+    }
+
+    @Override
+    public Player copy(Engine e) {
+        return getDelegate().copy(e);
     }
 }

@@ -97,5 +97,5 @@ public interface Engine{
     //\post getScreenManager() == getScreenManager()@pre
     public void display();
     
-
+    public Engine copy();
 }

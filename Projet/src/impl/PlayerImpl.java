@@ -19,24 +19,35 @@ public class PlayerImpl extends CharacterImpl implements Player {
     private int numberOfUsagesLeftForCurrentItem;
     private boolean facingRight;
 
-    
+    public Player copy(Engine e){
+        PlayerImpl copy = new PlayerImpl();
+        copy.x = this.x;
+        copy.y = this.y;
+        copy.engi = e;
+        copy.envi = e.getEnvironment();
+        copy.currentlyHeldItem = this.currentlyHeldItem;
+        copy.numberOfUsagesLeftForCurrentItem = this.numberOfUsagesLeftForCurrentItem;
+        copy.facingRight = this.facingRight;
+        return copy;
+    }
 
     public Engine getEngine() {
         return this.engi;
     }
 
     public void step() {
-        Set<Cell> EMP_HDR_HOL = new HashSet<>();
-        EMP_HDR_HOL.add(Cell.EMP);
-        // EMP_HDR_HOL.add(Cell.LAD);
-        EMP_HDR_HOL.add(Cell.HDR);
-        EMP_HDR_HOL.add(Cell.HOL);
+        Set<Cell> EMP_HDR_HOL_NGU = new HashSet<>();
+        EMP_HDR_HOL_NGU.add(Cell.EMP);
+        // EMP_HDR_HOL_NGU.add(Cell.LAD);
+        EMP_HDR_HOL_NGU.add(Cell.HDR);
+        EMP_HDR_HOL_NGU.add(Cell.HOL);
+        EMP_HDR_HOL_NGU.add(Cell.NGU);
 
         Set<Cell> LAD_HDR = new HashSet<>();
         LAD_HDR.add(Cell.LAD);
         LAD_HDR.add(Cell.HDR);
         if (!LAD_HDR.contains(this.envi.getCellNature(this.x, this.y))
-                && EMP_HDR_HOL.contains(this.envi.getCellNature(this.x, this.y - 1))
+                && EMP_HDR_HOL_NGU.contains(this.envi.getCellNature(this.x, this.y - 1))
                 && !Util.containsGuard(this.envi.getCellContent(this.x, this.y - 1))) {
             goDown();
             return;

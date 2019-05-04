@@ -19,6 +19,15 @@ public class CharacterImpl implements Character{
         this.envi.addToCellContent(x, y, this);
     }
 
+    @Override
+    public Character copy(){
+        CharacterImpl copy = new CharacterImpl();
+        copy.x = x;
+        copy.y = y;
+        copy.envi = envi.copy();
+        return copy;
+    }
+
     public Environment getEnvi() {
         return this.envi;
     }

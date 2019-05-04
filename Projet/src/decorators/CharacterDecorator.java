@@ -53,5 +53,10 @@ public class CharacterDecorator implements Character {
     public void goDown() {
         getDelegate().goDown();
     }
+
+    @Override
+    public Character copy() {
+        return getDelegate().copy();
+    }
     
 }

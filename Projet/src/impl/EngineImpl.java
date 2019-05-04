@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import contracts.EnvironmentContract;
+import contracts.GuardContract;
 import contracts.PlayerContract;
 import data.Cell;
 import data.Command;
@@ -44,6 +45,36 @@ public class EngineImpl implements Engine {
 
     private Engine engineInstance; // necessary for contracts
     
+    public Engine copy(){
+        EngineImpl copy = new EngineImpl();
+        copy.sm = this.sm.copy();
+        copy.envi = this.envi.copy();
+        copy.player = this.player.copy(copy);
+        copy.envi.addToCellContent(copy.player.getCol(), copy.player.getHgt(), copy.player);
+        copy.treasures = new ArrayList<>(this.treasures);
+
+        copy.guards = new ArrayList<>();
+        for(Guard g : this.guards){
+            Guard guardcopy = g.copy(copy);
+            copy.guards.add(guardcopy);
+            copy.envi.addToCellContent(guardcopy.getCol(), guardcopy.getHgt(), guardcopy);
+        } 
+
+        copy.status = this.status;
+        copy.nextCommand = this.nextCommand;
+        copy.holes = new HashSet<>();
+        for(Hole h : this.holes){
+            copy.holes.add(new Hole(h.getX(), h.getY(), h.getTime()));
+        }
+        copy.commandManager = null;
+        copy.nbTreasures = this.nbTreasures;
+        copy.lifes = this.lifes;
+        copy.score = this.score;
+        copy.scoreAtLevelStart = this.scoreAtLevelStart;
+        copy.currentLevel = this.currentLevel;
+        return copy;
+    }
+
 
     public Environment getEnvironment() {
         return this.envi;
@@ -302,6 +333,7 @@ public class EngineImpl implements Engine {
             }
         }
     }
+    
     
     
 

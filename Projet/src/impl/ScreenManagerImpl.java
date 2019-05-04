@@ -15,6 +15,13 @@ public class ScreenManagerImpl implements ScreenManager {
     private List<LevelSetup> levels;
 
     @Override
+    public ScreenManager copy(){
+        ScreenManagerImpl copy = new ScreenManagerImpl();
+        copy.levels = new ArrayList<>(this.levels);
+        return copy;
+    }
+
+    @Override
     public void init(){
         this.levels = new ArrayList<>();
     }

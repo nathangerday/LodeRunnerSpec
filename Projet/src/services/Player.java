@@ -33,7 +33,7 @@ public interface Player extends /* includes */ Character{
     /* Operators */
 
     //\def falling = \not getEnvi().getCellNature(getCol(), getHgt())@pre \in {LAD, HDR}
-    //               \and getEnvi().getCellNature(getCol(), getHgt() - 1)@pre \in {EMP, HDR, HOL}
+    //               \and getEnvi().getCellNature(getCol(), getHgt() - 1)@pre \in {EMP, HDR, HOL, NGU}
     //               \and \not \Exists Guard c \in getEnvi().getCellContent(getCol(), getHgt() - 1)@pre
 
     //\post falling \impl step() == this@pre.goDown()
@@ -203,4 +203,7 @@ public interface Player extends /* includes */ Character{
     //\post getCurrentlyHeldItem() == getCurrentlyHeldItem()@pre
     //\post getNumberOfUsagesLeftForCurrentItem() == getNumberOfUsagesLeftForCurrentItem()@pre
     public void goDown();
+
+
+    public Player copy(Engine e);
 }

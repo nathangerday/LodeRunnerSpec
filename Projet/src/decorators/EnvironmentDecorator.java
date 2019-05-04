@@ -36,5 +36,10 @@ public class EnvironmentDecorator extends ScreenDecorator implements Environment
     public void init(EditableScreen screen) {
         getDelegate().init(screen);
     }
+
+    @Override
+    public Environment copy(){
+        return getDelegate().copy();
+    }
     
 }

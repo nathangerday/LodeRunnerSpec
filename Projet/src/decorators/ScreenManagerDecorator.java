@@ -65,5 +65,10 @@ public class ScreenManagerDecorator implements ScreenManager {
         getDelegate().removeScreen(i);
     }
 
+    @Override
+    public ScreenManager copy() {
+        return getDelegate().copy();
+    }
+
 
 }

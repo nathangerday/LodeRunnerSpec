@@ -54,5 +54,10 @@ public class ScreenDecorator implements Screen {
     public void revealTrap(int x, int y) {
         getDelegate().revealTrap(x, y);
     }
+
+    @Override
+    public Screen copy() {
+        return getDelegate().copy();
+    }
     
 }

@@ -27,4 +27,7 @@ public interface EditableScreen extends /* includes */ Screen {
     //                      \and 
     //                      \Forall x in [0, getWidth()]
     //                          getCellNature(x, 0) == Cell.MTL
+
+    public EditableScreen copy();
+    
 }

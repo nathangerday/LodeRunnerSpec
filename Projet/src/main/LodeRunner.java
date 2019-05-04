@@ -63,6 +63,7 @@ public class LodeRunner{
         List<CoordItem> treasureCoords = new ArrayList<>();
         treasureCoords.add(new CoordItem(0, 2, ItemType.Treasure));
         treasureCoords.add(new CoordItem(17, 4, ItemType.Treasure));
+        treasureCoords.add(new CoordItem(5, 2, ItemType.Flash));
         List<CoordGuard> guardCoords = new ArrayList<>();
         guardCoords.add(new CoordGuard(1, 7, GuardType.NORMAL));
         // guardCoords.add(new Coord(10, 3));

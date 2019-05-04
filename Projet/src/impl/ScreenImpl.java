@@ -51,6 +51,13 @@ public class ScreenImpl implements Screen{
         this.natures[x][y] = Cell.EMP;
     }
 
-    
+    @Override
+    public Screen copy(){
+        ScreenImpl copy = new ScreenImpl();
+        copy.height = this.height;
+        copy.width = this.width;
+        copy.natures = this.natures.clone();
+        return copy;
+    }
     
 }

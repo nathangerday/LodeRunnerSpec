@@ -86,6 +86,6 @@ public interface Character extends Entity{
     //      \impl getHgt() == getHgt()@pre - 1
     public void goDown();
 
-
+    public Character copy();
     
 }

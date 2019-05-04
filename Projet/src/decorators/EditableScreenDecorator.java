@@ -23,5 +23,10 @@ public class EditableScreenDecorator extends ScreenDecorator implements Editable
     public void setNature(int x, int y, Cell type) {
         getDelegate().setNature(x, y, type);
     }
+
+    @Override
+    public EditableScreen copy(){
+        return getDelegate().copy();
+    }
     
 }

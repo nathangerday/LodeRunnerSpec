@@ -190,7 +190,9 @@ public class GuardImpl extends CharacterImpl implements Guard {
 
     @Override
     public void moveToInitCoords(){
-        //TODO Handle if already a guard in init position
+        if(Util.containsGuard(this.envi.getCellContent(this.initCoords.getX(), this.initCoords.getY()))){
+            Util.getGuard(this.envi.getCellContent(this.initCoords.getX(), this.initCoords.getY())).moveToInitCoords();
+        }
         this.envi.removeFromCellContent(this.x, this.y, this);
         this.x = this.initCoords.getX();
         this.y = this.initCoords.getY();
@@ -223,7 +225,7 @@ public class GuardImpl extends CharacterImpl implements Guard {
         LAD_HDR_HOL.add(Cell.HOL);
         if(!LAD_HDR_HOL.contains(this.envi.getCellNature(this.x, this.y)) && EMP_HDR_HOL.contains(this.envi.getCellNature(this.x, this.y - 1)) &&
         !Util.containsGuard(this.envi.getCellContent(this.x, this.y - 1))){
-            if(this.carryingTreasure && this.envi.getCellNature(this.x, this.y - 1) == Cell.HOL){
+            if(this.carryingTreasure && this.envi.getCellNature(this.x, this.y - 1) == Cell.HOL && !Util.containsTreasure(this.envi.getCellContent(this.x, this.y))){
                 this.carryingTreasure = false;
                 Item t = new Item(ItemType.Treasure, this.x, this.y);
                 this.envi.addToCellContent(this.x, this.y, t);

@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import data.Cell;
 import data.Entity;
 import data.Item;
 import services.Character;
@@ -52,11 +53,12 @@ public class EnvironmentImpl extends ScreenImpl implements Environment {
         copy.height = this.height;
         copy.width = this.width;
         copy.editScreen = this.editScreen.copy();
-        copy.natures = this.natures.clone();
+        copy.natures = new Cell[getWidth()][getHeight()];
         copy.content = new ArrayList<>();
         for (int x = 0; x < getWidth(); x++) {
             copy.content.add(new ArrayList<>());
             for (int y = 0; y < getHeight(); y++) {
+                copy.natures[x][y] = this.natures[x][y];
                 copy.content.get(x).add(new HashSet<>());
                 for(Entity e : this.content.get(x).get(y)){
                     if(e instanceof Item){

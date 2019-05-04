@@ -77,10 +77,28 @@ public interface Player extends /* includes */ Character{
     public void pickupItem(ItemType type);
 
 
+    //\def canUseItem = (getCurrentlyHeldItem()@pre != null \and getNumberOfUsagesLeftForCurrentItem()@pre >= 1) 
+
     //\post getCurrentlyHeldItem()@pre != null \and getNumberOfUsagesLeftForCurrentItem()@pre == 1 
     //      \impl getCurrentlyHeldItem() == null \and getNumberOfUsagesLeftForCurrentItem() == 0
     //\post getCurrentlyHeldItem()@pre != null \and getNumberOfUsagesLeftForCurrentItem()@pre > 1 
     //      \impl getCurrentlyHeldItem() == getCurrentlyHeldItem()@pre \and getNumberOfUsagesLeftForCurrentItem() == getNumberOfUsagesLeftForCurrentItem()@pre - 1
+    //\post canUseItem \and getCurrentlyHeldItem()@pre == Key \and isFacingRight()@pre 
+    //      \and getCol()@pre < getEnvi().getWidth() - 1 \and getEnvi().getCellNature(getCol() + 1, getHgt())@pre == DOR
+    //      \impl getEnvi().getCellNature(getCol() + 1, getHgt()) == EMP
+    //\post canUseItem \and getCurrentlyHeldItem()@pre == Key \and \not isFacingRight()@pre 
+    //      \and getCol()@pre > 0 \and getEnvi().getCellNature(getCol() - 1, getHgt())@pre == DOR
+    //      \impl getEnvi().getCellNature(getCol() - 1, getHgt()) == EMP
+    //\post \Forall Guard g \in getEngine().getGuards()
+    //          canUseItem \and getCurrentlyHeldItem()@pre == Flash \impl \impl g.getTimeLeftParalyzed() == 10
+    //\post canUseItem \and getCurrentlyHeldItem()@pre == Sword \and getCol()@pre - 2 >= 0 \and \Exists Guard g \in getEnvi().getCellContent(getCol()@pre - 2, getHgt())@pre \impl g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()
+    //\post canUseItem \and getCurrentlyHeldItem()@pre == Sword \and getCol()@pre - 1 >= 0 \and \Exists Guard g \in getEnvi().getCellContent(getCol()@pre - 1, getHgt())@pre \impl g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()
+    //\post canUseItem \and getCurrentlyHeldItem()@pre == Sword \and getCol()@pre + 2 < getEnvi().getWidth() \and \Exists Guard g \in getEnvi().getCellContent(getCol()@pre + 2, getHgt())@pre \impl g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()
+    //\post canUseItem \and getCurrentlyHeldItem()@pre == Sword \and getCol()@pre + 1 < getEnvi().getWidth() \and \Exists Guard g \in getEnvi().getCellContent(getCol()@pre + 1, getHgt())@pre \impl g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()
+    //\post getCol() == getCol()@pre
+    //\post getHgt() == getHgt()@pre
+
+    //TODO GUN
     //\post isFacingRight() == isFacingRight()@pre
     public void useItem();
 

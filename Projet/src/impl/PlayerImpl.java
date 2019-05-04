@@ -235,12 +235,12 @@ public class PlayerImpl extends CharacterImpl implements Player {
                 }
                 break;
             case Sword:
-                if(this.x - 2 > 0){
+                if(this.x - 2 >= 0){
                     if(Util.containsGuard(getEnvi().getCellContent(this.x - 2, this.y))){
                         Util.getGuard(getEnvi().getCellContent(this.x - 2, this.y)).moveToInitCoords();
                     }
                 }
-                if(this.x - 1 > 0){
+                if(this.x - 1 >= 0){
                     if(Util.containsGuard(getEnvi().getCellContent(this.x - 1, this.y))){
                         Util.getGuard(getEnvi().getCellContent(this.x - 1, this.y)).moveToInitCoords();
                     }

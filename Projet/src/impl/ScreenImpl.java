@@ -56,7 +56,12 @@ public class ScreenImpl implements Screen{
         ScreenImpl copy = new ScreenImpl();
         copy.height = this.height;
         copy.width = this.width;
-        copy.natures = this.natures.clone();
+        copy.natures = new Cell[getWidth()][getHeight()];
+        for (int x = 0; x < getWidth(); x++) {
+            for (int y = 0; y < getHeight(); y++) {
+                copy.natures[x][y] = this.natures[x][y];
+            }
+        }
         return copy;
     }
     

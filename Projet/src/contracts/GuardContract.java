@@ -387,12 +387,14 @@ public class GuardContract extends GuardDecorator {
 
     @Override
     public void moveToInitCoords() {
-        //\pre getEngine().getEnvironment().getCellNature(getCol(), getHgt()) == Cell.PLT
-        if(!(getEngine().getEnvironment().getCellNature(getCol(), getHgt()) == Cell.PLT)){
-            Contractor.defaultContractor().preconditionError("GuardContract", "moveToInitCoords", "getEngine().getEnvironment().getCellNature(getCol(), getHgt()) == Cell.PLT");
-        }
-
         //captures
+        List<List<Set<Entity>>> getCellContent_atPre = new ArrayList<>();
+        for(int u = 0; u < getEnvi().getWidth(); u++){
+            getCellContent_atPre.add(new ArrayList<>());
+            for(int v = 0; v < getEnvi().getHeight(); v++){
+                getCellContent_atPre.get(u).add(new HashSet<>(getEnvi().getCellContent(u, v)));
+            }
+        }
         Engine getEngine_atPre = getEngine();
         Environment getEnvi_atPre = getEnvi();
         int getId_atPre = getId();
@@ -410,7 +412,15 @@ public class GuardContract extends GuardDecorator {
 
         //inv post
         checkInvariant();
-        
+
+        //\post \Exists Guard g \in getEnvi().getCellContent(getInitCoords().getX(), getInitCoords().getY())@pre
+        //      \impl g.getCol() == g.getInitCoords.getX() \and g.getHgt() == g.getInitCoords().getY()
+        Guard g = Util.getGuard(getCellContent_atPre.get(getInitCoords().getX()).get(getInitCoords().getY()));
+        if(!(Checker.implication(g != null, g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()))){
+            Contractor.defaultContractor().postconditionError("GuardContract", "moveToInitCoords", "\\Exists Guard g \\in getEnvi().getCellContent(getInitCoords().getX(), getInitCoords().getY())@pre \\impl g.getCol() == g.getInitCoords.getX() \\and g.getHgt() == g.getInitCoords().getY()");
+        }
+
+
         //\post isCarryingTreasure() == isCarryingTreasure()@pre
         if(!(isCarryingTreasure() == isCarryingTreasure_atPre)){
             Contractor.defaultContractor().postconditionError("GuardContract", "moveToInitCoords", "isCarryingTreasure() == isCarryingTreasure()@pre");
@@ -567,7 +577,7 @@ public class GuardContract extends GuardDecorator {
             Contractor.defaultContractor().postconditionError("GuardContract", "step", "\\Exists Treasure t \\in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)@pre \\and \\not isCarryingTreasure()@pre \\impl isCarryingTreasure() \\and \\not \\Exists Treasure t \\in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)");
         }
 
-        //\post \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)@pre \and isCarryingTreasure()@pre 
+        //\post \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)@pre \and isCarryingTreasure()@pre
         //      \impl isCarryingTreasure() \and \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)
         if(!(Checker.implication(Util.containsTreasure(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre)) && isCarryingTreasure_atPre,
                                  isCarryingTreasure() && Util.containsTreasure(getEnvi().getCellContent(getCol_atPre, getHgt_atPre))))){
@@ -663,7 +673,7 @@ public class GuardContract extends GuardDecorator {
         }
 
         //\post getTimeLeftParalyzed()@pre == 0 \and \not isFalling \and getEnvi().getCellnature(getCol()@pre, getHgt()@pre)@pre != HOL \and getBehaviour()@pre == MOVEL \impl goLeft()
-        if(getTimeLeftParalyzed() == 0 && !isFalling(getCol_atPre, getHgt_atPre, getCellNature_atPre, getCellContent_atPre) && getCellNature_atPre[getCol_atPre][getHgt_atPre] != Cell.HOL && getBehaviour_atPre == Command.MOVEL){
+        if(getTimeLeftParalyzed_atPre == 0 && !isFalling(getCol_atPre, getHgt_atPre, getCellNature_atPre, getCellContent_atPre) && getCellNature_atPre[getCol_atPre][getHgt_atPre] != Cell.HOL && getBehaviour_atPre == Command.MOVEL){
             GuardContract clone = new GuardContract(duplicateGuard(this_atPre.getDelegate()));
             clone.goLeft();
             if(!(this.isEqual(clone))){
@@ -672,7 +682,7 @@ public class GuardContract extends GuardDecorator {
         }
         
         //\post getTimeLeftParalyzed()@pre == 0 \and \not isFalling \and getEnvi().getCellnature(getCol()@pre, getHgt()@pre)@pre != HOL \and getBehaviour()@pre == MOVER \impl goRight()
-        if(getTimeLeftParalyzed() == 0 && !isFalling(getCol_atPre, getHgt_atPre, getCellNature_atPre, getCellContent_atPre) && getCellNature_atPre[getCol_atPre][getHgt_atPre] != Cell.HOL && getBehaviour_atPre == Command.MOVER){
+        if(getTimeLeftParalyzed_atPre == 0 && !isFalling(getCol_atPre, getHgt_atPre, getCellNature_atPre, getCellContent_atPre) && getCellNature_atPre[getCol_atPre][getHgt_atPre] != Cell.HOL && getBehaviour_atPre == Command.MOVER){
             GuardContract clone = new GuardContract(duplicateGuard(this_atPre.getDelegate()));
             clone.goRight();
             if(!(this.isEqual(clone))){
@@ -681,7 +691,7 @@ public class GuardContract extends GuardDecorator {
         }
 
         //\post getTimeLeftParalyzed()@pre == 0 \and \not isFalling \and getEnvi().getCellnature(getCol()@pre, getHgt()@pre)@pre != HOL \and getBehaviour()@pre == MOVEU \impl goUp()
-        if(getTimeLeftParalyzed() == 0 && !isFalling(getCol_atPre, getHgt_atPre, getCellNature_atPre, getCellContent_atPre) && getCellNature_atPre[getCol_atPre][getHgt_atPre] != Cell.HOL && getBehaviour_atPre == Command.MOVEU){
+        if(getTimeLeftParalyzed_atPre == 0 && !isFalling(getCol_atPre, getHgt_atPre, getCellNature_atPre, getCellContent_atPre) && getCellNature_atPre[getCol_atPre][getHgt_atPre] != Cell.HOL && getBehaviour_atPre == Command.MOVEU){
             GuardContract clone = new GuardContract(duplicateGuard(this_atPre.getDelegate()));
             clone.goUp();
             if(!(this.isEqual(clone))){
@@ -690,7 +700,7 @@ public class GuardContract extends GuardDecorator {
         }
         
         //\post getTimeLeftParalyzed()@pre == 0 \and \not isFalling \and getEnvi().getCellnature(getCol()@pre, getHgt()@pre)@pre != HOL \and getBehaviour()@pre == MOVED \impl goDown()
-        if(getTimeLeftParalyzed() == 0 && !isFalling(getCol_atPre, getHgt_atPre, getCellNature_atPre, getCellContent_atPre) && getCellNature_atPre[getCol_atPre][getHgt_atPre] != Cell.HOL && getBehaviour_atPre == Command.MOVED){
+        if(getTimeLeftParalyzed_atPre == 0 && !isFalling(getCol_atPre, getHgt_atPre, getCellNature_atPre, getCellContent_atPre) && getCellNature_atPre[getCol_atPre][getHgt_atPre] != Cell.HOL && getBehaviour_atPre == Command.MOVED){
             GuardContract clone = new GuardContract(duplicateGuard(this_atPre.getDelegate()));
             clone.goDown();
             if(!(this.isEqual(clone))){

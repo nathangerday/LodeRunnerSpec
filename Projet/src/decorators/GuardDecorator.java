@@ -97,11 +97,6 @@ public class GuardDecorator extends CharacterDecorator implements Guard {
     }
 
     @Override
-    public Character copy() {
-        return null;
-    }
-
-    @Override
     public Guard copy(Engine e) {
         return getDelegate().copy(e);
     }

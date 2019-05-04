@@ -1,6 +1,7 @@
 package decorators;
 
 import data.Item;
+import data.ItemType;
 import services.Engine;
 import services.Player;
 
@@ -57,5 +58,10 @@ public class PlayerDecorator extends CharacterDecorator implements Player {
     @Override
     public void useItem() {
         getDelegate().useItem();
+    }
+
+    @Override
+    public void pickupItem(ItemType type) {
+        getDelegate().pickupItem(type);
     }
 }

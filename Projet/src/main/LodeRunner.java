@@ -85,12 +85,16 @@ public class LodeRunner{
             }
         }
 
-        screen2.setNature(4, 2, Cell.NPL);
-        screen2.setNature(11, 2, Cell.NPL);
-        screen2.setNature(1, 1, Cell.TRP);
+        // screen2.setNature(4, 2, Cell.NPL);
+        // screen2.setNature(9, 2, Cell.DOR);
+        // screen2.setNature(1, 1, Cell.TRP);
         List<CoordItem> treasureCoords2 = new ArrayList<>();
         treasureCoords2.add(new CoordItem(10, 2, ItemType.Treasure));
         treasureCoords2.add(new CoordItem(11, 2, ItemType.Treasure));
+        treasureCoords2.add(new CoordItem(2, 2, ItemType.Key));
+        treasureCoords2.add(new CoordItem(3, 2, ItemType.Gun));
+        treasureCoords2.add(new CoordItem(4, 2, ItemType.Flash));
+        treasureCoords2.add(new CoordItem(5, 2, ItemType.Flash));
         List<CoordGuard> guardCoords2 = new ArrayList<>();
         guardCoords2.add(new CoordGuard(16, 7, GuardType.NORMAL));
 
@@ -100,7 +104,6 @@ public class LodeRunner{
         while(engi.getStatus() == Status.Playing){
             engi.step();
             engi.display();
-            //UGLY
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {

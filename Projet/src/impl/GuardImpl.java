@@ -68,6 +68,11 @@ public class GuardImpl extends CharacterImpl implements Guard {
     }
 
     @Override
+    public int getTimeLeftParalyzed() {
+        return this.timeLeftParalyzed;
+    }
+
+    @Override
     public Command getBehaviour() {
         //TODO Improve behaviour
         if(getEnvi().getCellNature(x, y) == Cell.LAD && 
@@ -130,25 +135,29 @@ public class GuardImpl extends CharacterImpl implements Guard {
 
     @Override
     public void climbLeft() {
-        Set<Cell> MTL_PLT = new HashSet<>();
-        MTL_PLT.add(Cell.MTL);
-        MTL_PLT.add(Cell.PLT);
-        if(getCol() != 0 && !MTL_PLT.contains(envi.getCellNature(x - 1, y + 1)) && !Util.containsGuard(envi.getCellContent(x - 1, y + 1))){
+        Set<Cell> MTL_PLT_DOR_NGU = new HashSet<>();
+        MTL_PLT_DOR_NGU.add(Cell.MTL);
+        MTL_PLT_DOR_NGU.add(Cell.PLT);
+        MTL_PLT_DOR_NGU.add(Cell.DOR);
+        MTL_PLT_DOR_NGU.add(Cell.NGU);
+        if(getCol() != 0 && !MTL_PLT_DOR_NGU.contains(envi.getCellNature(x - 1, y + 1)) && !Util.containsGuard(envi.getCellContent(x - 1, y + 1))){
             this.envi.removeFromCellContent(this.x, this.y, this);
             if(!Util.containsPlayer(envi.getCellContent(x, y + 1))){ //if player above, stops on the player
                 this.x -= 1;
             }
-            this.y += 3;
+            this.y += 1;
             this.envi.addToCellContent(this.x, this.y, this);
         }
     }
 
     @Override
     public void climbRight() {
-        Set<Cell> MTL_PLT = new HashSet<>();
-        MTL_PLT.add(Cell.MTL);
-        MTL_PLT.add(Cell.PLT);
-        if(getCol() != envi.getWidth() - 1 && !MTL_PLT.contains(envi.getCellNature(x + 1, y + 1)) && !Util.containsGuard(envi.getCellContent(x + 1, y + 1))){
+        Set<Cell> MTL_PLT_DOR_NGU = new HashSet<>();
+        MTL_PLT_DOR_NGU.add(Cell.MTL);
+        MTL_PLT_DOR_NGU.add(Cell.PLT);
+        MTL_PLT_DOR_NGU.add(Cell.DOR);
+        MTL_PLT_DOR_NGU.add(Cell.NGU);
+        if(getCol() != envi.getWidth() - 1 && !MTL_PLT_DOR_NGU.contains(envi.getCellNature(x + 1, y + 1)) && !Util.containsGuard(envi.getCellContent(x + 1, y + 1))){
             this.envi.removeFromCellContent(this.x, this.y, this);
             if(!Util.containsPlayer(envi.getCellContent(x, y + 1))){
                 this.x += 1;
@@ -166,6 +175,7 @@ public class GuardImpl extends CharacterImpl implements Guard {
         this.y = this.initCoords.getY();
         this.envi.addToCellContent(this.x, this.y, this);
         this.timeInHole = 0;
+        this.timeLeftParalyzed = 0;
     }
 
     @Override

@@ -7,7 +7,6 @@ public class ScreenImpl implements Screen{
     protected int width, height;
     protected Cell[][] natures;
 
-    //TODO Ordre inversé h et w dans le sujet ? 
     public void init(int h, int w){
         this.width = w;
         this.height = h;

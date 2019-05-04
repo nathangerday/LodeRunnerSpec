@@ -65,5 +65,34 @@ public class Util {
         content.remove(toDelete);
         return toDelete;
     }
+
+    public static boolean containsItem(Set<Entity> content){
+        for(Entity e : content){
+            if(e instanceof Item){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Item getItem(Set<Entity> content){
+        for(Entity e : content){
+            if(e instanceof Item){
+                return (Item)e;
+            }
+        }
+        return null;
+    }
+
+    public static Item removeItem(Set<Entity> content){
+        Item toDelete = null;
+        for(Entity e : content){
+            if(e instanceof Item){
+                toDelete = (Item)e;
+            }
+        }
+        content.remove(toDelete);
+        return toDelete;
+    }
     
 }

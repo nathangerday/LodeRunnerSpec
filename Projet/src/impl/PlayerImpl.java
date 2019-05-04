@@ -73,16 +73,18 @@ public class PlayerImpl extends CharacterImpl implements Player {
     public void init(int x, int y, Engine e) {
         super.init(e.getEnvironment(), x, y);
         this.engi = e;
-        this.currentlyHeldItem = new Item(ItemType.Key, 0, 0);
-        this.numberOfUsagesLeftForCurrentItem = 1;
+        this.currentlyHeldItem = new Item(ItemType.Sword, 0, 0);
+        this.numberOfUsagesLeftForCurrentItem = 3;
         this.facingRight = true;
     }
 
     public void digLeft() {
-        Set<Cell> MTL_PLT_LAD = new HashSet<>();
-        MTL_PLT_LAD.add(Cell.MTL);
-        MTL_PLT_LAD.add(Cell.PLT);
-        MTL_PLT_LAD.add(Cell.LAD);
+        Set<Cell> MTL_PLT_LAD_DOR_NPL = new HashSet<>();
+        MTL_PLT_LAD_DOR_NPL.add(Cell.MTL);
+        MTL_PLT_LAD_DOR_NPL.add(Cell.PLT);
+        MTL_PLT_LAD_DOR_NPL.add(Cell.LAD);
+        MTL_PLT_LAD_DOR_NPL.add(Cell.DOR);
+        MTL_PLT_LAD_DOR_NPL.add(Cell.NPL);
 
         Set<Cell> libre = new HashSet<>();
         libre.add(Cell.EMP);
@@ -91,20 +93,24 @@ public class PlayerImpl extends CharacterImpl implements Player {
         libre.add(Cell.HOL);
 
         if (this.getCol() != 0
-                && (MTL_PLT_LAD.contains(this.envi.getCellNature(this.x, this.y - 1))
+                && (MTL_PLT_LAD_DOR_NPL.contains(this.envi.getCellNature(this.x, this.y - 1))
                         || Util.containsGuard(this.envi.getCellContent(this.x, this.y - 1)))
+                && libre.contains(this.envi.getCellNature(this.x - 1, this.y))
                 && this.envi.getCellNature(this.x - 1, this.y - 1) == Cell.PLT) {
             this.envi.dig(this.x - 1, this.y - 1);
             this.engi.addHole(this.x - 1, this.y - 1);
         }
+        this.facingRight = false;
 
     }
 
     public void digRight() {
-        Set<Cell> MTL_PLT_LAD = new HashSet<>();
-        MTL_PLT_LAD.add(Cell.MTL);
-        MTL_PLT_LAD.add(Cell.PLT);
-        MTL_PLT_LAD.add(Cell.LAD);
+        Set<Cell> MTL_PLT_LAD_DOR_NPL = new HashSet<>();
+        MTL_PLT_LAD_DOR_NPL.add(Cell.MTL);
+        MTL_PLT_LAD_DOR_NPL.add(Cell.PLT);
+        MTL_PLT_LAD_DOR_NPL.add(Cell.LAD);
+        MTL_PLT_LAD_DOR_NPL.add(Cell.DOR);
+        MTL_PLT_LAD_DOR_NPL.add(Cell.NPL);
 
         Set<Cell> libre = new HashSet<>();
         libre.add(Cell.EMP);
@@ -113,13 +119,14 @@ public class PlayerImpl extends CharacterImpl implements Player {
         libre.add(Cell.HOL);
 
         if (this.getCol() != this.envi.getWidth() - 1
-                && (MTL_PLT_LAD.contains(this.envi.getCellNature(this.x, this.y - 1))
+                && (MTL_PLT_LAD_DOR_NPL.contains(this.envi.getCellNature(this.x, this.y - 1))
                         || Util.containsGuard(this.envi.getCellContent(this.x, this.y - 1)))
+                && libre.contains(this.envi.getCellNature(this.x + 1, this.y))
                 && this.envi.getCellNature(this.x + 1, this.y - 1) == Cell.PLT) {
             this.envi.dig(this.x + 1, this.y - 1);
             this.engi.addHole(this.x + 1, this.y - 1);
         }
-
+        this.facingRight = true;
     }
 
     @Override
@@ -138,14 +145,59 @@ public class PlayerImpl extends CharacterImpl implements Player {
     }
 
     @Override
+    public void pickupItem(ItemType type){
+        int keyUsages = 1;
+        int gunUsages = 1;
+        int flashUsages = 1;
+        int swordUsages = 3;
+        
+        switch(type){
+            case Key:
+                if(this.currentlyHeldItem != null && this.currentlyHeldItem.getNature() == ItemType.Key){
+                    this.numberOfUsagesLeftForCurrentItem += keyUsages;
+                }else{
+                    this.currentlyHeldItem = new Item(type, 0, 0);
+                    this.numberOfUsagesLeftForCurrentItem = keyUsages;
+                }
+                break;
+            case Gun:
+                if(this.currentlyHeldItem != null && this.currentlyHeldItem.getNature() == ItemType.Gun){
+                    this.numberOfUsagesLeftForCurrentItem += gunUsages;
+                }else{
+                    this.currentlyHeldItem = new Item(type, 0, 0);
+                    this.numberOfUsagesLeftForCurrentItem = gunUsages;
+                }
+                break;
+            case Sword:
+                if(this.currentlyHeldItem != null && this.currentlyHeldItem.getNature() == ItemType.Sword){
+                    this.numberOfUsagesLeftForCurrentItem += swordUsages;
+                }else{
+                    this.currentlyHeldItem = new Item(type, 0, 0);
+                    this.numberOfUsagesLeftForCurrentItem = swordUsages;
+                }
+                break;
+            case Flash:
+                if(this.currentlyHeldItem != null && this.currentlyHeldItem.getNature() == ItemType.Flash){
+                    this.numberOfUsagesLeftForCurrentItem += flashUsages;
+                }else{
+                    this.currentlyHeldItem = new Item(type, 0, 0);
+                    this.numberOfUsagesLeftForCurrentItem = flashUsages;
+                }
+                break;
+        }
+    }
+
+    @Override
     public void useItem() {
         if(getCurrentlyHeldItem() == null || getNumberOfUsagesLeftForCurrentItem() == 0){
             return;
         }
 
-        Set<Cell> MTL_PLT = new HashSet<>();
-        MTL_PLT.add(Cell.MTL);
-        MTL_PLT.add(Cell.PLT);
+        Set<Cell> MTL_PLT_DOR_NPL = new HashSet<>();
+        MTL_PLT_DOR_NPL.add(Cell.MTL);
+        MTL_PLT_DOR_NPL.add(Cell.PLT);
+        MTL_PLT_DOR_NPL.add(Cell.DOR);
+        MTL_PLT_DOR_NPL.add(Cell.NPL);
 
         switch(getCurrentlyHeldItem().getNature()){
             case Gun:
@@ -155,7 +207,7 @@ public class PlayerImpl extends CharacterImpl implements Player {
                             Util.getGuard(getEnvi().getCellContent(i, y)).moveToInitCoords();
                         }
 
-                        if(MTL_PLT.contains(getEnvi().getCellNature(i, y))){
+                        if(MTL_PLT_DOR_NPL.contains(getEnvi().getCellNature(i, y))){
                             break;
                         }
                     }
@@ -165,7 +217,7 @@ public class PlayerImpl extends CharacterImpl implements Player {
                             Util.getGuard(getEnvi().getCellContent(i, y)).moveToInitCoords();
                         }
 
-                        if(MTL_PLT.contains(getEnvi().getCellNature(i, y))){
+                        if(MTL_PLT_DOR_NPL.contains(getEnvi().getCellNature(i, y))){
                             break;
                         }
                     }

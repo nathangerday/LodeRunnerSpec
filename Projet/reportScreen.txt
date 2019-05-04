@@ -1,9 +1,9 @@
 Testsuite: test.ScreenTest
 Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 sec
 ------------- Standard Error -----------------
-Service 'ScreenConctract' method 'dig': precondition error
+Service 'ScreenContract' method 'dig': precondition error
   ==> getCellNature(x,y) == Cell.PLT
-Service 'ScreenConctract' method 'fill': precondition error
+Service 'ScreenContract' method 'fill': precondition error
   ==> getCellNature(x,y) == Cell.HOL
 ------------- ---------------- ---------------
 

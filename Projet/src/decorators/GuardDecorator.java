@@ -91,5 +91,9 @@ public class GuardDecorator extends CharacterDecorator implements Guard {
         getDelegate().paralyze();
     }
 
+    @Override
+    public int getTimeLeftParalyzed() {
+        return getDelegate().getTimeLeftParalyzed();
+    }
 
 }

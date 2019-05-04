@@ -45,9 +45,20 @@ public interface Screen {
     //              u != x || v != y \impl getCellNature(u,v) == getCellNature(u, v)@pre
     public void fill(int x, int y);
 
-
+    
+    //\pre getCellNature(x,y) == Cell.DOR
+    //\post getCellNature(x, y) == Cell.EMP
+    //\post \Forall u in [0, getWidth() - 1]
+    //          \Forall v in [0, getHeight() - 1]
+    //              u != x || v != y \impl getCellNature(u,v) == getCellNature(u, v)@pre
     public void openDoor(int x, int y);
 
+
+    //\pre getCellNature(x,y) == Cell.TRP
+    //\post getCellNature(x, y) == Cell.EMP
+    //\post \Forall u in [0, getWidth() - 1]
+    //          \Forall v in [0, getHeight() - 1]
+    //              u != x || v != y \impl getCellNature(u,v) == getCellNature(u, v)@pre
     public void revealTrap(int x, int y);
 
 

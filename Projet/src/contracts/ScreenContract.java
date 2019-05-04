@@ -94,7 +94,7 @@ public class ScreenContract extends ScreenDecorator {
     public void dig(int x, int y) {
         //\pre getCellNature(x,y) == Cell.PLT
         if(!(getCellNature(x,y) == Cell.PLT)){
-            Contractor.defaultContractor().preconditionError("ScreenConctract", "dig", "getCellNature(x,y) == Cell.PLT");
+            Contractor.defaultContractor().preconditionError("ScreenContract", "dig", "getCellNature(x,y) == Cell.PLT");
         }
 
         //captures
@@ -148,7 +148,7 @@ public class ScreenContract extends ScreenDecorator {
     public void fill(int x, int y) {
         //\pre getCellNature(x,y) == Cell.HOL
         if(!(getCellNature(x,y) == Cell.HOL)){
-            Contractor.defaultContractor().preconditionError("ScreenConctract", "fill", "getCellNature(x,y) == Cell.HOL");
+            Contractor.defaultContractor().preconditionError("ScreenContract", "fill", "getCellNature(x,y) == Cell.HOL");
         }
 
         //captures
@@ -194,6 +194,112 @@ public class ScreenContract extends ScreenDecorator {
         //\post const getWidth()
         if(!(getWidth_atPre == getWidth())){
             Contractor.defaultContractor().postconditionError("ScreenContract", "fill", "const getWidth()");
+        }
+    }
+
+    @Override
+    public void openDoor(int x, int y) {
+        //\pre getCellNature(x,y) == Cell.DOR
+        if(!(getCellNature(x,y) == Cell.DOR)){
+            Contractor.defaultContractor().preconditionError("ScreenContract", "openDoor", "getCellNature(x,y) == Cell.DOR");
+        }
+
+        //captures
+        Cell[][] getCellNature_atPre = new Cell[getWidth()][getHeight()];
+        for(int u = 0; u < getWidth(); u++){
+            for(int v = 0; v < getHeight(); v++){
+                getCellNature_atPre[u][v] = getCellNature(u, v);
+            }
+        }
+        int getHeight_atPre = getHeight();
+        int getWidth_atPre = getWidth();
+
+        //inv pre
+        checkInvariant();
+
+        super.openDoor(x, y);
+
+        //inv post
+        checkInvariant();
+
+
+        //\post getCellNature(x, y) == Cell.EMP
+        if(!(getCellNature(x, y) == Cell.EMP)){
+            Contractor.defaultContractor().postconditionError("ScreenContract", "openDoor", "getCellNature(x, y) == Cell.EMP");
+        }
+
+        //\post \Forall u in [0, getWidth() - 1]
+        //          \Forall v in [0, getHeight() - 1]
+        //              u != x || v != y \impl getCellNature(u,v) == getCellNature(u, v)@pre
+        for(int u = 0; u < getWidth(); u++){
+            for(int v = 0; v < getHeight(); v++){
+                if(!Checker.implication(u != x || v != y, getCellNature(u, v) == getCellNature_atPre[u][v])){
+                    Contractor.defaultContractor().postconditionError("ScreenContract", "openDoor", "\\Forall u in [0, getWidth() - 1] \\Forall v in [0, getHeight() - 1] u != x || v != y \\impl getCellNature(u,v) == getCellNature(u, v)@pre");
+                }
+            }
+        }
+
+        //\post const getHeight()
+        if(!(getHeight_atPre == getHeight())){
+            Contractor.defaultContractor().postconditionError("ScreenContract", "openDoor", "const getHeight()");
+        }
+
+        //\post const getWidth()
+        if(!(getWidth_atPre == getWidth())){
+            Contractor.defaultContractor().postconditionError("ScreenContract", "openDoor", "const getWidth()");
+        }
+    }
+
+    @Override
+    public void revealTrap(int x, int y) {
+        //\pre getCellNature(x,y) == Cell.TRP
+        if(!(getCellNature(x,y) == Cell.TRP)){
+            Contractor.defaultContractor().preconditionError("ScreenContract", "revealTrap", "getCellNature(x,y) == Cell.TRP");
+        }
+
+        //captures
+        Cell[][] getCellNature_atPre = new Cell[getWidth()][getHeight()];
+        for(int u = 0; u < getWidth(); u++){
+            for(int v = 0; v < getHeight(); v++){
+                getCellNature_atPre[u][v] = getCellNature(u, v);
+            }
+        }
+        int getHeight_atPre = getHeight();
+        int getWidth_atPre = getWidth();
+
+        //inv pre
+        checkInvariant();
+
+        super.revealTrap(x, y);
+
+        //inv post
+        checkInvariant();
+
+
+        //\post getCellNature(x, y) == Cell.EMP
+        if(!(getCellNature(x, y) == Cell.EMP)){
+            Contractor.defaultContractor().postconditionError("ScreenContract", "revealTrap", "getCellNature(x, y) == Cell.EMP");
+        }
+
+        //\post \Forall u in [0, getWidth() - 1]
+        //          \Forall v in [0, getHeight() - 1]
+        //              u != x || v != y \impl getCellNature(u,v) == getCellNature(u, v)@pre
+        for(int u = 0; u < getWidth(); u++){
+            for(int v = 0; v < getHeight(); v++){
+                if(!Checker.implication(u != x || v != y, getCellNature(u, v) == getCellNature_atPre[u][v])){
+                    Contractor.defaultContractor().postconditionError("ScreenContract", "revealTrap", "\\Forall u in [0, getWidth() - 1] \\Forall v in [0, getHeight() - 1] u != x || v != y \\impl getCellNature(u,v) == getCellNature(u, v)@pre");
+                }
+            }
+        }
+
+        //\post const getHeight()
+        if(!(getHeight_atPre == getHeight())){
+            Contractor.defaultContractor().postconditionError("ScreenContract", "revealTrap", "const getHeight()");
+        }
+
+        //\post const getWidth()
+        if(!(getWidth_atPre == getWidth())){
+            Contractor.defaultContractor().postconditionError("ScreenContract", "revealTrap", "const getWidth()");
         }
     }
     

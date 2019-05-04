@@ -11,6 +11,7 @@ import contracts.PlayerContract;
 import data.Cell;
 import data.Command;
 import data.Coord;
+import data.CoordItem;
 import data.Hole;
 import data.Item;
 import data.ItemType;
@@ -133,6 +134,11 @@ public class EngineImpl implements Engine {
             }
         }
 
+        
+        if((t = Util.removeItem(envi.getCellContent(player.getCol(), player.getHgt()))) != null){
+            this.player.pickupItem(t.getNature());
+        }
+
         if(this.envi.getCellNature(this.player.getCol(), this.player.getHgt() - 1) == Cell.TRP){
             this.envi.revealTrap(this.player.getCol(), this.player.getHgt() - 1);
         }
@@ -202,6 +208,23 @@ public class EngineImpl implements Engine {
                     }else if(Util.containsTreasure(envi.getCellContent(j, i))){
                         System.out.print("Ø");
                         
+                    }else if(Util.containsItem(envi.getCellContent(j, i))){
+                        Item item = Util.getItem(envi.getCellContent(j, i));
+                        switch(item.getNature()){
+                            case Flash:
+                                System.out.print("f");
+                                break;
+                            case Gun:
+                                System.out.print("g");
+                                break;
+                            case Key:
+                                System.out.print("k");
+                                break;
+                            case Sword:
+                                System.out.print("s");
+                                break;
+                        }
+                        
                     }else{
                         switch(c){
                             case PLT:
@@ -270,11 +293,13 @@ public class EngineImpl implements Engine {
             this.guards.add(tmp);
         }
         this.nbTreasures = 0;
-        for(Coord c : sm.getItemsFromScreen(currentLevel)){
-            Item tmp = new Item(ItemType.Treasure, c.getX(), c.getY());
+        for(CoordItem c : sm.getItemsFromScreen(currentLevel)){
+            Item tmp = new Item(c.getItemType(), c.getX(), c.getY());
             this.treasures.add(tmp);
             this.envi.addToCellContent(c.getX(), c.getY(), tmp);
-            this.nbTreasures++;
+            if(tmp.getNature() == ItemType.Treasure){
+                this.nbTreasures++;
+            }
         }
     }
     

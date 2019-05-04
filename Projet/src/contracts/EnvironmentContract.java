@@ -76,114 +76,6 @@ public class EnvironmentContract extends EnvironmentDecorator{
     }
 
     @Override
-    public void dig(int x, int y) {
-        //\pre getCellNature(x,y) == Cell.PLT
-        if(!(getCellNature(x,y) == Cell.PLT)){
-            Contractor.defaultContractor().preconditionError("EnvironmentContract", "dig", "getCellNature(x,y) == Cell.PLT");
-        }
-
-        //captures
-        Cell[][] getCellNature_atPre = new Cell[getWidth()][getHeight()];
-        for(int u = 0; u < getWidth(); u++){
-            for(int v = 0; v < getHeight(); v++){
-                getCellNature_atPre[u][v] = getCellNature(u, v);
-            }
-        }
-        int getHeight_atPre = getHeight();
-        int getWidth_atPre = getWidth();
-
-        //inv pre
-        checkInvariant();
-        
-        super.dig(x, y);
-
-        //inv post
-        checkInvariant();
-
-
-        //\post getCellNature(x, y) == Cell.HOL
-        if(!(getCellNature(x, y) == Cell.HOL)){
-            Contractor.defaultContractor().postconditionError("EnvironmentContract", "dig", "getCellNature(x, y) == Cell.HOL");
-        }
-
-        //\post \Forall u in [0, getWidth() - 1]
-        //          \Forall v in [0, getHeight() - 1]
-        //              u != x || v != y \impl getCellNature(u,v) == getCellNature(u, v)@pre
-        for(int u = 0; u < getWidth(); u++){
-            for(int v = 0; v < getHeight(); v++){
-                if(!Checker.implication(u != x || v != y, getCellNature(u, v) == getCellNature_atPre[u][v])){
-                    Contractor.defaultContractor().postconditionError("EnvironmentContract", "dig", "\\Forall u in [0, getWidth() - 1] \\Forall v in [0, getHeight() - 1] u != x || v != y \\impl getCellNature(u,v) == getCellNature(u, v)@pre");
-                }
-            }
-        }
-
-        //\post const getHeight()
-        if(!(getHeight_atPre == getHeight())){
-            Contractor.defaultContractor().postconditionError("EnvironmentContract", "dig", "const getHeight()");
-        }
-
-        //\post const getWidth()
-        if(!(getWidth_atPre == getWidth())){
-            Contractor.defaultContractor().postconditionError("EnvironmentContract", "dig", "const getWidth()");
-        }
-
-    }
-
-    @Override
-    public void fill(int x, int y) {
-        //\pre getCellNature(x,y) == Cell.HOL
-        if(!(getCellNature(x,y) == Cell.HOL)){
-            Contractor.defaultContractor().preconditionError("EnvironmentContract", "fill", "getCellNature(x,y) == Cell.HOL");
-        }
-
-        //captures
-        Cell[][] getCellNature_atPre = new Cell[getWidth()][getHeight()];
-        for(int u = 0; u < getWidth(); u++){
-            for(int v = 0; v < getHeight(); v++){
-                getCellNature_atPre[u][v] = getCellNature(u, v);
-            }
-        }
-        int getHeight_atPre = getHeight();
-        int getWidth_atPre = getWidth();
-
-        //inv pre
-        checkInvariant();
-
-        super.fill(x, y);
-
-        //inv post
-        checkInvariant();
-
-
-        //\post getCellNature(x, y) == Cell.PLT
-        if(!(getCellNature(x, y) == Cell.PLT)){
-            Contractor.defaultContractor().postconditionError("EnvironmentContract", "fill", "getCellNature(x, y) == Cell.PLT");
-        }
-
-        //\post \Forall u in [0, getWidth() - 1]
-        //          \Forall v in [0, getHeight() - 1]
-        //              u != x || v != y \impl getCellNature(u,v) == getCellNature(u, v)@pre
-        for(int u = 0; u < getWidth(); u++){
-            for(int v = 0; v < getHeight(); v++){
-                if(!Checker.implication(u != x || v != y, getCellNature(u, v) == getCellNature_atPre[u][v])){
-                    Contractor.defaultContractor().postconditionError("EnvironmentContract", "fill", "\\Forall u in [0, getWidth() - 1] \\Forall v in [0, getHeight() - 1] u != x || v != y \\impl getCellNature(u,v) == getCellNature(u, v)@pre");
-                }
-            }
-        }
-
-        //\post const getHeight()
-        if(!(getHeight_atPre == getHeight())){
-            Contractor.defaultContractor().postconditionError("EnvironmentContract", "fill", "const getHeight()");
-        }
-
-        //\post const getWidth()
-        if(!(getWidth_atPre == getWidth())){
-            Contractor.defaultContractor().postconditionError("EnvironmentContract", "fill", "const getWidth()");
-        }
-    }
-
-
-    @Override
     public void addToCellContent(int x, int y, Entity e) {
         //\pre 0 <= y 
         if(!(0 <= y )){
@@ -363,12 +255,6 @@ public class EnvironmentContract extends EnvironmentDecorator{
             Contractor.defaultContractor().preconditionError("EnvironmentContract", "init", "screen != null");
         }
 
-        //TODO Remove
-        // //\pre screen.isPlayable()
-        // if(!(screen.isPlayable())){
-        //     Contractor.defaultContractor().preconditionError("EnvironmentContract", "init", "screen.isPlayable()");
-        // }
-
         super.init(screen);
 
         //inv post
@@ -399,6 +285,219 @@ public class EnvironmentContract extends EnvironmentDecorator{
                 }
             }
         }
-        
     }
+
+    @Override
+    public void dig(int x, int y) {
+        //\pre getCellNature(x,y) == Cell.PLT
+        if(!(getCellNature(x,y) == Cell.PLT)){
+            Contractor.defaultContractor().preconditionError("EnvironmentContract", "dig", "getCellNature(x,y) == Cell.PLT");
+        }
+
+        //captures
+        Cell[][] getCellNature_atPre = new Cell[getWidth()][getHeight()];
+        for(int u = 0; u < getWidth(); u++){
+            for(int v = 0; v < getHeight(); v++){
+                getCellNature_atPre[u][v] = getCellNature(u, v);
+            }
+        }
+        int getHeight_atPre = getHeight();
+        int getWidth_atPre = getWidth();
+
+        //inv pre
+        checkInvariant();
+        
+        super.dig(x, y);
+
+        //inv post
+        checkInvariant();
+
+
+        //\post getCellNature(x, y) == Cell.HOL
+        if(!(getCellNature(x, y) == Cell.HOL)){
+            Contractor.defaultContractor().postconditionError("EnvironmentContract", "dig", "getCellNature(x, y) == Cell.HOL");
+        }
+
+        //\post \Forall u in [0, getWidth() - 1]
+        //          \Forall v in [0, getHeight() - 1]
+        //              u != x || v != y \impl getCellNature(u,v) == getCellNature(u, v)@pre
+        for(int u = 0; u < getWidth(); u++){
+            for(int v = 0; v < getHeight(); v++){
+                if(!Checker.implication(u != x || v != y, getCellNature(u, v) == getCellNature_atPre[u][v])){
+                    Contractor.defaultContractor().postconditionError("EnvironmentContract", "dig", "\\Forall u in [0, getWidth() - 1] \\Forall v in [0, getHeight() - 1] u != x || v != y \\impl getCellNature(u,v) == getCellNature(u, v)@pre");
+                }
+            }
+        }
+
+        //\post const getHeight()
+        if(!(getHeight_atPre == getHeight())){
+            Contractor.defaultContractor().postconditionError("EnvironmentContract", "dig", "const getHeight()");
+        }
+
+        //\post const getWidth()
+        if(!(getWidth_atPre == getWidth())){
+            Contractor.defaultContractor().postconditionError("EnvironmentContract", "dig", "const getWidth()");
+        }
+
+    }
+
+    @Override
+    public void fill(int x, int y) {
+        //\pre getCellNature(x,y) == Cell.HOL
+        if(!(getCellNature(x,y) == Cell.HOL)){
+            Contractor.defaultContractor().preconditionError("EnvironmentContract", "fill", "getCellNature(x,y) == Cell.HOL");
+        }
+
+        //captures
+        Cell[][] getCellNature_atPre = new Cell[getWidth()][getHeight()];
+        for(int u = 0; u < getWidth(); u++){
+            for(int v = 0; v < getHeight(); v++){
+                getCellNature_atPre[u][v] = getCellNature(u, v);
+            }
+        }
+        int getHeight_atPre = getHeight();
+        int getWidth_atPre = getWidth();
+
+        //inv pre
+        checkInvariant();
+
+        super.fill(x, y);
+
+        //inv post
+        checkInvariant();
+
+
+        //\post getCellNature(x, y) == Cell.PLT
+        if(!(getCellNature(x, y) == Cell.PLT)){
+            Contractor.defaultContractor().postconditionError("EnvironmentContract", "fill", "getCellNature(x, y) == Cell.PLT");
+        }
+
+        //\post \Forall u in [0, getWidth() - 1]
+        //          \Forall v in [0, getHeight() - 1]
+        //              u != x || v != y \impl getCellNature(u,v) == getCellNature(u, v)@pre
+        for(int u = 0; u < getWidth(); u++){
+            for(int v = 0; v < getHeight(); v++){
+                if(!Checker.implication(u != x || v != y, getCellNature(u, v) == getCellNature_atPre[u][v])){
+                    Contractor.defaultContractor().postconditionError("EnvironmentContract", "fill", "\\Forall u in [0, getWidth() - 1] \\Forall v in [0, getHeight() - 1] u != x || v != y \\impl getCellNature(u,v) == getCellNature(u, v)@pre");
+                }
+            }
+        }
+
+        //\post const getHeight()
+        if(!(getHeight_atPre == getHeight())){
+            Contractor.defaultContractor().postconditionError("EnvironmentContract", "fill", "const getHeight()");
+        }
+
+        //\post const getWidth()
+        if(!(getWidth_atPre == getWidth())){
+            Contractor.defaultContractor().postconditionError("EnvironmentContract", "fill", "const getWidth()");
+        }
+    }
+
+    @Override
+    public void openDoor(int x, int y) {
+        //\pre getCellNature(x,y) == Cell.DOR
+        if(!(getCellNature(x,y) == Cell.DOR)){
+            Contractor.defaultContractor().preconditionError("EnvironmentContract", "openDoor", "getCellNature(x,y) == Cell.DOR");
+        }
+
+        //captures
+        Cell[][] getCellNature_atPre = new Cell[getWidth()][getHeight()];
+        for(int u = 0; u < getWidth(); u++){
+            for(int v = 0; v < getHeight(); v++){
+                getCellNature_atPre[u][v] = getCellNature(u, v);
+            }
+        }
+        int getHeight_atPre = getHeight();
+        int getWidth_atPre = getWidth();
+
+        //inv pre
+        checkInvariant();
+
+        super.openDoor(x, y);
+
+        //inv post
+        checkInvariant();
+
+
+        //\post getCellNature(x, y) == Cell.EMP
+        if(!(getCellNature(x, y) == Cell.EMP)){
+            Contractor.defaultContractor().postconditionError("EnvironmentContract", "openDoor", "getCellNature(x, y) == Cell.EMP");
+        }
+
+        //\post \Forall u in [0, getWidth() - 1]
+        //          \Forall v in [0, getHeight() - 1]
+        //              u != x || v != y \impl getCellNature(u,v) == getCellNature(u, v)@pre
+        for(int u = 0; u < getWidth(); u++){
+            for(int v = 0; v < getHeight(); v++){
+                if(!Checker.implication(u != x || v != y, getCellNature(u, v) == getCellNature_atPre[u][v])){
+                    Contractor.defaultContractor().postconditionError("EnvironmentContract", "openDoor", "\\Forall u in [0, getWidth() - 1] \\Forall v in [0, getHeight() - 1] u != x || v != y \\impl getCellNature(u,v) == getCellNature(u, v)@pre");
+                }
+            }
+        }
+
+        //\post const getHeight()
+        if(!(getHeight_atPre == getHeight())){
+            Contractor.defaultContractor().postconditionError("EnvironmentContract", "openDoor", "const getHeight()");
+        }
+
+        //\post const getWidth()
+        if(!(getWidth_atPre == getWidth())){
+            Contractor.defaultContractor().postconditionError("EnvironmentContract", "openDoor", "const getWidth()");
+        }
+    }
+
+    @Override
+    public void revealTrap(int x, int y) {
+        //\pre getCellNature(x,y) == Cell.TRP
+        if(!(getCellNature(x,y) == Cell.TRP)){
+            Contractor.defaultContractor().preconditionError("EnvironmentContract", "revealTrap", "getCellNature(x,y) == Cell.TRP");
+        }
+
+        //captures
+        Cell[][] getCellNature_atPre = new Cell[getWidth()][getHeight()];
+        for(int u = 0; u < getWidth(); u++){
+            for(int v = 0; v < getHeight(); v++){
+                getCellNature_atPre[u][v] = getCellNature(u, v);
+            }
+        }
+        int getHeight_atPre = getHeight();
+        int getWidth_atPre = getWidth();
+
+        //inv pre
+        checkInvariant();
+
+        super.revealTrap(x, y);
+
+        //inv post
+        checkInvariant();
+
+
+        //\post getCellNature(x, y) == Cell.EMP
+        if(!(getCellNature(x, y) == Cell.EMP)){
+            Contractor.defaultContractor().postconditionError("EnvironmentContract", "revealTrap", "getCellNature(x, y) == Cell.EMP");
+        }
+
+        //\post \Forall u in [0, getWidth() - 1]
+        //          \Forall v in [0, getHeight() - 1]
+        //              u != x || v != y \impl getCellNature(u,v) == getCellNature(u, v)@pre
+        for(int u = 0; u < getWidth(); u++){
+            for(int v = 0; v < getHeight(); v++){
+                if(!Checker.implication(u != x || v != y, getCellNature(u, v) == getCellNature_atPre[u][v])){
+                    Contractor.defaultContractor().postconditionError("EnvironmentContract", "revealTrap", "\\Forall u in [0, getWidth() - 1] \\Forall v in [0, getHeight() - 1] u != x || v != y \\impl getCellNature(u,v) == getCellNature(u, v)@pre");
+                }
+            }
+        }
+
+        //\post const getHeight()
+        if(!(getHeight_atPre == getHeight())){
+            Contractor.defaultContractor().postconditionError("EnvironmentContract", "revealTrap", "const getHeight()");
+        }
+
+        //\post const getWidth()
+        if(!(getWidth_atPre == getWidth())){
+            Contractor.defaultContractor().postconditionError("EnvironmentContract", "revealTrap", "const getWidth()");
+        }
+    }
+    
 }

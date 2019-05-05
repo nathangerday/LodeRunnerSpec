@@ -1,0 +1,755 @@
+\documentclass[7pt]{article}
+\usepackage{graphicx}
+\usepackage{fullpage,url}
+\usepackage[all]{xy}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,,%
+            left=0.3in,right=1in,top=0.7in,bottom=1in,%
+            footskip=.25in]{geometry}
+
+\renewcommand*{\ttdefault}{txtt}
+\begin{document}
+
+\title{Projet CPS 2019: Spécification formelle.}
+
+\author{GERDAY Nathan}
+\date{}
+\maketitle
+
+
+\section*{Ecran}
+
+\begin{tabular}{rl}
+\textbf{Service}: & \textrm{Screen}  \\
+\textbf{Observators}: & \textbf{const}~\texttt{Height}: \textrm{[Screen]} $\rightarrow$ \textrm{int} \\
+& \textbf{const}~\texttt{Width}: \textrm{[Screen]} $\rightarrow$ \textrm{int} \\
+& \texttt{CellNature}: \textrm{[Screen]} $\times$ \textrm{int} $\times$ \textrm{int} $\rightarrow$ \textrm{Cell} \\
+& \quad \textbf{pre } \texttt{CellNature(S,x,y)} \textbf{ requires } 0 $\leq$ \texttt{y} $<$ \texttt{Height(S)} \textbf{ and } 0 $\leq$ \texttt{x} $<$ \texttt{Width(S)}\\
+\textbf{Constructors}: & \texttt{init}: \textrm{int} $\times$ \textrm{int} $\rightarrow$ \textrm{[Screen]} \\
+& \quad \textbf{pre } \texttt{init(h,w)} \textbf{ requires } 0 $<$ \texttt{h} \textbf{ and } 0 $<$ \texttt{w} \\
+\textbf{Operators}: & \texttt{Dig}: \textrm{[Screen]} $\times$ \textrm{int} $\times$ \textrm{int}  $\rightarrow$ \textrm{[Screen]} \\
+& \quad \textbf{pre } \texttt{Dig(S,x,y)} \textbf{ requires } \texttt{CellNature(S,x,y)} $=$ \textbf{PLT} \\
+& \texttt{Fill}: \textrm{[Screen]} $\times$ \textrm{int} $\times$ \textrm{int}  $\rightarrow$ \textrm{[Screen]} \\
+& \quad \textbf{pre } \texttt{Fill(S,x,y)} \textbf{ requires } \texttt{CellNature(S,x,y)} $=$ \textbf{HOL} \\
+& \texttt{OpenDoor}: \textrm{[Screen]} $\times$ \textrm{int} $\times$ \textrm{int}  $\rightarrow$ \textrm{[Screen]} \\
+& \quad \textbf{pre } \texttt{OpenDoor(S,x,y)} \textbf{ requires } \texttt{CellNature(S,x,y)} $=$ \textbf{DOR} \\
+& \texttt{RevealTrap}: \textrm{[Screen]} $\times$ \textrm{int} $\times$ \textrm{int}  $\rightarrow$ \textrm{[Screen]} \\
+& \quad \textbf{pre } \texttt{RevealTrap(S,x,y)} \textbf{ requires } \texttt{CellNature(S,x,y)} $=$ \textbf{TRP} \\
+
+       \textbf{Observations}: & \\
+       \texttt{[init]}: & \texttt{Height(init(h,w))} $=$ \texttt{h} \\
+       & \texttt{Width(init(h,w))} $=$ \texttt{w} \\
+       & \textbf{forall} $(x,y)$ \textbf{in} \texttt{[0;Width(S)[}$\times$ \texttt{[0;Height(S)[},~ \texttt{CellNature(init(h,w),x,y)} $=$ \textbf{EMP} \\
+       \texttt{[Dig]}: & \texttt{CellNature(Dig(S,x,y)),x,y} $=$ \textbf{HOL} \\
+        & \textbf{forall} $(x,y)$ \textbf{in} \texttt{[0;Width(S)[} $\times$ \texttt{[0;Height(S)[}, \\ & \quad\quad\quad\quad (\texttt{x} $\neq$ \texttt{u} \textbf{or} \texttt{y} $\neq$ \texttt{v}) \textbf{implies} \texttt{CellNature(Dig(S,u,v)),x,y)} $=$ \texttt{CellNature(x,y)} \\
+       \texttt{[Fill]}: & \texttt{CellNature(Fill(S,x,y),x,y)} $=$ \textbf{PLT} \\
+       & \textbf{forall} $(x,y)$ \textbf{in} \texttt{[0;Width(S)[}$\times$ \texttt{[0;Height(S)[}, \\ & \quad\quad\quad\quad (\texttt{x} $\neq$ \texttt{u} \textbf{or} \texttt{y} $\neq$ \texttt{v}) \textbf{implies} \texttt{CellNature(Fill(S,u,v)),x,y)} $=$ \texttt{CellNature(x,y)} \\
+       \texttt{[OpenDoor]}: & \texttt{CellNature(Fill(S,x,y),x,y)} $=$ \textbf{EMP} \\
+       & \textbf{forall} $(x,y)$ \textbf{in} \texttt{[0;Width(S)[}$\times$ \texttt{[0;Height(S)[}, \\ & \quad\quad\quad\quad (\texttt{x} $\neq$ \texttt{u} \textbf{or} \texttt{y} $\neq$ \texttt{v}) \textbf{implies} \texttt{CellNature(OpenDoor(S,u,v)),x,y)} $=$ \texttt{CellNature(x,y)} \\
+       \texttt{[RevealTrap]}: & \texttt{CellNature(Fill(S,x,y),x,y)} $=$ \textbf{EMP} \\
+       & \textbf{forall} $(x,y)$ \textbf{in} \texttt{[0;Width(S)[}$\times$ \texttt{[0;Height(S)[}, \\ & \quad\quad\quad\quad (\texttt{x} $\neq$ \texttt{u} \textbf{or} \texttt{y} $\neq$ \texttt{v}) \textbf{implies} \texttt{CellNature(RevealTrap(S,u,v)),x,y)} $=$ \texttt{CellNature(x,y)} \\
+\end{tabular}
+
+\newpage
+\section*{Ecran éditable}
+\textit{Pas de changement par rapport à la spécification fournie} \\ \\
+\begin{tabular}{rl}
+\textbf{Service}: & \textrm{EditableScreen} {\bf includes} \textrm{Screen}  \\
+\textbf{Observators}: & \texttt{Playable}: \textrm{[EditableScreen]} $\rightarrow$ \textrm{bool} \\
+\textbf{Operators}: & \texttt{SetNature}: \textrm{[EditableScreen]} $\times$ \textrm{int} $\times$ \textrm{int} $\times$ \textrm{Cell}  $\rightarrow$ \textrm{[EditableScreen]} \\
+& \quad \textbf{pre } \texttt{SetNature(S,x,y,C)} \textbf{ requires } 0 $\leq$ \texttt{y} $<$ \texttt{Height(S)} \textbf{ and } 0 $\leq$ \texttt{x} $<$ \texttt{Width(S)}\\
+\textbf{Observations}: \\
+\texttt{[invariant]}: & \texttt{Playable(S)} \textbf{min} \\
+& \quad\quad\quad\quad \textbf{forall} $(x,y)$ \textbf{in} \texttt{[0;Width(S)[}$\times$ \texttt{[0;Height(S)[}, \texttt{CellNature(S,x,y)} $\neq$ \textbf{HOL}  \\
+& \quad\quad\quad\quad \textbf{and} \textbf{forall} $x$ \textbf{in} \texttt{[0;Width(S)[}, \texttt{CellNature(S,x,0)} $=$ \textbf{MTL}  \\
+\texttt{[SetNature]}: & \texttt{CellNature(SetNature(S,x,y,C)),x,y} $=$ C \\
+        & \textbf{forall} $(x,y)$ \textbf{in} \texttt{[0;Width(S)[}$\times$ \texttt{[0;Height(S)[}, \\ & \quad\quad\quad\quad (\texttt{x} $\neq$ \texttt{u} \textbf{or} \texttt{y} $\neq$ \texttt{v}) \textbf{implies} \texttt{CellNature(SetNature(S,u,v,C)),x,y)} $=$ \texttt{CellNature(S,x,y)} \\
+\end{tabular}
+
+\section*{Environnement}
+
+\begin{tabular}{rl}
+\textbf{Service}: & Environment \textbf{includes} Screen
+\\ \textbf{Observators} : & \texttt{CellContent}:
+\textrm{int} $\times$ \textrm{int} $\rightarrow$
+\textrm{Set\{Character + Item\}} \\
+& \quad \textbf{pre } \texttt{CellContent(E,x,y)} \textbf{ requires } 0 $\leq$ \texttt{y} $<$ \texttt{Height(S)} \textbf{ and } 0 $\leq$ \texttt{x} $<$ \texttt{Width(S)}\\
+\textbf{Constructors}: & \texttt{init}: \textrm{EditableScreen} $\rightarrow$ \textrm{Environment} \\
+\textbf{Operators}: & \texttt{AddToCellContent}: \textrm{[EditableScreen]} $\times$ \textrm{int} $\times$ \textrm{int} $\times$ \textrm{\{Character + Item\}} \\ & \quad\quad\quad\quad\quad\quad\quad\quad\quad\quad  $\rightarrow$ \textrm{[EditableScreen]} \\
+& \quad \textbf{pre } \texttt{AddToCellContent(S,x,y,e)} \textbf{ requires } 0 $\leq$ \texttt{y} $<$ \texttt{Height(S)} \\ & \quad\quad\quad\quad \textbf{and} 0 $\leq$ \texttt{x} $<$ \texttt{Width(S)} \\
+& \quad\quad\quad\quad  \textbf{and} \textbf{exists} \textrm{Guard g} \textbf{in} \texttt{CellContent(E,x,y)} \textbf{implies} \textbf{not} e \textbf{is}  \textrm{Guard} \\
+& \texttt{RemoveFromCellContent}: \textrm{[EditableScreen]} $\times$ \textrm{int} $\times$ \textrm{int} $\times$ \textrm{\{Character + Item\}} \\ & \quad\quad\quad\quad\quad\quad\quad\quad\quad\quad  $\rightarrow$ \textrm{[EditableScreen]} \\
+& \quad \textbf{pre } \texttt{RemoveFromCellContent(S,x,y,e)} \textbf{ requires } 0 $\leq$ \texttt{y} $<$ \texttt{Height(S)} \\
+& \quad\quad\quad\quad\textbf{and} 0 $\leq$ \texttt{x} $<$ \texttt{Width(S)}  \textbf{ and } \textbf{exists} \textrm{Guard g} \textbf{in} \texttt{CellContent(E,x,y)} \\
+\textbf{Observations}: \\
+\texttt{[invariant]}: & \textbf{forall} $(\mathtt{x},\mathtt{y})$ \textbf{in} \texttt{[0;Width(E)[}$\times$ \texttt{[0;Height(E)[},~\\ & \quad\quad \texttt{CellNature(E,x,y)} \textbf{in} \{\textbf{MTL}, \textbf{PLR}\} \textbf{implies} \texttt{CellContent(x,y)} $=$ $\emptyset$  \\
+\texttt{[init]}: & \textbf{forall} $(\mathtt{x},\mathtt{y})$ \textbf{in} \texttt{[0;Width(E)[}$\times$ \texttt{[0;Height(E)[},~\\ & \quad\quad
+\texttt{CellNature(init(S),x,y)} $=$ \textrm{EditableScreen}::\texttt{CellNature(S,x,y)} \\ & \quad\quad
+\textbf{and} \texttt{CellContent(init(S),x,y)} = \{\} \\
+\texttt{[AddToCellContent]}: & CellContent(AddToCellContent(S, x, y, e), x, y) = CellContent(S, x, y) \textbf{union} \{e\}\\
+& {\textbf{forall}} (x,y) {in} \texttt{[0;Width(E)[}× \texttt{[0;Height(E)[},\\
+& \quad\quad\quad\quad (\texttt{x} $\neq$ \texttt{u} \textbf{or} \texttt{y} $\neq$ \texttt{v}) \\& \quad\quad\quad\quad \quad\textbf{implies} \texttt{CellNature(AddToCellContent(S,u,v,e)),x,y)} $=$ \texttt{CellNature(S,x,y)} \\ &\quad\quad\quad\quad \quad\quad \textbf{and} CellContent(RemoveFromCellContent(S, u, v, e), x, y) = CellContent(S, x, y) \\
+\texttt{[RemoveFromCellContent]}: & CellContent(RemoveFromCellContent(S, x, y, e), x, y) = CellContent(S, x, y) \textbackslash \{e\}\\
+& {\textbf{forall}} (x,y) {in} \texttt{[0;Width(E)[}× \texttt{[0;Height(E)[},\\
+& \quad\quad\quad\quad (\texttt{x} $\neq$ \texttt{u} \textbf{or} \texttt{y} $\neq$ \texttt{v}) \\&\quad\quad\quad\quad \quad\textbf{implies} \texttt{CellNature(RemoveFromCellContent(S,u,v,e)),x,y)} $=$ \texttt{CellNature(S,x,y)}\\
+&\quad\quad\quad\quad \quad\quad \textbf{and} CellContent(RemoveFromCellContent(S, u, v, e), x, y) = CellContent(S, x, y) \\
+                        
+\end{tabular}
+
+\newpage
+
+\section*{Personnage}
+
+\begin{tabular}{rl}
+\textbf{Service}: & \textrm{Character}  \\
+\textbf{Observators}: & \textbf{const}~\texttt{Envi}: \textrm{[Character]} $\rightarrow$ \textrm{Environment}  \\
+ & \texttt{Hgt}: \textrm{[Character]} $\rightarrow$ \textrm{int}  \\
+ & \texttt{Col}: \textrm{[Character]} $\rightarrow$ \textrm{int}  \\
+ 
+\textbf{Constructors}: & \texttt{init}: \textrm{Environment} $\times$ \textrm{int} $\times$ \textrm{int} $\rightarrow$ \textrm{[Character]} \\
+& \quad\textbf{pre} \textrm{init(E,x,y)} \textbf{requires} E $\neq$ null \textbf{and} \textbf{not} \textrm{Environment::CellNature(E,x,y)} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}\} \\
+& \quad\quad\quad \textbf{and} 0 $\leq$ \texttt{y} $<$ \texttt{Environment::Height(E)} \textbf{and} 0 $\leq$ \texttt{x} $<$ \texttt{Environment::Width(E)} \\
+
+\textbf{Operators}: 
+& \texttt{GoLeft}: \textrm{[Character]} $\rightarrow$ \textrm{[Character]} \\
+ & \texttt{GoRight}: \textrm{[Character]} $\rightarrow$ \textrm{[Character]} \\
+ & \texttt{GoUp}: \textrm{[Character]} $\rightarrow$ \textrm{[Character]} \\
+ & \texttt{GoDown}: \textrm{[Character]} $\rightarrow$ \textrm{[Character]} \\
+
+\textbf{Observations}: \\
+\texttt{[invariant]}: & \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C))} \textbf{in} \{\textbf{EMP}, \textbf{HOL}, \textbf{LAD}, \textbf{HDR}, \textbf{NPL}, \textbf{NGU}\} \\
+\texttt{[init]}: & Hgt(init(E,x,y)) = y\\
+& Col(init(E,x,y)) = x\\
+& Envi(init(E,x,y)) = e\\
+& \textbf{exists} init(E,x,y) \textbf{in} Environment::CellContent(Envi(init(E,x,y), x, y)) \\
+
+\texttt{[GoLeft]}: & \textrm{Hgt(GoLeft(C))} $=$ \textrm{Hgt(C)} \\
+& \textrm{Col(C)} $=$ 0 \textbf{implies} \textrm{Col(GoLeft(C))} = \textrm{Col(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C)-1,Hgt(C))} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}\} \textbf{implies} \textrm{Col(GoLeft(C))} = \textrm{Col(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C))} \textbf{not in} \{\textbf{LAD}, \textbf{HDR}\}
+\\ & \quad\quad \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)-1)} \textbf{not in} \{\textbf{PLT}, \textbf{MTL}, \textbf{LAD},\textbf{DOR}\} \\
+& \quad\quad \textbf{and} \textbf{not exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)-1)} \\
+& \quad\quad \textbf{implies} \textrm{Col(GoLeft(C))} = \textrm{Col(C)} \\
+& \textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C)-1,Hgt(C))} \\ & \quad\quad \textbf{implies} \textrm{Col(GoLeft(C))} = \textrm{Col(C)} \\
+& (\textrm{Col(C)} $\neq$ 0) \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C)-1,Hgt(C))} \textbf{not in} \{\textbf{MTL}, \textbf{PLT},\textbf{DOR}\} \\
+& \quad\quad \textbf{and} (\textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C))} \textbf{in} \{\textbf{LAD}, \textbf{HDR}\} \\
+& \quad\quad\quad\quad \textbf{or} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)-1)} \textbf{in} \{\textbf{PLT}, \textbf{MTL}, \textbf{LAD},\textbf{DOR}\} \\
+& \quad\quad\quad\quad \textbf{or} \textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)-1)} ) \\
+& \quad\quad \textbf{and} \textbf{not} (\textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C)-1,Hgt(C))}) \\
+& \quad\quad \textbf{implies} \textrm{Col(GoLeft(C))} = \textrm{Col(C)}-1 \\
+
+\texttt{[GoRight]}: & \textrm{Hgt(GoRight(C))} $=$ \textrm{Hgt(C)} \\
+& \textrm{Col(C)} $=$ Environment::Width(Envi(GoRight(C))) - 1 \textbf{implies} \textrm{Col(GoRight(C))} = \textrm{Col(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C)+1,Hgt(C))} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}\} \textbf{implies} \textrm{Col(GoRight(C))} = \textrm{Col(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C))} \textbf{not in} \{\textbf{LAD}, \textbf{HDR}\}
+\\ & \quad\quad \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)-1)} \textbf{not in} \{\textbf{PLT}, \textbf{MTL}, \textbf{LAD},\textbf{DOR}\} \\
+& \quad\quad \textbf{and} \textbf{not exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)-1)} \\
+& \quad\quad \textbf{implies} \textrm{Col(GoRight(C))} = \textrm{Col(C)} \\
+& \textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C)+1,Hgt(C))} \\ & \quad\quad \textbf{implies} \textrm{Col(GoRight(C))} = \textrm{Col(C)} \\
+
+& (\textrm{Col(C)} $\neq$  Environment::Width(Envi(GoRight(C))) - 1) \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C)+1,Hgt(C))} \textbf{not in} \{\textbf{MTL}, \textbf{PLT},\textbf{DOR}\} \\
+& \quad\quad \textbf{and} (\textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C))} \textbf{in} \{\textbf{LAD}, \textbf{HDR}\} \\
+& \quad\quad\quad\quad \textbf{or} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)-1)} \textbf{in} \{\textbf{PLT}, \textbf{MTL}, \textbf{LAD},\textbf{DOR}\} \\
+& \quad\quad\quad\quad \textbf{or} \textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)-1)} ) \\
+& \quad\quad \textbf{and} \textbf{not} (\textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C)+1,Hgt(C))}) \\
+& \quad\quad \textbf{implies} \textrm{Col(GoRight(C))} = \textrm{Col(C)}+1 \\
+
+\end{tabular}
+\newpage
+\begin{tabular}{rl}
+
+\texttt{[GoUp]}: & \textrm{Col(GoUp(C))} $=$ \textrm{Col(C)}\\
+& \textrm{Hgt(C)} $=$ Environment::Height(Envi(GoUp(C))) - 1 \textbf{implies} \textrm{Hgt(GoUp(C))} = \textrm{Hgt(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)+1)} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}\} \textbf{implies} \textrm{Hgt(GoUp(C))} = \textrm{Hgt(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C))} $\neq$ \textbf{LAD} \textbf{implies} \textrm{Hgt(GoUp(C))} = \textrm{Hgt(C)} \\
+& \textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)+1)} \\ & \quad\quad \textbf{implies} \textrm{Hgt(GoUp(C))} = \textrm{Hgt(C)}  \\
+& (\textrm{Hgt(C)} $\neq$ Environment::Height(Envi(GoUp(C))) - 1) \\ 
+&  \quad\quad \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)+1)} \textbf{not} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}\} \\ 
+& \quad\quad  \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C))} $=$ \textbf{LAD} \\
+& \quad\quad  \textbf{and} {exists} \textrm{Guard} g {in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)+1)} \\ & \quad\quad \textbf{implies} \textrm{Hgt(GoUp(C))} = \textrm{Hgt(C)}+1  \\
+
+\texttt{[GoDown]}: & \textrm{Col(GoDown(C))} $=$ \textrm{Col(C)}\\
+& \textrm{Hgt(C)} $=$ 0 \textbf{implies} \textrm{Hgt(GoDown(C))} = \textrm{Hgt(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)-1)} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}\} \textbf{implies} \textrm{Hgt(GoDown(C))} = \textrm{Hgt(C)} \\
+& \textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)-1)} \\ & \quad\quad \textbf{implies} \textrm{Hgt(GoDown(C))} = \textrm{Hgt(C)}  \\
+& (\textrm{Hgt(C)} $\neq$ 0) \\ 
+&  \quad\quad \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)-1)} \textbf{not} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}\} \\ 
+& \quad\quad  \textbf{and} {exists} \textrm{Guard} g {in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)-1)} \\ & \quad\quad \textbf{implies} \textrm{Hgt(GoDown(C))} = \textrm{Hgt(C)}-1  \\
+
+\end{tabular}
+
+\newpage
+
+\section*{Joueur}
+
+\begin{tabular}{rl}
+\textbf{Service}: & \textrm{Player} \textbf{includes} \textrm{Character}  \\
+\textbf{Observators}: & \textbf{const} \texttt{Engine}: \textrm{[Player]} $\rightarrow$ \textrm{Engine}  \\
+ & \texttt{FacingRight}: \textrm{[Player]} $\rightarrow$ \textrm{bool}  \\
+& \texttt{CurrentlyHeldItem}: \textrm{[Player]} $\rightarrow$ \textrm{Item}  \\
+& \texttt{NumberOfUsagesLeftForCurrentItem}: \textrm{[Player]} $\rightarrow$ \textrm{int}  \\
+
+\textbf{Constructors}: & \texttt{init}:  \textrm{int} $\times$ \textrm{int}  $\times$ \textrm{Engine} $\rightarrow$ \textrm{[Player]} \\
+& \quad\textbf{pre} \textrm{init(x,y,E)} \textbf{requires} E $\neq$ null \textbf{and} \textbf{not} \textrm{Environment::CellNature(Engine::Environment(E),x,y)} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NPL}\} \\
+& \quad\quad\quad \textbf{and} 0 $\leq$ \texttt{y} $<$ \texttt{Environment::Height(Engine::Environment(E))} \textbf{and} 0 $\leq$ \texttt{x} $<$ \texttt{Environment::Width(Engine::Environment(E))} \\
+
+\textbf{Operators}: & \texttt{DigLeft}: \textrm{[Player]} $\rightarrow$ \textrm{[Player]}\\
+ & \texttt{DigRight}: \textrm{[Player]} $\rightarrow$ \textrm{[Player]}\\
+ & \texttt{UseItem}: \textrm{[Player]} $\rightarrow$ \textrm{[Player]}\\
+ & \texttt{PickupItem}: \textrm{[Player]} $\times$  \textrm{[ItemType]} $\rightarrow$ \textrm{[Player]}\\
+& \texttt{Step}: \textrm{[Player]} $\rightarrow$ \textrm{[Player]}\\
+
+\textbf{Observations}: \\
+\texttt{[invariants]}: & \\
+
+\texttt{[init]}: & Hgt(init(x,y,E)) = y\\
+& Col(init(x,y,E)) = x \\
+& Envi(init(x,y,E)) = Engine::Environment(E) \\
+& \textbf{exists} init(x,y,E) Environment::CellContent(Envi(init(x,y,E)), x, y) \\
+& Engine(init(x,y,E)) = E \\
+& FacingRight(init(x,y,E)) \\
+& Item::Nature(CurrentlyHeldItem(init(x,y,E))) = Sword \\
+& NumberOfUsagesLeftForCurrentItem(init(x,y,E)) = 3 \\ \\
+
+
+
+\texttt{[DigLeft]}:& \textbf{NoCellNatureChanged}\texttt{(C)} \textbf{defined by} \\ 
+&\quad\quad ( {\textbf{forall}} (i,j) {in} \texttt{[0;Environment::Width(Environment(DigLeft(C)))[}× \\ & \quad\quad\quad\quad\quad\quad\quad\quad\quad \texttt{[0;Environment::Height(Environment(DigLeft(C)))[}, \\
+       & \quad\quad\quad\quad\quad\quad Environment::CellNature(Envi(DigLeft(C), i, j) ) = Environment::CellNature(Envi(C, i, j) ) \\
+& Hgt(DigLeft(C)) = Hgt(C) \\
+& Col(DigLeft(C)) = Col(C) \\
+& Col(C) = 0 \textbf{implies} NoCellNatureChanged \\
+& Environment::CellNature(Envi(C), Col(C), Hgt(C)-1) \textbf{not in} \{\textbf{MTL}, \textbf{PLT}, \textbf{LAD}, \textbf{DOR}, \textbf{NPL}\} \\
+& \quad \textbf{and} \textbf{not exists} Guard g \textbf{in} Environment::CellContent(Envi(C), Col(C), Hgt(C)-1) \\
+& \quad \textbf{implies} NoCellNatureChanged \\
+& Environment::CellNature(Envi(C), Col(C)-1, Hgt(C)) \textbf{not in} \{\textbf{EMP}, \textbf{HOL}, \textbf{LAD}, \textbf{HDR}\} \\
+& \quad \textbf{implies} NoCellNatureChanged \\
+& Environment::CellNature(Envi(C), Col(C)-1, Hgt(C)-1) $\neq$ PLT \\
+& \quad \textbf{implies} NoCellNatureChanged \\
+& Col(C) $\neq$ 0 \\
+& \quad \textbf{and} (Environment::CellNature(Envi(C), Col(C), Hgt(C)-1) \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{LAD}, \textbf{DOR}, \textbf{NPL}\} \\
+& \quad\quad \textbf{or} \textbf{exists} Guard g {in} Environment::CellContent(Envi(C), Col(C), Hgt(C)-1)) \\
+& \quad \textbf{and} Environment::CellNature(Envi(C), Col(C)-1, Hgt(C)) \textbf{in} \{\textbf{EMP}, \textbf{HOL}, \textbf{LAD}, \textbf{HDR}\} \\
+& \quad \textbf{and}  Environment::CellNature(Envi(C), Col(C)-1, Hgt(C)-1) = PLT \\
+& \quad \textbf{implies} Environment::CellNature(Envi(DigLeft(C)), Col(C)-1, Hgt(C)-1) = \textbf{HOL} \\
+& \quad\quad \textbf{and} {\textbf{forall}} (i,j) {in} \texttt{[0;Environment::Width(Environment(DigLeft(C)))[}× \\ & \quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\texttt{[0;Environment::Height(Environment(DigLeft(C)))[}, \\
+       & \quad\quad\quad\quad\quad\quad ((i $\neq$ Col(DigLeft(C))-1) \textbf{or}  (j $\neq$ Hgt(DigLeft(C))-1) \textbf{implies} \\
+       & \quad\quad\quad\quad\quad\quad\quad Environment::CellNature(Envi(DigLeft(C), i, j) ) = Environment::CellNature(Envi(C, i, j) \\
+& FacingRight(DigLeft(C)) \\
+& CurrentlyHeldItem(DigLeft(C)) = CurrentlyHeldItem(C) \\
+& NumberOfUsagesLeftForCurrentItem(DigLeft(C)) = NumberOfUsagesLeftForCurrentItem(C) \\
+
+\end{tabular}
+\newpage
+\begin{tabular}{rl}
+
+\texttt{[DigRight]}:  & \textbf{NoCellNatureChanged}\texttt{(C)} \textbf{defined by} \\ 
+&\quad\quad ( {\textbf{forall}} (i,j) {in} \texttt{[0;Environment::Width(Environment(DigRight(C)))[}× \\ & \quad\quad\quad\quad\quad\quad\quad\quad\quad \texttt{[0;Environment::Height(Environment(DigRight(C)))[}, \\
+       & \quad\quad\quad\quad\quad\quad Environment::CellNature(Envi(DigRight(C), i, j) ) = Environment::CellNature(Envi(C, i, j) ) \\
+& Hgt(DigRight(C)) = Hgt(C) \\
+& Col(DigRight(C)) = Col(C) \\
+& Col(C) = Environment::Width(Envi(DigRight(C))) - 1 \textbf{implies} NoCellNatureChanged \\
+& Environment::CellNature(Envi(C), Col(C), Hgt(C)-1) \textbf{not in} \{\textbf{MTL}, \textbf{PLT}, \textbf{LAD}, \textbf{DOR}, \textbf{NPL}\} \\
+& \quad \textbf{and} \textbf{not exists} Guard g \textbf{in} Environment::CellContent(Envi(C), Col(C), Hgt(C)-1) \\
+& \quad \textbf{implies} NoCellNatureChanged \\
+& Environment::CellNature(Envi(C), Col(C)+1, Hgt(C)) \textbf{not in} \{\textbf{EMP}, \textbf{HOL}, \textbf{LAD}, \textbf{HDR}\} \\
+& \quad \textbf{implies} NoCellNatureChanged \\
+& Environment::CellNature(Envi(C), Col(C)+1, Hgt(C)-1) $\neq$ PLT \\
+& \quad \textbf{implies} NoCellNatureChanged \\
+& Col(C) $\neq$ Environment::Width(Envi(DigRight(C))) - 1 \\
+& \quad \textbf{and} (Environment::CellNature(Envi(C), Col(C), Hgt(C)-1) \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{LAD}, \textbf{DOR}, \textbf{NPL}\} \\
+& \quad\quad \textbf{or} \textbf{exists} Guard g {in} Environment::CellContent(Envi(C), Col(C), Hgt(C)-1)) \\
+& \quad \textbf{and} Environment::CellNature(Envi(C), Col(C)+1, Hgt(C)) \textbf{in} \{\textbf{EMP}, \textbf{HOL}, \textbf{LAD}, \textbf{HDR}\} \\
+& \quad \textbf{and}  Environment::CellNature(Envi(C), Col(C)+1, Hgt(C)-1) = PLT \\
+& \quad \textbf{implies} Environment::CellNature(Envi(DigRight(C)), Col(C)+1, Hgt(C)-1) = \textbf{HOL} \\
+& \quad\quad \textbf{and} {\textbf{forall}} (i,j) {in} \texttt{[0;Environment::Width(Environment(DigRight(C)))[}× \\ & \quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\texttt{[0;Environment::Height(Environment(DigRight(C)))[}, \\
+       & \quad\quad\quad\quad\quad\quad ((i $\neq$ Col(DigRight(C))+1) \textbf{or}  (j $\neq$ Hgt(DigRight(C))-1) \textbf{implies} \\
+       & \quad\quad\quad\quad\quad\quad\quad Environment::CellNature(Envi(DigRight(C), i, j) ) = Environment::CellNature(Envi(C, i, j) \\
+& \textbf{not} FacingRight(DigLeft(C)) \\
+& CurrentlyHeldItem(DigLeft(C)) = CurrentlyHeldItem(C) \\
+& NumberOfUsagesLeftForCurrentItem(DigLeft(C)) = NumberOfUsagesLeftForCurrentItem(C) \\
+
+\texttt{[UseItem]}:  & \textbf{CanUseItem}\texttt{(C)} \textbf{defined by} \\ 
+&\quad\quad CurrentlyHeldItem(C) $\neq$ null \\
+&\quad\quad \textbf{and} NumberOfUsagesLeftForCurrentItem(C) $\geq$ 1  \\
+&  CurrentlyHeldItem(C) $\neq$ null \textbf{and} NumberOfUsagesLeftForCurrentItem(C) = 1 \\
+& \quad \textbf{implies}  CurrentlyHeldItem(UseItem('C)) = null \\
+& \quad\quad \textbf{and} NumberOfUsagesLeftForCurrentItem(UseItem(C)) = 0 \\
+&  CurrentlyHeldItem(C) $\neq$ null \textbf{and} NumberOfUsagesLeftForCurrentItem(C) $>$ 1 \\
+& \quad \textbf{implies}  CurrentlyHeldItem(UseItem(C)) = CurrentlyHeldItem(C) \\
+& \quad\quad \textbf{and} NumberOfUsagesLeftForCurrentItem(UseItem(C)) = NumberOfUsagesLeftForCurrentItem(C) - 1 \\
+& CanUseItem \textbf{and} Item::Nature(CurrentlyHeldItem(C)) = Key \textbf{and} FacingRight(C) \\
+& \quad \textbf{and} Col(C) $<$ Environment::Width(Envi(C)) - 1 \\
+& \quad \textbf{and} Environment::CellNature(Envi(C), Col(C)+1, Hgt(C)) = DOR \\
+& \quad \textbf{implies} Environment::CellNature(Envi(UseItem(C), Col(C)+1, Hgt(C)) = EMP \\
+& CanUseItem \textbf{and} Item::Nature(CurrentlyHeldItem(C)) = Key \textbf{and} \textbf{not} FacingRight(C) \\
+& \quad \textbf{and} Col(C) $\geq$ 0 \\
+& \quad \textbf{and} Environment::CellNature(Envi(C), Col(C)-1, Hgt(C)) = DOR \\
+& \quad \textbf{implies} Environment::CellNature(Envi(UseItem(C), Col(C)-1, Hgt(C)+1) = EMP \\
+& \textbf{forall} Guard g \textbf{in} Engine::Guards(Engi(UseItem(C))), \\
+&  \quad CanUseItem \textbf{and} Item::Nature(CurrentlyHeldItem(C)) = Flash \\
+& \quad\quad \textbf{implies} Guard::TimeLeftParalyzed(g) = 10 \\
+& CanUseItem \textbf{and} Item::Nature(CurrentlyHeldItem(C)) = Sword \textbf{and} Col(C) - 2 $\geq$  0 \\
+& \quad \textbf{and exists} Guard g \textbf{in} Environment::CellContent(Envi(C), Col(C) - 2, Hgt(C)) \\
+& \quad \textbf{implies} \textbf{exists} g \textbf{in} Environment::CellContrent(Envi(UseItem(C)), \\
+& \quad\quad\quad Coord::X(Guard::InitCoords(g)), Coord::Y(Guard::InitCoords(g))) \\
+& CanUseItem \textbf{and} Item::Nature(CurrentlyHeldItem(C)) = Sword \textbf{and} Col(C) - 1 $\geq$  0 \\
+& \quad \textbf{and exists} Guard g \textbf{in} Environment::CellContent(Envi(C), Col(C) - 1, Hgt(C)) \\
+& \quad \textbf{implies} \textbf{exists} g \textbf{in} Environment::CellContrent(Envi(UseItem(C)), \\
+& \quad\quad\quad Coord::X(Guard::InitCoords(g)), Coord::Y(Guard::InitCoords(g))) \\
+& CanUseItem \textbf{and} Item::Nature(CurrentlyHeldItem(C)) = Sword \\
+& \quad \textbf{and} Col(C) + 2 $<$ Environment::Width(Envi(C)) \\
+& \quad \textbf{and exists} Guard g \textbf{in} Environment::CellContent(Envi(C), Col(C) + 2, Hgt(C)) \\
+& \quad \textbf{implies} \textbf{exists} g \textbf{in} Environment::CellContrent(Envi(UseItem(C)), \\
+& \quad\quad\quad Coord::X(Guard::InitCoords(g)), Coord::Y(Guard::InitCoords(g))) \\
+& CanUseItem \textbf{and} Item::Nature(CurrentlyHeldItem(C)) = Sword \\
+& \quad \textbf{and} Col(C) + 1 $<$ Environment::Width(Envi(C)) \\
+& \quad \textbf{and exists} Guard g \textbf{in} Environment::CellContent(Envi(C), Col(C) + 1, Hgt(C)) \\
+& \quad \textbf{implies} \textbf{exists} g \textbf{in} Environment::CellContrent(Envi(UseItem(C)), \\
+& \quad\quad\quad Coord::X(Guard::InitCoords(g)), Coord::Y(Guard::InitCoords(g))) \\
+& Col(UseItem(C)) = Col(C) \\
+& Hgt(UseItem(C)) = Hgt(C) \\
+& FacingRight(UseItem(C)) = FacingRight(C) \\
+
+\end{tabular}
+\newpage
+\begin{tabular}{rl}
+
+\texttt{[PickupItem]}: & FacingRight(PickupItem(C, t)) = FacingRight(C)\\
+& Col(PickupItem(C, t)) = Col(C)\\
+& Hgt(PickupItem(C, t)) = Hgt(C)\\
+& CurrentlyHeldItem(C) $\neq$ null \textbf{and} Item::Nature(CurrentlyHeldItem(C)) = t \textbf{and} t = Key \\
+& \quad \textbf{implies} NumberOfUsagesLeftForCurrentItem(PickupItem(C, t)) = \\
+& \quad\quad NumberOfUsagesLeftForCurrentItem(C)+1  \\
+& \quad\quad \textbf{and} CurrentlyHeldItem(PickupItem(C, t)) = CurrentlyHeldItem(C) \\
+& CurrentlyHeldItem(C) $\neq$ null \textbf{and} Item::Nature(CurrentlyHeldItem(C)) = t \textbf{and} t = Flash \\
+& \quad \textbf{implies} NumberOfUsagesLeftForCurrentItem(PickupItem(C, t)) = \\
+& \quad\quad NumberOfUsagesLeftForCurrentItem(C)+1  \\
+& \quad\quad \textbf{and} CurrentlyHeldItem(PickupItem(C, t)) = CurrentlyHeldItem(C) \\
+& CurrentlyHeldItem(C) $\neq$ null \textbf{and} Item::Nature(CurrentlyHeldItem(C)) = t \textbf{and} t = Gun \\
+& \quad \textbf{implies} NumberOfUsagesLeftForCurrentItem(PickupItem(C, t)) = \\
+& \quad\quad NumberOfUsagesLeftForCurrentItem(C)+1  \\
+& \quad\quad \textbf{and} CurrentlyHeldItem(PickupItem(C, t)) = CurrentlyHeldItem(C) \\
+& CurrentlyHeldItem(C) $\neq$ null \textbf{and} Item::Nature(CurrentlyHeldItem(C)) = t \textbf{and} t = Sword \\
+& \quad \textbf{implies} NumberOfUsagesLeftForCurrentItem(PickupItem(C, t)) = \\
+& \quad\quad NumberOfUsagesLeftForCurrentItem(C)+3  \\
+& \quad\quad \textbf{and} CurrentlyHeldItem(PickupItem(C, t)) = CurrentlyHeldItem(C) \\
+& \textbf{not} (CurrentlyHeldItem(C) $\neq$ null \textbf{and} Item::Nature(CurrentlyHeldItem(C)) = t) \textbf{and} t = Key \\
+& \quad \textbf{implies} NumberOfUsagesLeftForCurrentItem(PickupItem(C, t)) = 1 \\
+& \quad\quad Item::Nature(CurrentlyHeldItem(PickupItem(C, t))) = t \\
+& \textbf{not} (CurrentlyHeldItem(C) $\neq$ null \textbf{and} Item::Nature(CurrentlyHeldItem(C)) = t) \textbf{and} t = Flash \\
+& \quad \textbf{implies} NumberOfUsagesLeftForCurrentItem(PickupItem(C, t)) = 1 \\
+& \quad\quad Item::Nature(CurrentlyHeldItem(PickupItem(C, t))) = t \\
+& \textbf{not} (CurrentlyHeldItem(C) $\neq$ null \textbf{and} Item::Nature(CurrentlyHeldItem(C)) = t) \textbf{and} t = Gun \\
+& \quad \textbf{implies} NumberOfUsagesLeftForCurrentItem(PickupItem(C, t)) = 1 \\
+& \quad\quad Item::Nature(CurrentlyHeldItem(PickupItem(C, t))) = t \\
+& \textbf{not} (CurrentlyHeldItem(C) $\neq$ null \textbf{and} Item::Nature(CurrentlyHeldItem(C)) = t) \textbf{and} t = Sword \\
+& \quad \textbf{implies} NumberOfUsagesLeftForCurrentItem(PickupItem(C, t)) = 3 \\
+& \quad\quad Item::Nature(CurrentlyHeldItem(PickupItem(C, t))) = t \\
+
+
+
+\texttt{[Step]}:  & \textbf{Falling}\texttt{(C)} \textbf{defined by} \\ 
+&\quad\quad (Environment::CellNature(Envi(C), Col(C), Hgt(C)) \textbf{not in} \{\textbf{LAD},\textbf{HDR}\}  \\
+&\quad\quad \textbf{and} Environment::CellNature(Envi(C), Col(C), Hgt(C)-1) \textbf{in} \{\textbf{EMP},\textbf{HDR},\textbf{HOL},\textbf{NGU}\}  \\
+& \quad\quad \textbf{and} \textbf{not exists} Guard g \textbf{in} Environment::CellContent(Envi(C), Col(C), Hgt(C)-1) )\\
+& Falling \textbf{implies} Step(C) = GoDown(C) \\
+& \textbf{not} Falling \textbf{and} NextCommand(C) = MOVEL \textbf{implies} Step(C) = GoLeft(C) \\
+& \textbf{not} Falling \textbf{and} NextCommand(C) = MOVER \textbf{implies} Step(C) = GoRight(C) \\
+& \textbf{not} Falling \textbf{and} NextCommand(C) = MOVED \textbf{implies} Step(C) = GoDown(C) \\
+& \textbf{not} Falling \textbf{and} NextCommand(C) = MOVEU \textbf{implies} Step(C) = GoUp(C) \\
+& \textbf{not} Falling \textbf{and} NextCommand(C) = DIGL \textbf{implies} Step(C) = DigLeft(C) \\
+& \textbf{not} Falling \textbf{and} NextCommand(C) = DIGR \textbf{implies} Step(C) = DigRight(C) \\
+& \textbf{not} Falling \textbf{and} NextCommand(C) = USEITEM \textbf{implies} Step(C) = UseItem(C) \\
+& \textbf{not} Falling \textbf{and} NextCommand(C) = NONE \textbf{implies} Step(C) = C \\
+
+\end{tabular}
+\newpage
+
+\texttt{\textit{Les fonctions de déplacements de Player sont quasiment les mêmes que celles de Character, on change seulement le fait qu'on ne puisse pas aller dans une case NPL}} \\ \\
+
+\begin{tabular}{rl}
+\texttt{[GoLeft]}: & \textrm{Hgt(GoLeft(C))} $=$ \textrm{Hgt(C)} \\
+& \textrm{Col(C)} $=$ 0 \textbf{implies} \textrm{Col(GoLeft(C))} = \textrm{Col(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C)-1,Hgt(C))} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NPL}\} \textbf{implies} \textrm{Col(GoLeft(C))} = \textrm{Col(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C))} \textbf{not in} \{\textbf{LAD}, \textbf{HDR}\}
+\\ & \quad\quad \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)-1)} \textbf{not in} \{\textbf{PLT}, \textbf{MTL}, \textbf{LAD},\textbf{DOR}, \textbf{NPL}\} \\
+& \quad\quad \textbf{and} \textbf{not exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)-1)} \\
+& \quad\quad \textbf{implies} \textrm{Col(GoLeft(C))} = \textrm{Col(C)} \\
+& \textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C)-1,Hgt(C))} \\ & \quad\quad \textbf{implies} \textrm{Col(GoLeft(C))} = \textrm{Col(C)} \\
+& (\textrm{Col(C)} $\neq$ 0) \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C)-1,Hgt(C))} \textbf{not in} \{\textbf{MTL}, \textbf{PLT},\textbf{DOR}, \textbf{NPL}\} \\
+& \quad\quad \textbf{and} (\textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C))} \textbf{in} \{\textbf{LAD}, \textbf{HDR}\} \\
+& \quad\quad\quad\quad \textbf{or} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)-1)} \textbf{in} \{\textbf{PLT}, \textbf{MTL}, \textbf{LAD},\textbf{DOR}, \textbf{NPL}\} \\
+& \quad\quad\quad\quad \textbf{or} \textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)-1)} ) \\
+& \quad\quad \textbf{and} \textbf{not} (\textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C)-1,Hgt(C))}) \\
+& \quad\quad \textbf{implies} \textrm{Col(GoLeft(C))} = \textrm{Col(C)}-1 \\
+
+\texttt{[GoRight]}: & \textrm{Hgt(GoRight(C))} $=$ \textrm{Hgt(C)} \\
+& \textrm{Col(C)} $=$ Environment::Width(Envi(GoRight(C))) - 1 \textbf{implies} \textrm{Col(GoRight(C))} = \textrm{Col(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C)+1,Hgt(C))} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NPL}\} \textbf{implies} \textrm{Col(GoRight(C))} = \textrm{Col(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C))} \textbf{not in} \{\textbf{LAD}, \textbf{HDR}\}
+\\ & \quad\quad \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)-1)} \textbf{not in} \{\textbf{PLT}, \textbf{MTL}, \textbf{LAD},\textbf{DOR}, \textbf{NPL}\} \\
+& \quad\quad \textbf{and} \textbf{not exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)-1)} \\
+& \quad\quad \textbf{implies} \textrm{Col(GoRight(C))} = \textrm{Col(C)} \\
+& \textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C)+1,Hgt(C))} \\ & \quad\quad \textbf{implies} \textrm{Col(GoRight(C))} = \textrm{Col(C)} \\
+
+& (\textrm{Col(C)} $\neq$  Environment::Width(Envi(GoRight(C))) - 1) \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C)+1,Hgt(C))} \textbf{not in} \{\textbf{MTL}, \textbf{PLT},\textbf{DOR}, \textbf{NPL}\} \\
+& \quad\quad \textbf{and} (\textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C))} \textbf{in} \{\textbf{LAD}, \textbf{HDR}\} \\
+& \quad\quad\quad\quad \textbf{or} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)-1)} \textbf{in} \{\textbf{PLT}, \textbf{MTL}, \textbf{LAD},\textbf{DOR}, \textbf{NPL}\} \\
+& \quad\quad\quad\quad \textbf{or} \textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)-1)} ) \\
+& \quad\quad \textbf{and} \textbf{not} (\textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C)+1,Hgt(C))}) \\
+& \quad\quad \textbf{implies} \textrm{Col(GoRight(C))} = \textrm{Col(C)}+1 \\
+
+\texttt{[GoUp]}: & \textrm{Col(GoUp(C))} $=$ \textrm{Col(C)}\\
+& \textrm{Hgt(C)} $=$ Environment::Height(Envi(GoUp(C))) - 1 \textbf{implies} \textrm{Hgt(GoUp(C))} = \textrm{Hgt(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)+1)} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NPL}\} \textbf{implies} \textrm{Hgt(GoUp(C))} = \textrm{Hgt(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C))} $\neq$ \textbf{LAD} \textbf{implies} \textrm{Hgt(GoUp(C))} = \textrm{Hgt(C)} \\
+& \textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)+1)} \\ & \quad\quad \textbf{implies} \textrm{Hgt(GoUp(C))} = \textrm{Hgt(C)}  \\
+& (\textrm{Hgt(C)} $\neq$ Environment::Height(Envi(GoUp(C))) - 1) \\ 
+&  \quad\quad \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)+1)} \textbf{not} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NPL}\} \\ 
+& \quad\quad  \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C))} $=$ \textbf{LAD} \\
+& \quad\quad  \textbf{and} {exists} \textrm{Guard} g {in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)+1)} \\ & \quad\quad \textbf{implies} \textrm{Hgt(GoUp(C))} = \textrm{Hgt(C)}+1  \\
+
+\texttt{[GoDown]}: & \textrm{Col(GoDown(C))} $=$ \textrm{Col(C)}\\
+& \textrm{Hgt(C)} $=$ 0 \textbf{implies} \textrm{Hgt(GoDown(C))} = \textrm{Hgt(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)-1)} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NPL}\} \textbf{implies} \textrm{Hgt(GoDown(C))} = \textrm{Hgt(C)} \\
+& \textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)-1)} \\ & \quad\quad \textbf{implies} \textrm{Hgt(GoDown(C))} = \textrm{Hgt(C)}  \\
+& (\textrm{Hgt(C)} $\neq$ 0) \\ 
+&  \quad\quad \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)-1)} \textbf{not} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NPL}\} \\ 
+& \quad\quad  \textbf{and} {exists} \textrm{Guard} g {in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)-1)} \\ & \quad\quad \textbf{implies} \textrm{Hgt(GoDown(C))} = \textrm{Hgt(C)}-1  \\
+\end{tabular}
+
+\section*{Garde}
+
+\begin{tabular}{rl}
+\textbf{Service}: & \textrm{Guard} \textbf{includes} \textrm{Character}  \\
+\textbf{Observators}: & \textbf{const} \texttt{Id}: \textrm{[Guard]} $\rightarrow$ \textrm{int}  \\
+& \textbf{const} \texttt{Engine}: \textrm{[Guard]} $\rightarrow$ \textrm{Engine}  \\
+& \textbf{const} \texttt{Target}: \textrm{[Guard]} $\rightarrow$ \textrm{Character}  \\
+& \textbf{const} \texttt{InitCoords}: \textrm{[Guard]} $\rightarrow$ \textrm{Coord}  \\
+& \textbf{const} \texttt{Nature}: \textrm{[Guard]} $\rightarrow$ \textrm{GuardType}  \\
+ & \texttt{Behaviour}: \textrm{[Guard]} $\rightarrow$ \textrm{Command}  \\
+& \texttt{TimeInHole}: \textrm{[Guard]} $\rightarrow$ \textrm{int}  \\
+& \texttt{IdCounter}: \textrm{[Guard]} $\rightarrow$ \textrm{int}  \\
+& \texttt{CarryingTreasure}: \textrm{[Guard]} $\rightarrow$ \textrm{bool}  \\
+& \texttt{TimeLeftParalyzed}: \textrm{[Guard]} $\rightarrow$ \textrm{int}  \\
+
+\textbf{Constructors}: & \texttt{init}: \textrm{Engine} $\times$ \textrm{int} $\times$ \textrm{int}  $\times$ \textrm{Character} $\rightarrow$ \textrm{[Guard]} \\
+& \quad\textbf{pre} \textrm{init(E,x,y,t)} \textbf{requires} E $\neq$ null \textbf{and} \textbf{not} \textrm{Environment::CellNature(Engine::Environment(E),x,y)} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NGU}\} \\
+& \quad\quad\quad \textbf{and} 0 $\leq$ \texttt{y} $<$ \texttt{Environment::Height(Engine::Environment(E))} \textbf{and} 0 $\leq$ \texttt{x} $<$ \texttt{Environment::Width(Engine::Environment(E))} \\
+
+\textbf{Operators}: & \texttt{ClimbLeft}: \textrm{[Guard]} $\rightarrow$ \textrm{[Guard]}\\
+& \quad\quad \textbf{pre} \texttt{ClimbLeft(G)} \textbf{requires} \texttt{Environment::CellNature(Envi(G),Hgt(G),Col(G))} $=$ \textbf{HOL} \\
+ & \texttt{ClimbRight}: \textrm{[Guard]} $\rightarrow$ \textrm{[Guard]}\\
+& \quad\quad \textbf{pre} \texttt{ClimbRight(G)} \textbf{requires} \texttt{Environment::CellNature(Envi(G),Hgt(G),Col(G))} $=$ \textbf{HOL} \\
+ & \texttt{MoveToInitCoords}: \textrm{[Guard]} $\rightarrow$ \textrm{[Guard]}\\
+ & \texttt{Paralyze}: \textrm{[Guard]} $\rightarrow$ \textrm{[Guard]}\\
+& \texttt{Step}: \textrm{[Guard]} $\rightarrow$ \textrm{[Guard]}\\
+
+\textbf{Observations}: & \\
+\textrm{[invariant]}: & \ \\
+\textrm{[init]}: & Engine(init(E,x,y,t)) = e \\
+& Nature(init(E,x,y,t)) = NORMAL \\
+& Coord::X(InitCoords(init(E,x,y,t))) = x \\
+& Coord::Y(InitCoords(init(E,x,y,t))) = y \\
+& Target(init(E,x,y,t)) = t \\
+& Id(init(E,x,y,t)) = IdCounter(init(E,x,y,t)) - 1 \\
+& \textbf{not} CarryingTreasure(init(E,x,y,t)) \\
+& TimeInHole(init(E,x,y,t)) = 0 \\
+& TimeLeftParalyzed(init(E,x,y,t)) = 0 \\
+
+
+\textrm{[ClimbLeft]}: 
+& \textrm{Col(C)} $=$ 0 \textbf{implies} \textrm{Col(ClimbLeft(C))} = \textrm{Col(C)} \textbf{and} \textrm{Hgt(ClimbLeft(C))} $=$ \textrm{Hgt(C)} \\
+& \textrm{Screen::CellNature(Envi(C),Col(C)-1,Hgt(C) +1)} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NGU} \} \\ & \quad\quad \textbf{implies} \textrm{Col(ClimbLeft(C))} = \textrm{Col(C)} \textbf{and} \textrm{Hgt(ClimbLeft(C))} $=$ \textrm{Hgt(C)} \\
+& \textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C)-1,Hgt(C)+1)} \\
+& \quad\quad \textbf{implies} \textrm{Col(ClimbLeft(C))} = \textrm{Col(C)} \textbf{and} \textrm{Hgt(ClimbLeft(C))} $=$ \textrm{Hgt(C)} \\
+& \textrm{Col(C)} $\neq$ 0 \textbf{and} \textrm{Screen::CellNature(Envi(C),Col(C)-1,Hgt(C)+1)} \textbf{notin} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NGU} \} \\
+& \quad\quad \textbf{and} \textbf{not exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C)-1,Hgt(C)+1)} \\
+& \quad\quad \textbf{and} \textbf{exists} \textrm{Player} p \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)+1)} \\
+& \quad\quad \textbf{implies} \textrm{Col(ClimbLeft(C))} = \textrm{Col(C)} \textbf{and} \textrm{Hgt(ClimbLeft(C))} = \textrm{Hgt(C)}+1 \\
+& \textrm{Col(C)} $\neq$ 0 \textbf{and} \textrm{Screen::CellNature(Envi(C),Col(C)-1,Hgt(C)+1)} \textbf{notin} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NGU} \} \\
+& \quad\quad \textbf{and} \textbf{not exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C)-1,Hgt(C)+1)} \\
+& \quad\quad \textbf{and} \textbf{not exists} \textrm{Player} p \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)+1)} \\
+& \quad\quad \textbf{implies} \textrm{Col(ClimbLeft(C))} = \textrm{Col(C)}-1 \textbf{and} \textrm{Hgt(ClimbLeft(C))} = \textrm{Hgt(C)}+1 \\
+
+\end{tabular}
+\newpage
+\begin{tabular}{rl}
+
+\textrm{[ClimbRight]}: 
+& \textrm{Col(C)} $=$ Environment::Width(Envi(GoRight(C))) - 1 \textbf{implies} \textrm{Col(ClimbRight(C))} = \textrm{Col(C)} \textbf{and} \textrm{Hgt(ClimbRight(C))} $=$ \textrm{Hgt(C)} \\
+& \textrm{Screen::CellNature(Envi(C),Col(C)+1,Hgt(C) +1)} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NGU} \} \\ & \quad\quad \textbf{implies} \textrm{Col(ClimbRight(C))} = \textrm{Col(C)} \textbf{and} \textrm{Hgt(ClimbRight(C))} $=$ \textrm{Hgt(C)} \\
+& \textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C)+1,Hgt(C)+1)} \\
+& \quad\quad \textbf{implies} \textrm{Col(ClimbRight(C))} = \textrm{Col(C)} \textbf{and} \textrm{Hgt(ClimbRight(C))} $=$ \textrm{Hgt(C)} \\
+& \textrm{Col(C)} $\neq$ Environment::Width(Envi(GoRight(C))) - 1 \textbf{and} \textrm{Screen::CellNature(Envi(C),Col(C)+1,Hgt(C)+1)} \textbf{notin} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NGU} \} \\
+& \quad\quad \textbf{and} \textbf{not exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C)+1,Hgt(C)+1)} \\
+& \quad\quad \textbf{and} \textbf{exists} \textrm{Player} p \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)+1)} \\
+& \quad\quad \textbf{implies} \textrm{Col(ClimbRight(C))} = \textrm{Col(C)} \textbf{and} \textrm{Hgt(ClimbRight(C))} = \textrm{Hgt(C)}+1 \\
+& \textrm{Col(C)} $\neq$ Environment::Width(Envi(GoRight(C))) - 1 \textbf{and} \textrm{Screen::CellNature(Envi(C),Col(C)+1,Hgt(C)+1)} \textbf{notin} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NGU} \} \\
+& \quad\quad \textbf{and} \textbf{not exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C)+1,Hgt(C)+1)} \\
+& \quad\quad \textbf{and} \textbf{not exists} \textrm{Player} p \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)+1)} \\
+& \quad\quad \textbf{implies} \textrm{Col(ClimbRight(C))} = \textrm{Col(C)}+1 \textbf{and} \textrm{Hgt(ClimbRight(C))} = \textrm{Hgt(C)}+1 \\
+
+\textrm{[MoveToInitCoords]}:  & \textbf{exists} Guard g \textbf{in} Environment::CellContent(Envi(C), \\ & \quad Coord::X(InitCoords(C)), Coord::Y(InitCoords(C))) \textbf{implies} \textbf{exists} g \textbf{in} \\ & \quad Environment::CellContent(Envi(MoveToInitCoords(C)), \\ & \quad 
+Coord::X(InitCoords(g)), Coord::Y(InitCoords(g))) \\
+& TimeInHole(MoveToInitCoords(C)) = 0 \\
+& Col(MoveToInitCoords(C)) = Coord::X(InitCoords(MoveToInitCoords(C))) \\
+& Hgt(MoveToInitCoords(C)) = Coord::Y(InitCoords(MoveToInitCoords(C))) \\
+& IdCounter(MoveToInitCoords(C)) = IdCounter(C) \\
+& CarryingTreasure(MoveToInitCoords(C)) = CarryingTreasure(C) \\
+& TimeLeftParalyzed(MoveToInitCoords(C)) = 0 \\
+
+\textrm{[Paralyze]}:  & CarryingTreasure(Paralyze(C)) = CarryingTreasure(C) \\
+& TimeInHole(Paralyze(C)) = TimeInHole(C) \\
+& Col(Paralyze(C)) = Col(C) \\
+& Hgt(Paralyze(C)) = Hgt(C) \\
+& IdCounter(Paralyze(C)) = IdCounter(C) \\
+& TimeLeftParalyzed(Paralyze(C)) = 10 \\
+
+\end{tabular}
+\newpage
+\begin{tabular}{rl}
+
+\textrm{[Step]}: & \textbf{Falling}\texttt{(C)} \textbf{defined by} \\ 
+&\quad\quad (Environment::CellNature(Envi(C), Col(C), Hgt(C)) \textbf{not in} \{\textbf{LAD},\textbf{HDR}\}  \\
+&\quad\quad \textbf{and} Environment::CellNature(Envi(C), Col(C), Hgt(C)-1) \textbf{in} \{\textbf{EMP},\textbf{HDR},\textbf{HOL},\textbf{NPL}\}  \\
+& \quad\quad \textbf{and} \textbf{not exists} Guard g \textbf{in} Environment::CellContent(Envi(C), Col(C), Hgt(C)-1) )\\
+&  TimeLeftParalyzed(C) = 0 \textbf{implies} TimeLeftParalyzed(Step(C))\\
+&  TimeLeftParalyzed(C) $>$ 0 \textbf{and} Falling \textbf{implies} TimeLeftParalyzed(Step(C)) = TimeLeftParalyzed(C)\\
+&  TimeLeftParalyzed(C) $>$ 0 \textbf{and} \textbf{not} Falling \textbf{implies} TimeLeftParalyzed(Step(C)) = TimeLeftParalyzed(C) - 1\\
+& \textbf{exists} Treasure t \textbf{in} Environment::CellContent(Envi(C), Col(C), Hgt(C)) \\ 
+& \quad \textbf{and not} CarryingTreasure(C) \\ 
+& \quad \textbf{implies} CarryingTreasure(Step(C)) \\
+& \quad\quad \textbf{and not exists} t \textbf{in} Environment::CellContent(Envi(Step(C)), Col(C), Hgt(C)) \\ 
+& \textbf{exists} Treasure t \textbf{in} Environment::CellContent(Envi(C), Col(C), Hgt(C)) \\ 
+& \quad \textbf{and} CarryingTreasure(C) \\ 
+& \quad \textbf{implies} CarryingTreasure(Step(C)) \\
+& \quad\quad \textbf{and exists} t \textbf{in} Environment::CellContent(Envi(Step(C)), Col(C), Hgt(C)) \\
+& \textbf{not exists} Treasure t \textbf{in} Environment::CellContent(Envi(C), Col(C), Hgt(C)) \\ 
+& \quad \textbf{and not} CarryingTreasure(C) \\ 
+& \quad \textbf{implies not} CarryingTreasure(Step(C)) \\
+& \quad\quad \textbf{and not exists} t \textbf{in} Environment::CellContent(Envi(Step(C)), Col(C), Hgt(C)) \\
+& \textbf{not exists} Treasure t \textbf{in} Environment::CellContent(Envi(C), Col(C), Hgt(C)) \\ 
+& \quad \textbf{and} CarryingTreasure(C) \\
+& \quad \textbf{and} Environment::CellNature(Envi(C), Col(C), Hgt(C)-1) = HOL \\
+& \quad \textbf{and not} Environment::CellNature(Envi(C), Col(C), Hgt(C)) \textbf{in} \{\textbf{LAD}, \textbf{HDR}, \textbf{HOL}\} \\
+&\quad \textbf{and not exists} Guard g \textbf{in} Environment::CellContent(Envi(C), Col(C), Hgt(C)-1) \\ 
+& \quad \textbf{implies not} CarryingTreasure(Step(C)) \\
+& \quad\quad \textbf{and exists} Treasure t2 \textbf{in} Environment::CellContent(Envi(Step(C)), Col(C), Hgt(C)) \\
+& \textbf{not exists} Treasure t \textbf{in} Environment::CellContent(Envi(C), Col(C), Hgt(C)) \\ 
+& \quad \textbf{and} CarryingTreasure(C) \\
+& \quad (\textbf{and} Environment::CellNature(Envi(C), Col(C), Hgt(C)-1) $\neq$ HOL \\
+& \quad\quad \textbf{or} Environment::CellNature(Envi(C), Col(C), Hgt(C)) \textbf{in} \{\textbf{LAD}, \textbf{HDR}, \textbf{HOL}\} \\
+&\quad\quad \textbf{or exists} Guard g \textbf{in} Environment::CellContent(Envi(C), Col(C), Hgt(C)-1) )\\ 
+& \quad \textbf{implies} CarryingTreasure(Step(C)) \\
+& \quad\quad \textbf{and not exists} Treasure t2 \textbf{in} Environment::CellContent(Envi(Step(C)), Col(C), Hgt(C)) \\
+& TimeLeftParalyzed(C) = 0 \textbf{and} Environment::CellNature(Envi(C), Col(C), Hgt(C)) = HOL \\
+& \quad \textbf{and} TimeInHole(C) $<$ 5 \\
+& \quad \textbf{implies} TimeInHole(Step(C)) = TimeInHole(C)+1 \\
+& TimeLeftParalyzed(C) = 0 \textbf{and} Environment::CellNature(Envi(C), Col(C), Hgt(C)) = HOL \\
+& \quad \textbf{and} TimeInHole(C) $\geq$  5 \\
+& \quad \textbf{and} Behaviour(C) = MOVEL \\
+& \quad \textbf{implies} TimeInHole(Step(C)) = 0 \textbf{and} Step(C) = ClimbLeft(C) \\
+& \quad \textbf{and} TimeInHole(C) $\geq$  5 \\
+& \quad \textbf{and} Behaviour(C) = MOVER \\
+& \quad \textbf{implies} TimeInHole(Step(C)) = 0 \textbf{and} Step(C) = ClimbRight(C) \\
+& Falling \textbf{implies} Step(C) = GoDown(C) \\
+& \textbf{not} Falling \textbf{and} TimeLeftParalyzed(C) = 0 \\
+& \quad \textbf{and} Environment::CellNature(Envi(C), Col(C), Hgt(C)) $\neq$ HOL \\
+& \quad \textbf{and} Behaviour(C) = MOVEL \\
+& \quad \textbf{implies} Step(C) = GoLeft(C) \\
+& \textbf{not} Falling \textbf{and} TimeLeftParalyzed(C) = 0 \\
+& \quad \textbf{and} Environment::CellNature(Envi(C), Col(C), Hgt(C)) $\neq$ HOL \\
+& \quad \textbf{and} Behaviour(C) = MOVER \\
+& \quad \textbf{implies} Step(C) = GoRight(C) \\
+& \textbf{not} Falling \textbf{and} TimeLeftParalyzed(C) = 0 \\
+& \quad \textbf{and} Environment::CellNature(Envi(C), Col(C), Hgt(C)) $\neq$ HOL \\
+& \quad \textbf{and} Behaviour(C) = MOVEU \\
+& \quad \textbf{implies} Step(C) = GoUp(C) \\
+& \textbf{not} Falling \textbf{and} TimeLeftParalyzed(C) = 0 \\
+& \quad \textbf{and} Environment::CellNature(Envi(C), Col(C), Hgt(C)) $\neq$ HOL \\
+& \quad \textbf{and} Behaviour(C) = MOVED \\
+& \quad \textbf{implies} Step(C) = GoDown(C) \\
+& IdCounter(Step(C)) = IdCounter(C) \\
+
+
+\end{tabular}
+\newpage
+\texttt{\textit{Les fonctions de déplacements de Guard sont quasiment les mêmes que celles de Character, on change seulement le fait qu'on ne puisse pas aller dans une case NGU}} \\ \\
+
+\begin{tabular}{rl}
+
+
+\texttt{[GoLeft]}: & \textrm{Hgt(GoLeft(C))} $=$ \textrm{Hgt(C)} \\
+& \textrm{Col(C)} $=$ 0 \textbf{implies} \textrm{Col(GoLeft(C))} = \textrm{Col(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C)-1,Hgt(C))} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NGU}\} \textbf{implies} \textrm{Col(GoLeft(C))} = \textrm{Col(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C))} \textbf{not in} \{\textbf{LAD}, \textbf{HDR}\}
+\\ & \quad\quad \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)-1)} \textbf{not in} \{\textbf{PLT}, \textbf{MTL}, \textbf{LAD},\textbf{DOR}, \textbf{NGU}\} \\
+& \quad\quad \textbf{and} \textbf{not exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)-1)} \\
+& \quad\quad \textbf{implies} \textrm{Col(GoLeft(C))} = \textrm{Col(C)} \\
+& \textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C)-1,Hgt(C))} \\ & \quad\quad \textbf{implies} \textrm{Col(GoLeft(C))} = \textrm{Col(C)} \\
+& (\textrm{Col(C)} $\neq$ 0) \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C)-1,Hgt(C))} \textbf{not in} \{\textbf{MTL}, \textbf{PLT},\textbf{DOR}, \textbf{NGU}\} \\
+& \quad\quad \textbf{and} (\textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C))} \textbf{in} \{\textbf{LAD}, \textbf{HDR}\} \\
+& \quad\quad\quad\quad \textbf{or} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)-1)} \textbf{in} \{\textbf{PLT}, \textbf{MTL}, \textbf{LAD},\textbf{DOR}, \textbf{NGU}\} \\
+& \quad\quad\quad\quad \textbf{or} \textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)-1)} ) \\
+& \quad\quad \textbf{and} \textbf{not} (\textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C)-1,Hgt(C))}) \\
+& \quad\quad \textbf{implies} \textrm{Col(GoLeft(C))} = \textrm{Col(C)}-1 \\
+
+\texttt{[GoRight]}: & \textrm{Hgt(GoRight(C))} $=$ \textrm{Hgt(C)} \\
+& \textrm{Col(C)} $=$ Environment::Width(Envi(GoRight(C))) - 1 \textbf{implies} \textrm{Col(GoRight(C))} = \textrm{Col(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C)+1,Hgt(C))} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NGU}\} \textbf{implies} \textrm{Col(GoRight(C))} = \textrm{Col(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C))} \textbf{not in} \{\textbf{LAD}, \textbf{HDR}\}
+\\ & \quad\quad \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)-1)} \textbf{not in} \{\textbf{PLT}, \textbf{MTL}, \textbf{LAD},\textbf{DOR}, \textbf{NGU}\} \\
+& \quad\quad \textbf{and} \textbf{not exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)-1)} \\
+& \quad\quad \textbf{implies} \textrm{Col(GoRight(C))} = \textrm{Col(C)} \\
+& \textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C)+1,Hgt(C))} \\ & \quad\quad \textbf{implies} \textrm{Col(GoRight(C))} = \textrm{Col(C)} \\
+
+& (\textrm{Col(C)} $\neq$  Environment::Width(Envi(GoRight(C))) - 1) \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C)+1,Hgt(C))} \textbf{not in} \{\textbf{MTL}, \textbf{PLT},\textbf{DOR}, \textbf{NGU}\} \\
+& \quad\quad \textbf{and} (\textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C))} \textbf{in} \{\textbf{LAD}, \textbf{HDR}\} \\
+& \quad\quad\quad\quad \textbf{or} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)-1)} \textbf{in} \{\textbf{PLT}, \textbf{MTL}, \textbf{LAD},\textbf{DOR}, \textbf{NGU}\} \\
+& \quad\quad\quad\quad \textbf{or} \textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)-1)} ) \\
+& \quad\quad \textbf{and} \textbf{not} (\textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C)+1,Hgt(C))}) \\
+& \quad\quad \textbf{implies} \textrm{Col(GoRight(C))} = \textrm{Col(C)}+1 \\
+
+\texttt{[GoUp]}: & \textrm{Col(GoUp(C))} $=$ \textrm{Col(C)}\\
+& \textrm{Hgt(C)} $=$ Environment::Height(Envi(GoUp(C))) - 1 \textbf{implies} \textrm{Hgt(GoUp(C))} = \textrm{Hgt(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)+1)} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NGU}\} \textbf{implies} \textrm{Hgt(GoUp(C))} = \textrm{Hgt(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C))} $\neq$ \textbf{LAD} \textbf{implies} \textrm{Hgt(GoUp(C))} = \textrm{Hgt(C)} \\
+& \textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)+1)} \\ & \quad\quad \textbf{implies} \textrm{Hgt(GoUp(C))} = \textrm{Hgt(C)}  \\
+& (\textrm{Hgt(C)} $\neq$ Environment::Height(Envi(GoUp(C))) - 1) \\ 
+&  \quad\quad \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)+1)} \textbf{not} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NGU}\} \\ 
+& \quad\quad  \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C))} $=$ \textbf{LAD} \\
+& \quad\quad  \textbf{and} {exists} \textrm{Guard} g {in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)+1)} \\ & \quad\quad \textbf{implies} \textrm{Hgt(GoUp(C))} = \textrm{Hgt(C)}+1  \\
+
+\texttt{[GoDown]}: & \textrm{Col(GoDown(C))} $=$ \textrm{Col(C)}\\
+& \textrm{Hgt(C)} $=$ 0 \textbf{implies} \textrm{Hgt(GoDown(C))} = \textrm{Hgt(C)} \\
+& \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)-1)} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NGU}\} \textbf{implies} \textrm{Hgt(GoDown(C))} = \textrm{Hgt(C)} \\
+& \textbf{exists} \textrm{Guard} g \textbf{in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)-1)} \\ & \quad\quad \textbf{implies} \textrm{Hgt(GoDown(C))} = \textrm{Hgt(C)}  \\
+& (\textrm{Hgt(C)} $\neq$ 0) \\ 
+&  \quad\quad \textbf{and} \textrm{Environment::CellNature(Envi(C),Col(C),Hgt(C)-1)} \textbf{not} \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NGU}\} \\ 
+& \quad\quad  \textbf{and} {exists} \textrm{Guard} g {in} \textrm{Environment::CellContent(Envi(C),Col(C),Hgt(C)-1)} \\ & \quad\quad \textbf{implies} \textrm{Hgt(GoDown(C))} = \textrm{Hgt(C)}-1  \\
+
+\end{tabular}
+
+\newpage
+
+\section*{Moteur}
+
+\begin{tabular}{rl}
+\textbf{Service}: & \textrm{Engine} \\
+{\textbf{Observators}}: &\texttt{Environment}: \textrm{[Engine]}  $\rightarrow$ \textrm{Environment}  \\
+&\texttt{Player}: \textrm{[Engine]}  $\rightarrow$ \textrm{Player}  \\
+&\texttt{Guards}: \textrm{[Engine]}  $\rightarrow$ \textrm{List\{Guard\}}  \\
+&\texttt{Treasures}: \textrm{[Engine]}  $\rightarrow$ \textrm{List\{Treasure\}}  \\
+&\texttt{Status}: \textrm{[Engine]}  $\rightarrow$ \textrm{Status}  \\
+&\texttt{NextCommand}: \textrm{[Engine]}  $\rightarrow$ \textrm{Command}  \\
+&\texttt{Holes}: \textrm{[Engine]}  $\rightarrow$ \textrm{Set\{Hole\}}  \\
+&\texttt{NbLifes}: \textrm{[Engine]}  $\rightarrow$ \textrm{int}  \\
+&\texttt{Score}: \textrm{[Engine]}  $\rightarrow$ \textrm{int}  \\
+&\texttt{ScoreAtStartOfLevel}: \textrm{[Engine]}  $\rightarrow$ \textrm{int}  \\
+&\texttt{ScreenManager}: \textrm{[Engine]}  $\rightarrow$ \textrm{ScreenManager}  \\
+
+\textbf{Constructors}: & \texttt{init}: \textrm{ScreenManager} $\times$ \textrm{CommandManager} $\times$ \textrm{Engine}  $\rightarrow$ \textrm{Engine} \\
+& \quad\quad \textbf{pre} \texttt{init(sm,cm,e)} \textbf{requires} sm $\neq$ null \\
+
+
+\textbf{Operators}: & \texttt{Step}: \textrm{[Engine]} $\rightarrow$ \textrm{[Engine]}\\
+& \quad\quad \textbf{pre} \texttt{Step(E)} \textbf{requires} \texttt{Status(E)} $=$ \textbf{Playing} \\
+& \texttt{AddHole}: \textrm{[Engine]} $\times$ \textrm{int} $\times$ \textrm{int} $\rightarrow$ \textrm{[Engine]}\\
+& \quad\quad \textbf{pre} \texttt{AddHole(E,x,y)} \textbf{requires} \textbf{not} \textbf{exists} Hole h \textbf{in} Holes(E) \textbf{with} (Hole::X(h) = x \textbf{and} Hole::Y(h) = y) \\ & \quad\quad\quad \textbf{and} Environment::CellNature(Environment(E), x, y) = \textbf{HOL}\\
+& \texttt{Display}: \textrm{[Engine]} $\rightarrow$ \textrm{[Engine]}\\
+
+\textbf{Observations}: & \\
+       \texttt{[invariants]}: & \\
+       \texttt{[init]}: & Environment::Height(Environment(init(sm,cm,e))) =  Screen::Width(ScreenManager::Screen(sm,0))\\
+       & Environment::Width(Environment(init(sm,cm,e))) = Screen::Height(ScreenManager::Screen(sm,0))\\
+       & {\textbf{forall}} (i,j) {in} \texttt{[0;Environment::Width(Environment(init(sm,cm,e)))[}× \texttt{[0;Environment::Height(Environment(init(sm,cm,e)))[}, \\
+       & \quad\quad Screen::CellNature(ScreenManager::Screen(sm, 0), i, j) = Screen::CellNature(Environment(init(sm,cm,e), i, j) \\
+       & Player::Col(Player(init(sm,cm,e))) = Coord::X(ScreenManager::PlayerFromScreen(sm, 0)) \\
+       & Player::Hgt(Player(init(sm,cm,e))) = Coord::Y(ScreenManager::PlayerFromScreen(sm, 0)) \\
+       & \textbf{forall} CoordItem c \textbf{in} ScreenManager::ItemsFromScreen(sm, 0), \\
+       & \quad\quad \textbf{exists} Item i \textbf{in} Treasures(init(sm,cm,e)) \textbf{with} (Item::Hgt(i) = CoordItem::Y(c) \textbf{and} Item::Col(i) = CoordItem::X(c) \textbf{and} Item::Nature(i) = CoordItem::ItemType(c)) \\
+        & \textbf{forall} CoordGuard c \textbf{in} ScreenManager::GuardsFromScreen(sm, 0), \\
+       & \quad\quad \textbf{exists} Guard g \textbf{in} Guards(init(sm,cm,e)) \textbf{with} (Guard::Hgt(g) = CoordGuard::Y(c) \textbf{and} Guard::Col(i) = CoordGuard::X(c) \textbf{and} Guard::Nature(i) = CoordGuard::Type(c)) \\
+       & Status(init(sm,cm,e)) = \textbf{Playing} \\
+       & NextCommand(init(sm,cm,e)) = \textbf{NONE} \\
+       & Holes(init(sm,cm,e)) = \{\} \\
+       & NbLifes(init(sm,cm,e)) = 3 \\
+       & Score(init(sm,cm,e)) = 0 \\
+       & ScoreAtStartOfLevel(init(sm,cm,e)) = 0 \\
+       & ScreenManager(init(sm,cm,e)) = sm \\
+       
+       \texttt{[Step]}: & \textbf{TODO\}
+} \\
+    \texttt{[AddHole]}: & Holes(AddHole(E,x,y)) = Holes(E) \textbf{union} Hole h \textbf{ with} (Hole::X(h) = x \textbf{and} Hole::Y(h) = y) \\
+       & Environment(AddHole(E,x,y)) = Environment(E) \\
+       & Player(AddHole(E,x,y)) = Player(E) \\
+       & Guards(AddHole(E,x,y)) = Guards(E) \\
+       & Treasures(AddHole(E,x,y)) = Treasures(E) \\
+       & Status(AddHole(E,x,y)) = Status(E) \\
+       & NextCommand(AddHole(E,x,y)) = NextCommand(E) \\
+       & NbLifes(AddHole(E,x,y)) = NbLifes(E) \\
+       & Score(AddHole(E,x,y)) = Score(E) \\
+       & ScoreAtStartOfLevel(AddHole(E,x,y)) = ScoreAtStartOfLevel(E) \\
+       & ScreenManager(AddHole(E,x,y)) = ScreenManager(E) \\
+       
+       \texttt{[Display]}: & Environment(AddHole(E,x,y)) = Environment(E) \\
+       & Player(AddHole(E,x,y)) = Player(E) \\
+       & Guards(AddHole(E,x,y)) = Guards(E) \\
+       & Treasures(AddHole(E,x,y)) = Treasures(E) \\
+       & Status(AddHole(E,x,y)) = Status(E) \\
+       & NextCommand(AddHole(E,x,y)) = NextCommand(E) \\
+       & Holes(AddHole(E,x,y)) = Holes(E) \\
+       & NbLifes(AddHole(E,x,y)) = NbLifes(E) \\
+       & Score(AddHole(E,x,y)) = Score(E) \\
+       & ScoreAtStartOfLevel(AddHole(E,x,y)) = ScoreAtStartOfLevel(E) \\
+       & ScreenManager(AddHole(E,x,y)) = ScreenManager(E) \\
+
+\end{tabular}
+\newpage
+
+\section*{Gestionnaire d'écran}
+
+\begin{tabular}{rl}
+\textbf{Service}: & \textrm{ScreenManager}  \\
+\textbf{Observators}: & \texttt{NbScreen}: \textrm{[ScreenManager]} $\rightarrow$ \textrm{int} \\
+& \texttt{LevelSetup}: \textrm{[ScreenManager]} $\times$ \textrm{int} $\rightarrow$ \textrm{LevelSetup} \\
+& \quad \textbf{pre } \texttt{LevelSetup(S,i)} \textbf{ requires } 0 $\leq$ \texttt{i} $<$ \texttt{NbScreen(S)}\\
+& \texttt{Screen}: \textrm{[ScreenManager]} $\times$ \textrm{int} $\rightarrow$ \textrm{EditableScreen} \\
+& \quad \textbf{pre } \texttt{Screen(S,i)} \textbf{ requires } 0 $\leq$ \texttt{i} $<$ \texttt{NbScreen(S)}\\
+& \texttt{GuardsFromScreen}: \textrm{[ScreenManager]} $\times$ \textrm{int} $\rightarrow$ \textrm{List\{CoordGuard\}} \\
+& \quad \textbf{pre } \texttt{GuardsFromScreen(S,i)} \textbf{ requires } 0 $\leq$ \texttt{i} $<$ \texttt{NbScreen(S)}\\
+& \texttt{ItemsFromScreen}: \textrm{[ScreenManager]} $\times$ \textrm{int} $\rightarrow$ \textrm{List\{CoordItem\}} \\
+& \quad \textbf{pre } \texttt{ItemsFromScreen(S,i)} \textbf{ requires } 0 $\leq$ \texttt{i} $<$ \texttt{NbScreen(S)}\\
+& \texttt{PlayerFromScreen}: \textrm{[ScreenManager]} $\times$ \textrm{int} $\rightarrow$ \textrm{Coord} \\
+& \quad \textbf{pre } \texttt{PlayerFromScreen(S,i)} \textbf{ requires } 0 $\leq$ \texttt{i} $<$ \texttt{NbScreen(S)}\\
+\textbf{Constructors}: & \texttt{init}: $\rightarrow$ \textrm{[ScreenManager]} \\
+\textbf{Operators}: & \texttt{AddScreen}: \textrm{[ScreenManager]} $\times$ \textrm{EditableScreen} $\times$ \textrm{List\{CoordGuard\}}   $\times$ \textrm{List\{CoordItem\}} $\times$  \textrm{Coord} $\rightarrow$ \textrm{[ScreenManager]} \\
+& \quad \textbf{pre } \texttt{AddScreen(S,es,g,i,p)} \textbf{ requires } p $\neq$ null \textbf{and} es $\neq$ null \\
+& \texttt{RemoveScreen}: \textrm{[ScreenManager]} $\times$ \textrm{int}  $\rightarrow$ \textrm{[ScreenManager]} \\
+& \quad \textbf{pre } \texttt{RemoveScreen(S,i)} \textbf{ requires } 0 $\leq$ \texttt{i} $<$ \texttt{NbScreen(S)} \\
+
+       \textbf{Observations}: & \\
+       \texttt{[invariants]}: &  \texttt{Screen(S, i)} \textbf{min} LevelSetup::Screen(LevelSetup(S, i))\\
+       &  \texttt{GuardsFromScreen(S, i)} \textbf{min} LevelSetup::Guards(LevelSetup(S, i))\\
+       &  \texttt{ItemsFromScreen(S, i)} \textbf{min} LevelSetup::Items(LevelSetup(S, i))\\
+       &  \texttt{PlayerFromScreen(S, i)} \textbf{min} LevelSetup::Player(LevelSetup(S, i))\\
+       \texttt{[init]}: & NbScreen(init()) = 0\\
+       \texttt{[AddScreen]}: &  NbScreen(AddScreen(S,es,g,i,p)) = NbScreen(S) + 1 \\
+       &  Screen(AddScreen(S,es,g,i,p), NbScreen(S)) = es \\
+       &  PlayerFromScreen(AddScreen(S,es,g,i,p), NbScreen(S)) = p \\
+       &  g = null \textbf{implies} GuardsFromScreen(AddScreen(S,es,g,i,p),  NbScreen(S)) = \{\}  \\
+       &  g $\neq$ null \textbf{implies} GuardsFromScreen(AddScreen(S,es,g,i,p),  NbScreen(S)) = g  \\
+       &  i = null \textbf{implies} ItemsFromScreen(AddScreen(S,es,g,i,p),  NbScreen(S)) = \{\}  \\
+       &  i $\neq$ null \textbf{implies} ItemsFromScreen(AddScreen(S,es,g,i,p),  NbScreen(S)) = i  \\
+       & {\textbf{forall}} cpt {in} \texttt{[0, NbScreen(S)[},~\\
+       & \quad LevelSetup(AddScreen(S,es,g,i,p), cpt) = LevelSetup(S, cpt) \\
+       \texttt{[RemoveScreen]}: & NbScreen(RemoveScreen(S,i)) = NbScreen(S) - 1\\
+        & {\textbf{forall}} cpt {in} \texttt{[0, NbScreen(S)[},~\\
+       & \quad cpt $<$ i \textbf{implies} LevelSetup(RemoveScreen(S,i), cpt) = LevelSetup(S, cpt) \\
+       & \quad cpt $\geq$ i \textbf{implies} LevelSetup(RemoveScreen(S,i), cpt) = LevelSetup(S, cpt + 1) \\
+\end{tabular}
+
+\end{document}
+

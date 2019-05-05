@@ -375,17 +375,21 @@ public class PlayerContract extends PlayerDecorator{
         //\post canUseItem \and getCurrentlyHeldItem()@pre == Key \and isFacingRight()@pre 
         //      \and getCol()@pre < getEnvi().getWidth() - 1 \and getEnvi().getCellNature(getCol() + 1, getHgt())@pre == DOR
         //      \impl getEnvi().getCellNature(getCol() + 1, getHgt()) == EMP
-        if(!(Checker.implication(canUseItem && getCurrentlyHeldItem_atPre.getNature() == ItemType.Key && isFacingRight_atPre && getCol_atPre < getEnvi().getWidth() - 1 && getCellNature_atPre[getCol_atPre + 1][getHgt_atPre] == Cell.DOR, getEnvi().getCellNature(getCol_atPre + 1, getHgt_atPre) == Cell.EMP))){
-            Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "canUseItem \\and getCurrentlyHeldItem()@pre == Key \\and isFacingRight()@pre  \\and getCol()@pre < getEnvi().getWidth() - 1 \\and getEnvi().getCellNature(getCol() + 1, getHgt())@pre == DOR \\impl getEnvi().getCellNature(getCol() + 1, getHgt()) == EMP");
+        if(getCol_atPre < getEnvi().getWidth()){
+            if(!(Checker.implication(canUseItem && getCurrentlyHeldItem_atPre.getNature() == ItemType.Key && isFacingRight_atPre && getCol_atPre < getEnvi().getWidth() - 1 && getCellNature_atPre[getCol_atPre + 1][getHgt_atPre] == Cell.DOR, getEnvi().getCellNature(getCol_atPre + 1, getHgt_atPre) == Cell.EMP))){
+                Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "canUseItem \\and getCurrentlyHeldItem()@pre == Key \\and isFacingRight()@pre  \\and getCol()@pre < getEnvi().getWidth() - 1 \\and getEnvi().getCellNature(getCol() + 1, getHgt())@pre == DOR \\impl getEnvi().getCellNature(getCol() + 1, getHgt()) == EMP");
+            }
         }
 
         //\post canUseItem \and getCurrentlyHeldItem()@pre == Key \and \not isFacingRight()@pre 
         //      \and getCol()@pre > 0 \and getEnvi().getCellNature(getCol() - 1, getHgt())@pre == DOR
         //      \impl getEnvi().getCellNature(getCol() - 1, getHgt()) == EMP
-        if(!(Checker.implication(canUseItem && getCurrentlyHeldItem_atPre.getNature() == ItemType.Key && isFacingRight_atPre && getCol_atPre > 0 && getCellNature_atPre[getCol_atPre - 1][getHgt_atPre] == Cell.DOR, getEnvi().getCellNature(getCol_atPre - 1, getHgt_atPre) == Cell.EMP))){
-            Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "canUseItem \\and getCurrentlyHeldItem()@pre == Key \\and \\not isFacingRight()@pre  \\and getCol()@pre > 0 \\and getEnvi().getCellNature(getCol() - 1, getHgt())@pre == DOR \\impl getEnvi().getCellNature(getCol() - 1, getHgt()) == EMP");
+        if(getCol_atPre >= 0){
+            if(!(Checker.implication(canUseItem && getCurrentlyHeldItem_atPre.getNature() == ItemType.Key && isFacingRight_atPre && getCol_atPre > 0 && getCellNature_atPre[getCol_atPre - 1][getHgt_atPre] == Cell.DOR, getEnvi().getCellNature(getCol_atPre - 1, getHgt_atPre) == Cell.EMP))){
+                Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "canUseItem \\and getCurrentlyHeldItem()@pre == Key \\and \\not isFacingRight()@pre  \\and getCol()@pre > 0 \\and getEnvi().getCellNature(getCol() - 1, getHgt())@pre == DOR \\impl getEnvi().getCellNature(getCol() - 1, getHgt()) == EMP");
+            }
         }
-
+        
         //\post \Forall Guard g \in getEngine().getGuards()
         //          canUseItem \and getCurrentlyHeldItem()@pre == Flash \impl g.getTimeLeftParalyzed() == 10
         for(Guard g : getEngine().getGuards()){

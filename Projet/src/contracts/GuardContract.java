@@ -481,6 +481,8 @@ public class GuardContract extends GuardDecorator {
         int getCol_atPre = getCol();
         int getHgt_atPre = getHgt();
         int getIdCounter_atPre = getIdCounter();
+        int getTimeInHole_atPre = getTimeInHole();
+
 
         //inv pre 
         checkInvariant();
@@ -495,9 +497,9 @@ public class GuardContract extends GuardDecorator {
             Contractor.defaultContractor().postconditionError("GuardContract", "paralyze", "isCarryingTreasure() == isCarryingTreasure()@pre");
         }
 
-        //\post getTimeInHole() == 0
-        if(!(getTimeInHole() == 0)){
-            Contractor.defaultContractor().postconditionError("GuardContract", "paralyze", "getTimeInHole() == 0");
+        //\post getTimeInHole() == getTimeInHole()@pre
+        if(!(getTimeInHole() == getTimeInHole_atPre)){
+            Contractor.defaultContractor().postconditionError("GuardContract", "paralyze", "getTimeInHole() == getTimeInHole()@pre");
         }
 
         //\post getCol() == getCol()@pre

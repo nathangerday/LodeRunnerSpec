@@ -101,7 +101,7 @@ public interface Guard extends Character{
     public void moveToInitCoords();
 
     //\post isCarryingTreasure() == isCarryingTreasure()@pre
-    //\post getTimeInHole() == 0
+    //\post getTimeInHole() == getTimeInHole()@pre
     //\post getCol() == getCol()@pre
     //\post getHgt() == getHgt()@pre
     //\post getIdCounter() == getIdCounter()@pre
@@ -118,7 +118,7 @@ public interface Guard extends Character{
     //\post getTimeLeftParalyzed()@pre > 0 \and \not isFalling \impl getTimeLeftParalyzed() == getTimeLeftParalyzed()@pre - 1
     //\post \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)@pre \and \not isCarryingTreasure()@pre 
     //      \impl isCarryingTreasure() \and \not \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)
-    //\post \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)@pre \and isCarryingTreasure()@pre \and \not isFalling 
+    //\post \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)@pre \and isCarryingTreasure()@pre
     //      \impl isCarryingTreasure() \and \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)
     //\post \not \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)@pre \and \not isCarryingTreasure()@pre
     //      \impl \not isCarryingTreasure() \and \not \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)

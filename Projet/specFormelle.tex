@@ -672,6 +672,7 @@ Coord::X(InitCoords(g)), Coord::Y(InitCoords(g))) \\
 &\texttt{Score}: \textrm{[Engine]}  $\rightarrow$ \textrm{int}  \\
 &\texttt{ScoreAtStartOfLevel}: \textrm{[Engine]}  $\rightarrow$ \textrm{int}  \\
 &\texttt{ScreenManager}: \textrm{[Engine]}  $\rightarrow$ \textrm{ScreenManager}  \\
+&\texttt{NbTreasuresLeft}: \textrm{[Engine]}  $\rightarrow$ \textrm{int}  \\
 
 \textbf{Constructors}: & \texttt{init}: \textrm{ScreenManager} $\times$ \textrm{CommandManager} $\times$ \textrm{Engine}  $\rightarrow$ \textrm{Engine} \\
 & \quad\quad \textbf{pre} \texttt{init(sm,cm,e)} \textbf{requires} sm $\neq$ null \\
@@ -702,6 +703,8 @@ Coord::X(InitCoords(g)), Coord::Y(InitCoords(g))) \\
        & Score(init(sm,cm,e)) = 0 \\
        & ScoreAtStartOfLevel(init(sm,cm,e)) = 0 \\
        & ScreenManager(init(sm,cm,e)) = sm \\
+       & NbTreasuresLeft(init(sm,cm,e)) = \textbf{count} CoordItem c \textbf{in} \\
+       & \quad ScreenManager::ItemsFromScreen(sm,0) \textbf{with} (CoordItem::ItemType(c) = Treasure) \\
        
        \texttt{[Step]}: & \textbf{TODO\
 } \\
@@ -716,18 +719,20 @@ Coord::X(InitCoords(g)), Coord::Y(InitCoords(g))) \\
        & Score(AddHole(E,x,y)) = Score(E) \\
        & ScoreAtStartOfLevel(AddHole(E,x,y)) = ScoreAtStartOfLevel(E) \\
        & ScreenManager(AddHole(E,x,y)) = ScreenManager(E) \\
+       & NbTreasuresLeft(AddHole(E,x,y)) = NbTreasuresLeft(E) \\
        
        \texttt{[Display]}: & Environment(AddHole(E,x,y)) = Environment(E) \\
-       & Player(AddHole(E,x,y)) = Player(E) \\
-       & Guards(AddHole(E,x,y)) = Guards(E) \\
-       & Treasures(AddHole(E,x,y)) = Treasures(E) \\
-       & Status(AddHole(E,x,y)) = Status(E) \\
-       & NextCommand(AddHole(E,x,y)) = NextCommand(E) \\
-       & Holes(AddHole(E,x,y)) = Holes(E) \\
-       & NbLifes(AddHole(E,x,y)) = NbLifes(E) \\
-       & Score(AddHole(E,x,y)) = Score(E) \\
-       & ScoreAtStartOfLevel(AddHole(E,x,y)) = ScoreAtStartOfLevel(E) \\
-       & ScreenManager(AddHole(E,x,y)) = ScreenManager(E) \\
+       & Player(Display(E)) = Player(E) \\
+       & Guards(Display(E)) = Guards(E) \\
+       & Treasures(Display(E)) = Treasures(E) \\
+       & Status(Display(E)) = Status(E) \\
+       & NextCommand(Display(E)) = NextCommand(E) \\
+       & Holes(Display(E)) = Holes(E) \\
+       & NbLifes(Display(E)) = NbLifes(E) \\
+       & Score(Display(E)) = Score(E) \\
+       & ScoreAtStartOfLevel(Display(E)) = ScoreAtStartOfLevel(E) \\
+       & ScreenManager(Display(E)) = ScreenManager(E) \\
+       & NbTreasuresLeft(Display(E)) = NbTreasuresLeft(E) \\
 
 \end{tabular}
 \newpage

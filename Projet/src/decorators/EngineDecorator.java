@@ -103,4 +103,9 @@ public class EngineDecorator implements Engine{
 	public Engine copy() {
         return getDelegate().copy();
 	}
+
+	@Override
+	public int getNbTreasuresLeft(){
+        return getDelegate().getNbTreasuresLeft();
+    }
 }

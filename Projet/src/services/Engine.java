@@ -23,7 +23,8 @@ public interface Engine{
     public int getNbLifes();
     public int getScore();
     public int getScoreAtStartOfLevel();
-    public ScreenManager getScreenManager(); 
+    public ScreenManager getScreenManager();
+    public int getNbTreasuresLeft();
 
     /* Constructors */
     //\pre sm.getNbScreen() >= 1
@@ -46,6 +47,7 @@ public interface Engine{
     //\post getScore() == 0
     //\post getScoreAtStartOfLevel() == 0
     //\post getScreenManager() == sm
+    //\post getNbTreasuresLeft() == \Count CoordItem c \in sm.getItemsFromScreen(0) \with (c.getItemType() == Treasure)
     public void init(ScreenManager sm, CommandManager cm, Engine engineInstance);
     
     /* Invariants */
@@ -82,6 +84,7 @@ public interface Engine{
     //\post getScore() == getScore()@pre
     //\post getScoreAtStartOfLevel() == getScoreAtStartOfLevel()@pre
     //\post getScreenManager() == getScreenManager()@pre
+    //\post getNbTreasuresLeft() == getNbTreasuresLeft()@pre
     public void addHole(int x, int y);    
     
     //\post getEnvironment() == getEnvironment()@pre
@@ -95,6 +98,7 @@ public interface Engine{
     //\post getScore() == getScore()@pre
     //\post getScoreAtStartOfLevel() == getScoreAtStartOfLevel()@pre
     //\post getScreenManager() == getScreenManager()@pre
+    //\post getNbTreasuresLeft() == getNbTreasuresLeft()@pre
     public void display();
     
     public Engine copy();

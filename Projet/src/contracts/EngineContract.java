@@ -12,6 +12,7 @@ import data.CoordGuard;
 import data.CoordItem;
 import data.Hole;
 import data.Item;
+import data.ItemType;
 import data.Status;
 import decorators.EngineDecorator;
 import services.EditableScreen;
@@ -150,6 +151,18 @@ public class EngineContract extends EngineDecorator{
 			Contractor.defaultContractor().postconditionError("EngineContract", "init", "getScreenManager() == sm");
 		}
 
+	    //\post getNbTreasuresLeft() == \Count CoordItem c \in sm.getItemsFromScreen(0) \with (c.getItemType() == Treasure)
+		int countTreasure = 0;
+		for(CoordItem c : sm.getItemsFromScreen(0)){
+			if(c.getItemType() == ItemType.Treasure){
+				countTreasure++;
+			}
+		}
+
+		if(!(getNbTreasuresLeft() == countTreasure)){
+			Contractor.defaultContractor().postconditionError("EngineContract", "init", "getNbTreasuresLeft() == \\Count CoordItem c \\in sm.getItemsFromScreen(0) \\with (c.getItemType() == Treasure)");
+		}
+
 	}
 
 	@Override
@@ -188,7 +201,7 @@ public class EngineContract extends EngineDecorator{
 		int getScore_atPre = getScore();
 		int getScoreAtStartOfLevel_atPre = getScoreAtStartOfLevel();
 		ScreenManager getScreenManager_atPre = getScreenManager();
-
+		int getNbTreasuresLeft_atPre = getNbTreasuresLeft();
 		//inv pre
 		checkInvariant();
 		
@@ -257,6 +270,11 @@ public class EngineContract extends EngineDecorator{
 			Contractor.defaultContractor().postconditionError("EngineContract", "addHole", "getScreenManager() == getScreenManager()@pre");
 		}
 
+		//\post getNbTreasuresLeft() == getNbTreasuresLeft()@pre
+		if(!(getNbTreasuresLeft() == getNbTreasuresLeft_atPre)){
+			Contractor.defaultContractor().postconditionError("EngineContract", "diplay", "getNbTreasuresLeft() == getNbTreasuresLeft()@pre");
+		}
+
 	}
 
 	@Override
@@ -274,6 +292,7 @@ public class EngineContract extends EngineDecorator{
 		int getScore_atPre = getScore();
 		int getScoreAtStartOfLevel_atPre = getScoreAtStartOfLevel();
 		ScreenManager getScreenManager_atPre = getScreenManager();
+		int getNbTreasuresLeft_atPre = getNbTreasuresLeft();
 
 
 		//inv pre
@@ -343,6 +362,10 @@ public class EngineContract extends EngineDecorator{
 			Contractor.defaultContractor().postconditionError("EngineContract", "display", "getScreenManager() == getScreenManager()@pre");
 		}
 
+		//\post getNbTreasuresLeft() == getNbTreasuresLeft()@pre
+		if(!(getNbTreasuresLeft() == getNbTreasuresLeft_atPre)){
+			Contractor.defaultContractor().postconditionError("EngineContract", "diplay", "getNbTreasuresLeft() == getNbTreasuresLeft()@pre");
+		}
 		
 	}
     

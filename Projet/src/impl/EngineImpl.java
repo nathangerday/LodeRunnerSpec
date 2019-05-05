@@ -116,6 +116,10 @@ public class EngineImpl implements Engine {
         return this.scoreAtLevelStart;
     }
 
+    public int getNbTreasuresLeft(){
+        return this.nbTreasures;
+    }
+
     public synchronized Command getNextCommand() {
         return this.nextCommand;
     }

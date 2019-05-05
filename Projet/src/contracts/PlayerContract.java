@@ -375,7 +375,7 @@ public class PlayerContract extends PlayerDecorator{
         //\post canUseItem \and getCurrentlyHeldItem()@pre == Key \and isFacingRight()@pre 
         //      \and getCol()@pre < getEnvi().getWidth() - 1 \and getEnvi().getCellNature(getCol() + 1, getHgt())@pre == DOR
         //      \impl getEnvi().getCellNature(getCol() + 1, getHgt()) == EMP
-        if(getCol_atPre < getEnvi().getWidth()){
+        if(getCol_atPre < getEnvi().getWidth() - 1){
             if(!(Checker.implication(canUseItem && getCurrentlyHeldItem_atPre.getNature() == ItemType.Key && isFacingRight_atPre && getCol_atPre < getEnvi().getWidth() - 1 && getCellNature_atPre[getCol_atPre + 1][getHgt_atPre] == Cell.DOR, getEnvi().getCellNature(getCol_atPre + 1, getHgt_atPre) == Cell.EMP))){
                 Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "canUseItem \\and getCurrentlyHeldItem()@pre == Key \\and isFacingRight()@pre  \\and getCol()@pre < getEnvi().getWidth() - 1 \\and getEnvi().getCellNature(getCol() + 1, getHgt())@pre == DOR \\impl getEnvi().getCellNature(getCol() + 1, getHgt()) == EMP");
             }
@@ -384,7 +384,7 @@ public class PlayerContract extends PlayerDecorator{
         //\post canUseItem \and getCurrentlyHeldItem()@pre == Key \and \not isFacingRight()@pre 
         //      \and getCol()@pre > 0 \and getEnvi().getCellNature(getCol() - 1, getHgt())@pre == DOR
         //      \impl getEnvi().getCellNature(getCol() - 1, getHgt()) == EMP
-        if(getCol_atPre >= 0){
+        if(getCol_atPre > 0){
             if(!(Checker.implication(canUseItem && getCurrentlyHeldItem_atPre.getNature() == ItemType.Key && isFacingRight_atPre && getCol_atPre > 0 && getCellNature_atPre[getCol_atPre - 1][getHgt_atPre] == Cell.DOR, getEnvi().getCellNature(getCol_atPre - 1, getHgt_atPre) == Cell.EMP))){
                 Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "canUseItem \\and getCurrentlyHeldItem()@pre == Key \\and \\not isFacingRight()@pre  \\and getCol()@pre > 0 \\and getEnvi().getCellNature(getCol() - 1, getHgt())@pre == DOR \\impl getEnvi().getCellNature(getCol() - 1, getHgt()) == EMP");
             }
@@ -400,28 +400,64 @@ public class PlayerContract extends PlayerDecorator{
 
 
         //\post canUseItem \and getCurrentlyHeldItem()@pre == Sword \and getCol()@pre - 2 >= 0 \and \Exists Guard g \in getEnvi().getCellContent(getCol()@pre - 2, getHgt())@pre \impl g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()
-        Guard g = Util.getGuard(getCellContent_atPre.get(getCol_atPre - 2).get(getHgt_atPre));
-        if(g != null && !(Checker.implication(canUseItem && getCurrentlyHeldItem_atPre.getNature() == ItemType.Sword && getCol_atPre - 2 >= 0 && g != null, g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()))){
-            Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "canUseItem \\and getCurrentlyHeldItem()@pre == Sword \\and getCol()@pre - 2 >= 0 \\and \\Exists Guard g \\in getEnvi().getCellContent(getCol()@pre - 2, getHgt())@pre \\impl g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()");
+        Guard g;
+        if(getCol_atPre - 2 >= 0){
+            g = Util.getGuard(getCellContent_atPre.get(getCol_atPre - 2).get(getHgt_atPre));
+            if(g != null && !(Checker.implication(canUseItem && getCurrentlyHeldItem_atPre.getNature() == ItemType.Sword && getCol_atPre - 2 >= 0 && g != null, g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()))){
+                Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "canUseItem \\and getCurrentlyHeldItem()@pre == Sword \\and getCol()@pre - 2 >= 0 \\and \\Exists Guard g \\in getEnvi().getCellContent(getCol()@pre - 2, getHgt())@pre \\impl g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()");
+            }
         }
 
         //\post canUseItem \and getCurrentlyHeldItem()@pre == Sword \and getCol()@pre - 1 >= 0 \and \Exists Guard g \in getEnvi().getCellContent(getCol()@pre - 1, getHgt())@pre \impl g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()
-        g = Util.getGuard(getCellContent_atPre.get(getCol_atPre - 1).get(getHgt_atPre));
-        if(g != null && !(Checker.implication(canUseItem && getCurrentlyHeldItem_atPre.getNature() == ItemType.Sword && getCol_atPre - 1 >= 0 && g != null, g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()))){
-            Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "canUseItem \\and getCurrentlyHeldItem()@pre == Sword \\and getCol()@pre - 1 >= 0 \\and \\Exists Guard g \\in getEnvi().getCellContent(getCol()@pre - 1, getHgt())@pre \\impl g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()");
+        if(getCol_atPre - 1 >= 0){        
+            g = Util.getGuard(getCellContent_atPre.get(getCol_atPre - 1).get(getHgt_atPre));
+            if(g != null && !(Checker.implication(canUseItem && getCurrentlyHeldItem_atPre.getNature() == ItemType.Sword && getCol_atPre - 1 >= 0 && g != null, g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()))){
+                Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "canUseItem \\and getCurrentlyHeldItem()@pre == Sword \\and getCol()@pre - 1 >= 0 \\and \\Exists Guard g \\in getEnvi().getCellContent(getCol()@pre - 1, getHgt())@pre \\impl g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()");
+            }
         }
-        
         //\post canUseItem \and getCurrentlyHeldItem()@pre == Sword \and getCol()@pre + 2 < getEnvi().getWidth() \and \Exists Guard g \in getEnvi().getCellContent(getCol()@pre + 2, getHgt())@pre \impl g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()
-        g = Util.getGuard(getCellContent_atPre.get(getCol_atPre + 2).get(getHgt_atPre));
-        if(g != null && !(Checker.implication(canUseItem && getCurrentlyHeldItem_atPre.getNature() == ItemType.Sword && getCol_atPre + 2 < getEnvi().getWidth() && g != null, g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()))){
-            Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "canUseItem \\and getCurrentlyHeldItem()@pre == Sword \\and getCol()@pre + 2 < getEnvi().getWidth() \\and \\Exists Guard g \\in getEnvi().getCellContent(getCol()@pre + 2, getHgt())@pre \\impl g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()");
+        if(getCol_atPre + 2 < getEnvi().getWidth()){        
+            g = Util.getGuard(getCellContent_atPre.get(getCol_atPre + 2).get(getHgt_atPre));
+            if(g != null && !(Checker.implication(canUseItem && getCurrentlyHeldItem_atPre.getNature() == ItemType.Sword && getCol_atPre + 2 < getEnvi().getWidth() && g != null, g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()))){
+                Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "canUseItem \\and getCurrentlyHeldItem()@pre == Sword \\and getCol()@pre + 2 < getEnvi().getWidth() \\and \\Exists Guard g \\in getEnvi().getCellContent(getCol()@pre + 2, getHgt())@pre \\impl g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()");
+            }
         }
         
         //\post canUseItem \and getCurrentlyHeldItem()@pre == Sword \and getCol()@pre + 1 < getEnvi().getWidth() \and \Exists Guard g \in getEnvi().getCellContent(getCol()@pre + 1, getHgt())@pre \impl g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()
-        g = Util.getGuard(getCellContent_atPre.get(getCol_atPre + 1).get(getHgt_atPre));
-        if(g != null && !(Checker.implication(canUseItem && getCurrentlyHeldItem_atPre.getNature() == ItemType.Sword && getCol_atPre + 1 < getEnvi().getWidth() && g != null, g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()))){
-            Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "canUseItem \\and getCurrentlyHeldItem()@pre == Sword \\and getCol()@pre + 1 < getEnvi().getWidth() \\and \\Exists Guard g \\in getEnvi().getCellContent(getCol()@pre + 1, getHgt())@pre \\impl g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()");
+        if(getCol_atPre + 1 < getEnvi().getWidth()){
+            g = Util.getGuard(getCellContent_atPre.get(getCol_atPre + 1).get(getHgt_atPre));
+            if(g != null && !(Checker.implication(canUseItem && getCurrentlyHeldItem_atPre.getNature() == ItemType.Sword && getCol_atPre + 1 < getEnvi().getWidth() && g != null, g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()))){
+                Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "canUseItem \\and getCurrentlyHeldItem()@pre == Sword \\and getCol()@pre + 1 < getEnvi().getWidth() \\and \\Exists Guard g \\in getEnvi().getCellContent(getCol()@pre + 1, getHgt())@pre \\impl g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()");
+            }
         }
+
+        //\post \Forall i \in [0, getEnvi().getWidth()-1]
+        //      canUseItem \and getCurrentlyHeldItem()@pre == Gun \and isFacingRight()@pre \and i > getCol()@pre
+        //          \and \not ExistsObstacleBetween(getCol()@pre, i, getHgt()@pre)
+        //          \and \Exists Guard g \in getEnvi().getCellContent(i, getHgt()@pre)@pre
+        //          \impl \Exists g \in getEnvi().getCellContent(g.getInitCoords().getX(), g.getInitCoords().getY())
+        //      canUseItem \and getCurrentlyHeldItem()@pre == Gun \and \not isFacingRight()@pre \and i < getCol()@pre
+        //          \and \not ExistsObstacleBetween(i, getCol()@pre, getHgt()@pre)
+        //          \and \Exists Guard g \in getEnvi().getCellContent(i, getHgt()@pre)@pre
+        //          \impl \Exists g \in getEnvi().getCellContent(g.getInitCoords().getX(), g.getInitCoords().getY())
+        for(int i=0;i<getEnvi().getWidth(); i++){
+            Guard guard = Util.getGuard(getCellContent_atPre.get(i).get(getHgt_atPre));
+            if(canUseItem && getCurrentlyHeldItem_atPre.getNature() == ItemType.Gun && isFacingRight_atPre && i > getCol_atPre &&
+                !existsObstacleBetween(getCol_atPre, i, getHgt_atPre, getCellNature_atPre) &&  guard != null){
+                    System.out.println("SHOOT RIGHT");
+                    if(!(guard.getCol() == guard.getInitCoords().getX() && guard.getHgt() == guard.getInitCoords().getY())){
+                        Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "Check kill guards when shooting to the right");
+                    }
+            }
+            if(canUseItem && getCurrentlyHeldItem_atPre.getNature() == ItemType.Gun && !isFacingRight_atPre && i < getCol_atPre &&
+                !existsObstacleBetween(i, getCol_atPre, getHgt_atPre, getCellNature_atPre)  && guard != null){
+                    System.out.println("SHOOT LEFT");
+                    if(!(guard.getCol() == guard.getInitCoords().getX() && guard.getHgt() == guard.getInitCoords().getY())){
+                        Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "Check kill guards when shooting to the left");
+                    }
+            }
+        }
+
         
         //\post getCol() == getCol()@pre
         if(!(getCol() == getCol_atPre)){
@@ -438,6 +474,22 @@ public class PlayerContract extends PlayerDecorator{
         if(!(isFacingRight() == isFacingRight_atPre)){
             Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "isFacingRight() == isFacingRight()@pre");
         }
+    }
+
+    private boolean existsObstacleBetween(int x1, int x2, int y, Cell[][] getCellNature_atPre){
+        //\def ExistsObstacleBetween(x1, x2, y) = \Exists Cell c \in \Union (\Forall i in [x, x2], getEnvi().getCellNature(i, y)) \with (c \in {MTL, PLT, DOR, NPL})
+        
+        for(int i=x1; i<x2; i++){
+            Set<Cell> PLT_MTL_DOR_NPL = new HashSet<>();
+            PLT_MTL_DOR_NPL.add(Cell.PLT);
+            PLT_MTL_DOR_NPL.add(Cell.MTL);
+            PLT_MTL_DOR_NPL.add(Cell.DOR);
+            PLT_MTL_DOR_NPL.add(Cell.NPL);
+            if(PLT_MTL_DOR_NPL.contains(getCellNature_atPre[i][y])){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

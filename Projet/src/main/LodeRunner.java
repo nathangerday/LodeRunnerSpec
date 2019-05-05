@@ -63,7 +63,8 @@ public class LodeRunner{
         List<CoordItem> treasureCoords = new ArrayList<>();
         treasureCoords.add(new CoordItem(0, 2, ItemType.Treasure));
         treasureCoords.add(new CoordItem(17, 4, ItemType.Treasure));
-        treasureCoords.add(new CoordItem(5, 2, ItemType.Flash));
+        treasureCoords.add(new CoordItem(5, 2, ItemType.Key));
+        treasureCoords.add(new CoordItem(1, 2, ItemType.Sword));
         List<CoordGuard> guardCoords = new ArrayList<>();
         guardCoords.add(new CoordGuard(1, 7, GuardType.NORMAL));
         // guardCoords.add(new Coord(10, 3));
@@ -92,7 +93,11 @@ public class LodeRunner{
         List<CoordItem> treasureCoords2 = new ArrayList<>();
         treasureCoords2.add(new CoordItem(10, 2, ItemType.Treasure));
         treasureCoords2.add(new CoordItem(11, 2, ItemType.Treasure));
-        treasureCoords2.add(new CoordItem(6, 2, ItemType.Flash));
+        treasureCoords2.add(new CoordItem(8, 2, ItemType.Gun));
+        treasureCoords2.add(new CoordItem(8, 2, ItemType.Gun));
+        treasureCoords2.add(new CoordItem(8, 2, ItemType.Gun));
+        treasureCoords2.add(new CoordItem(8, 2, ItemType.Gun));
+        treasureCoords2.add(new CoordItem(1, 2, ItemType.Sword));
         // treasureCoords2.add(new CoordItem(3, 2, ItemType.Gun));
         // treasureCoords2.add(new CoordItem(4, 2, ItemType.Flash));
         // treasureCoords2.add(new CoordItem(5, 2, ItemType.Flash));

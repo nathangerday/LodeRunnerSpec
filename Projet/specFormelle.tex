@@ -269,6 +269,10 @@
 & CurrentlyHeldItem(DigLeft(C)) = CurrentlyHeldItem(C) \\
 & NumberOfUsagesLeftForCurrentItem(DigLeft(C)) = NumberOfUsagesLeftForCurrentItem(C) \\
 
+\end{tabular}
+\newpage
+\begin{tabular}{rl}
+
 \texttt{[UseItem]}:  & \textbf{CanUseItem}\texttt{(C)} \textbf{defined by} \\ 
 &\quad\quad CurrentlyHeldItem(C) $\neq$ null \\
 &\quad\quad \textbf{and} NumberOfUsagesLeftForCurrentItem(C) $\geq$ 1  \\
@@ -283,7 +287,7 @@
 & \quad \textbf{and} Environment::CellNature(Envi(C), Col(C)+1, Hgt(C)) = DOR \\
 & \quad \textbf{implies} Environment::CellNature(Envi(UseItem(C), Col(C)+1, Hgt(C)) = EMP \\
 & CanUseItem \textbf{and} Item::Nature(CurrentlyHeldItem(C)) = Key \textbf{and} \textbf{not} FacingRight(C) \\
-& \quad \textbf{and} Col(C) $\geq$ 0 \\
+& \quad \textbf{and} Col(C) $>$ 0 \\
 & \quad \textbf{and} Environment::CellNature(Envi(C), Col(C)-1, Hgt(C)) = DOR \\
 & \quad \textbf{implies} Environment::CellNature(Envi(UseItem(C), Col(C)-1, Hgt(C)+1) = EMP \\
 & \textbf{forall} Guard g \textbf{in} Engine::Guards(Engi(UseItem(C))), \\
@@ -298,15 +302,34 @@
 & \quad \textbf{implies} \textbf{exists} g \textbf{in} Environment::CellContrent(Envi(UseItem(C)), \\
 & \quad\quad\quad Coord::X(Guard::InitCoords(g)), Coord::Y(Guard::InitCoords(g))) \\
 & CanUseItem \textbf{and} Item::Nature(CurrentlyHeldItem(C)) = Sword \\
-& \quad \textbf{and} Col(C) + 2 $<$ Environment::Width(Envi(C)) \\
-& \quad \textbf{and exists} Guard g \textbf{in} Environment::CellContent(Envi(C), Col(C) + 2, Hgt(C)) \\
+& \quad \textbf{and} Col(C) + 2 $<$ Environment::Width(Envi(C))\\
+ & \quad \textbf{and exists} Guard g \textbf{in} Environment::CellContent(Envi(C), Col(C) + 2, Hgt(C)) \\
 & \quad \textbf{implies} \textbf{exists} g \textbf{in} Environment::CellContrent(Envi(UseItem(C)), \\
 & \quad\quad\quad Coord::X(Guard::InitCoords(g)), Coord::Y(Guard::InitCoords(g))) \\
 & CanUseItem \textbf{and} Item::Nature(CurrentlyHeldItem(C)) = Sword \\
 & \quad \textbf{and} Col(C) + 1 $<$ Environment::Width(Envi(C)) \\
 & \quad \textbf{and exists} Guard g \textbf{in} Environment::CellContent(Envi(C), Col(C) + 1, Hgt(C)) \\
 & \quad \textbf{implies} \textbf{exists} g \textbf{in} Environment::CellContrent(Envi(UseItem(C)), \\
-& \quad\quad\quad Coord::X(Guard::InitCoords(g)), Coord::Y(Guard::InitCoords(g))) \\
+& \quad\quad\quad Coord::X(Guard::InitCoords(g)), Coord::Y(Guard::InitCoords(g))) \\ \\
+& \textbf{ExistsObstacleBetween(x1, x2, y)} \textbf{defined by} \\ 
+&\quad\quad \textbf{exists} Cell c \textbf{in} (\textbf{union} (\textbf{forall} i \textbf{in} \texttt{[x1;x2]}, Environment::CellNature(Envi(C), i, y))) \\
+&\quad\quad \textbf{with} (c \textbf{in} \{\textbf{MTL}, \textbf{PLT}, \textbf{DOR}, \textbf{NPL}\}) \\
+& \textbf{forall} i \textbf{in}  \texttt{[0;Environment::Width(Envi(C))[]}, \\
+& \quad CanUseItem \textbf{and} Item::Nature(CurrentlyHeldItem(C)) = Gun \\
+& \quad\quad \textbf{and} FacingRight(C) \\
+& \quad\quad \textbf{and} i $>$ Col(C) \\
+& \quad\quad \textbf{and not}  ExistsObstacleBetween(Col(C), i, Hgt(C)) \\
+& \quad\quad \textbf{and exists} Guard g\textbf{in} Environment::CellContent(Envi(C), i, Hgt(C)) \\
+& \quad\quad \textbf{implies exists} g \textbf{in} Environment::CellContent(Envi(UseItem(C), \\
+& \quad\quad \quad\quad Coord::X(Guard::InitCoords(g)), Coord::Y(Guard::InitCoords(g)))  \\
+& \quad CanUseItem \textbf{and} Item::Nature(CurrentlyHeldItem(C)) = Gun \\
+& \quad\quad \textbf{and not} FacingRight(C) \\
+& \quad\quad \textbf{and} i $<$ Col(C) \\
+& \quad\quad \textbf{and not}  ExistsObstacleBetween(i, Col(C), Hgt(C)) \\
+& \quad\quad \textbf{and exists} Guard g\textbf{in} Environment::CellContent(Envi(C), i, Hgt(C)) \\
+& \quad\quad \textbf{implies exists} g \textbf{in} Environment::CellContent(Envi(UseItem(C), \\
+& \quad\quad \quad\quad Coord::X(Guard::InitCoords(g)), Coord::Y(Guard::InitCoords(g)))  \\
+
 & Col(UseItem(C)) = Col(C) \\
 & Hgt(UseItem(C)) = Hgt(C) \\
 & FacingRight(UseItem(C)) = FacingRight(C) \\
@@ -680,7 +703,7 @@ Coord::X(InitCoords(g)), Coord::Y(InitCoords(g))) \\
        & ScoreAtStartOfLevel(init(sm,cm,e)) = 0 \\
        & ScreenManager(init(sm,cm,e)) = sm \\
        
-       \texttt{[Step]}: & \textbf{TODO\}
+       \texttt{[Step]}: & \textbf{TODO\
 } \\
     \texttt{[AddHole]}: & Holes(AddHole(E,x,y)) = Holes(E) \textbf{union} Hole h \textbf{ with} (Hole::X(h) = x \textbf{and} Hole::Y(h) = y) \\
        & Environment(AddHole(E,x,y)) = Environment(E) \\

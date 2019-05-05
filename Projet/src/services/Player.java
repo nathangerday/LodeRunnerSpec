@@ -98,6 +98,17 @@ public interface Player extends /* includes */ Character{
     //\post getCol() == getCol()@pre
     //\post getHgt() == getHgt()@pre
 
+    //\def ExistsObstacleBetween(x1, x2, y) = \Exists Cell c \in \Union (\Forall i in [x, x2], getEnvi().getCellNature(i, y)) \with (c \in {MTL, PLT, DOR, NPL})
+    //\post \Forall i \in [0, getEnvi().getWidth()-1]
+    //      canUseItem \and getCurrentlyHeldItem()@pre == Gun \and isFacingRight()@pre \and i > getCol()@pre
+    //          \and \not ExistsObstacleBetween(getCol()@pre, i, getHgt()@pre)
+    //          \and \Exists Guard g \in getEnvi().getCellContent(i, getHgt()@pre)@pre
+    //          \impl \Exists g \in getEnvi().getCellContent(g.getInitCoords().getX(), g.getInitCoords().getY())
+    //      canUseItem \and getCurrentlyHeldItem()@pre == Gun \and \not isFacingRight()@pre \and i < getCol()@pre
+    //          \and \not ExistsObstacleBetween(i, getCol()@pre, getHgt()@pre)
+    //          \and \Exists Guard g \in getEnvi().getCellContent(i, getHgt()@pre)@pre
+    //          \impl \Exists g \in getEnvi().getCellContent(g.getInitCoords().getX(), g.getInitCoords().getY())
+
     //TODO GUN
     //\post isFacingRight() == isFacingRight()@pre
     public void useItem();

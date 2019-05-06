@@ -124,6 +124,14 @@ public class EngineImpl implements Engine {
         return this.nextCommand;
     }
 
+    public CommandManager getCommandManager(){
+        return this.commandManager;
+    }
+
+    public int getCurrentLevel(){
+        return this.currentLevel;
+    }
+
     public void addHole(int x, int y){
         this.holes.add(new Hole(x, y));
     }

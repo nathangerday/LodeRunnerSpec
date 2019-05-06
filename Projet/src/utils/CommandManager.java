@@ -35,7 +35,11 @@ public class CommandManager extends Thread{
 		Command res = this.currentCommand;
 		this.currentCommand = Command.NONE;
 		return res;
-	}
+    }
+    
+    public Command peekCurrentCommand(){
+        return this.currentCommand;
+    }
 
 	public void run(){
 	

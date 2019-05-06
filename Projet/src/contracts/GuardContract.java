@@ -574,7 +574,7 @@ public class GuardContract extends GuardDecorator {
 
         //\post \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)@pre \and \not isCarryingTreasure()@pre 
         //      \impl isCarryingTreasure() \and \not \Exists Treasure t \in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)
-        if(!(Checker.implication(Util.containsTreasure(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre)) && !isCarryingTreasure_atPre,
+        if(!(Checker.implication(Util.containsTreasure(getCellContent_atPre.get(getCol_atPre).get(getHgt_atPre)) && !isCarryingTreasure_atPre && getCellNature_atPre[getCol_atPre][getHgt_atPre - 1] != Cell.HOL,
                                  isCarryingTreasure() && !Util.containsTreasure(getEnvi().getCellContent(getCol_atPre, getHgt_atPre))))){
             Contractor.defaultContractor().postconditionError("GuardContract", "step", "\\Exists Treasure t \\in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)@pre \\and \\not isCarryingTreasure()@pre \\impl isCarryingTreasure() \\and \\not \\Exists Treasure t \\in getEnvi().getCellContent(getCol()@pre, getHgt()@pre)");
         }

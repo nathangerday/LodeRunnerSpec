@@ -108,4 +108,14 @@ public class EngineDecorator implements Engine{
 	public int getNbTreasuresLeft(){
         return getDelegate().getNbTreasuresLeft();
     }
+
+	@Override
+	public CommandManager getCommandManager() {
+		return getDelegate().getCommandManager();
+	}
+
+	@Override
+	public int getCurrentLevel() {
+		return getDelegate().getCurrentLevel();
+	}
 }

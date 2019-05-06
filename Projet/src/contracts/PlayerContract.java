@@ -444,14 +444,12 @@ public class PlayerContract extends PlayerDecorator{
             Guard guard = Util.getGuard(getCellContent_atPre.get(i).get(getHgt_atPre));
             if(canUseItem && getCurrentlyHeldItem_atPre.getNature() == ItemType.Gun && isFacingRight_atPre && i > getCol_atPre &&
                 !existsObstacleBetween(getCol_atPre, i, getHgt_atPre, getCellNature_atPre) &&  guard != null){
-                    System.out.println("SHOOT RIGHT");
                     if(!(guard.getCol() == guard.getInitCoords().getX() && guard.getHgt() == guard.getInitCoords().getY())){
                         Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "Check kill guards when shooting to the right");
                     }
             }
             if(canUseItem && getCurrentlyHeldItem_atPre.getNature() == ItemType.Gun && !isFacingRight_atPre && i < getCol_atPre &&
                 !existsObstacleBetween(i, getCol_atPre, getHgt_atPre, getCellNature_atPre)  && guard != null){
-                    System.out.println("SHOOT LEFT");
                     if(!(guard.getCol() == guard.getInitCoords().getX() && guard.getHgt() == guard.getInitCoords().getY())){
                         Contractor.defaultContractor().postconditionError("PlayerContract", "useItem", "Check kill guards when shooting to the left");
                     }

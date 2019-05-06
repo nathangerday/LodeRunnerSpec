@@ -10,6 +10,7 @@ import data.Command;
 import data.Coord;
 import data.CoordGuard;
 import data.CoordItem;
+import data.Entity;
 import data.Hole;
 import data.Item;
 import data.ItemType;
@@ -22,6 +23,7 @@ import services.Guard;
 import services.Player;
 import services.ScreenManager;
 import utils.CommandManager;
+import utils.Util;
 
 public class EngineContract extends EngineDecorator{
 
@@ -163,6 +165,11 @@ public class EngineContract extends EngineDecorator{
 			Contractor.defaultContractor().postconditionError("EngineContract", "init", "getNbTreasuresLeft() == \\Count CoordItem c \\in sm.getItemsFromScreen(0) \\with (c.getItemType() == Treasure)");
 		}
 
+		//\post getCurrentLevel() == 0
+		if(!(getCurrentLevel() == 0)){
+			Contractor.defaultContractor().postconditionError("EngineContract", "init", "getCurrentLevel() == 0");
+		}
+
 	}
 
 	@Override
@@ -171,8 +178,186 @@ public class EngineContract extends EngineDecorator{
 		if(!(getStatus() == Status.Playing)){
 			Contractor.defaultContractor().postconditionError("EngineContract", "step", "getStatus() == Status.Playing");
 		}
-		
+
+		//captures
+		Cell[][] getCellNature_atPre = new Cell[getEnvironment().getWidth()][getEnvironment().getHeight()];
+        List<List<Set<Entity>>> getCellContent_atPre = new ArrayList<>();
+        for(int u = 0; u < getEnvironment().getWidth(); u++){
+            getCellContent_atPre.add(new ArrayList<>());
+            for(int v = 0; v < getEnvironment().getHeight(); v++){
+                getCellNature_atPre[u][v] = getEnvironment().getCellNature(u, v);
+                getCellContent_atPre.get(u).add(new HashSet<>(getEnvironment().getCellContent(u, v)));
+            }
+        }
+		Set<Hole> getHoles_atPre = new HashSet<>();
+		for(Hole h : getHoles()){
+			getHoles_atPre.add(new Hole(h.getX(), h.getY(), h.getTime()));
+		}
+		Status getStatus_atPre = getStatus();
+		List<Item> getTreasures_atPre = new ArrayList<>(getTreasures());
+		Environment getEnvironment_atPre = getEnvironment();
+		Player getPlayer_atPre = getPlayer();
+		Command getNextCommand_atPre = getNextCommand();
+		List<Guard> getGuards_atPre = new ArrayList<>(getGuards());
+		int getNbLifes_atPre = getNbLifes();
+		int getScore_atPre = getScore();
+		int getScoreAtStartOfLevel_atPre = getScoreAtStartOfLevel();
+		ScreenManager getScreenManager_atPre = getScreenManager();
+		int getNbTreasuresLeft_atPre = getNbTreasuresLeft();
+		int getCurrentLevel_atPre = getCurrentLevel();
+		Command commandManagerPeekCurrentCommand_atPre = getCommandManager().peekCurrentCommand();
+		int getPlayerCol_atPre = getPlayer().getCol();
+		int getPlayerHgt_atPre = getPlayer().getHgt();
+
+		//inv pre
+		checkInvariant();
+
 		super.step();
+
+		//inv post
+		checkInvariant();
+
+		//\post getCommandManager()@pre != null \implies getNextCommand() == getCommandManager().peekCurrentCommand()@pre
+		if(!(Util.containsTreasure(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getNbTreasuresLeft_atPre == 1) && !Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre))){
+			boolean holeexists = false;
+			for(Hole o: getHoles_atPre){
+				if(o.getX() == getPlayerCol_atPre && o.getY() == getPlayerHgt_atPre && o.getTime() == 14){
+					holeexists = true;
+				}
+			}
+			if(!holeexists){
+				if(!(Checker.implication(getCommandManager() != null, getNextCommand() == commandManagerPeekCurrentCommand_atPre))){
+					Contractor.defaultContractor().postconditionError("EngineContract", "step", "getCommandManager()@pre != null \\implies getNextCommand() == getCommandManager().peekCurrentCommand()@pre");
+				}
+			}
+		}
+
+		//\post getCommandManager()@pre == null \implies getNextCommand() == NONE
+		if(!(Checker.implication(getCommandManager() == null, getNextCommand() == Command.NONE))){
+			Contractor.defaultContractor().postconditionError("EngineContract", "step", "getCommandManager()@pre == null \\implies getNextCommand() == NONE");
+		}
+
+		//\post \Exists Guard g \in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre
+		//          \and getNbLifes()@pre == 1
+		//          \implies getNbLifes() == 0 \and getStatus() = Loss
+		if(!(Checker.implication(Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getNbLifes_atPre == 1, getNbLifes() == 0 && getStatus() == Status.Loss))){
+			Contractor.defaultContractor().postconditionError("EngineContract", "step", "\\Exists Guard g \\in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre \\and getNbLifes()@pre == 1 \\implies getNbLifes() == 0 \\and getStatus() = Loss");
+		}
+
+		//\post \Exists Guard g \in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre
+		//          \and getNbLifes()@pre > 1
+		//          \implies death
+		//TODO
+		// if(!(Checker.implication(Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getNbLifes_atPre > 1, death))){
+		// 	Contractor.defaultContractor().postconditionError("EngineContract", "step", "\\Exists Guard g \\in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre \\and getNbLifes()@pre > 1 \\implies death");
+		// }
+
+		//\post \not \Exists Guard g \in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre
+		//      \and \Exists Treasure t \in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre
+		//              \implies t \not \in getTreasure() \and getNbTreasuresLeft() = getNbTreasuresLeft()@pre - 1 \and getScore() = getScore()@pre + 1
+		//                  \and (getNbTreasuresLeft()@pre == 1 \and getCurrentLevel()@pre < getScreenManager().getNbScreen() - 1
+		//                              \implies getCurrentLevel() = getCurrentLevel()@pre + 1 \and loadLevel(getCurrentLevel()@pre + 1))
+		//                  \and (getNbTreasuresLeft()@pre == 1 \and getCurrentLevel()@pre = getScreenManager().getNbScreen() - 1
+		//                              \implies getStatus() = Win
+		if(!Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && Util.containsTreasure(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre))){
+			if(Util.containsTreasure(getEnvironment().getCellContent(getPlayerCol_atPre, getPlayerHgt_atPre)) || getNbTreasuresLeft() != getNbTreasuresLeft_atPre - 1 || getScore() != getScore_atPre + 1){
+				Contractor.defaultContractor().postconditionError("EnfineContract", "step", "pickup treasure");
+			}
+			//TODO
+			// if(!(Checker.implication(getNbTreasuresLeft_atPre == 1 && getCurrentLevel_atPre < getScreenManager().getNbScreen() - 1, getCurrentLevel() == getCurrentLevel_atPre + 1 && loadlevel(getCurrentLevel_atPre + 1)){
+			// 	Contractor.defaultContractor().postconditionError("EngineContract", "step", "Load next level");
+			// }
+
+			if(!(Checker.implication(getNbTreasuresLeft_atPre == 1 && getCurrentLevel_atPre == getScreenManager().getNbScreen() - 1, getStatus() == Status.Win))){
+				Contractor.defaultContractor().postconditionError("EngineContract", "step", "Load next level");
+			}
+
+		}
+
+		//\post \not (\Exists Treasure t \in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre
+		//              \and getNbTreasuresLeft() = 1)
+		//			\and \not \Exists Guard g \in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre
+		//          \and \Exists Item i \in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre
+		//              \implies getPlayer().getCurrentlyHeldItem().getNature() = i.getNature()
+		if(!Util.containsTreasure(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && !Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && Util.containsItem(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre))){
+			ItemType nature = Util.getItem(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)).getNature();
+			if(!(getPlayer().getCurrentlyHeldItem().getNature() == nature)){
+				Contractor.defaultContractor().postconditionError("EngineContract", "step", "Pickup item");
+			}
+		}
+
+
+		
+		//\post \not (\Exists Treasure t \in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre
+		//              \and getNbTreasuresLeft() = 1)
+		//			\and \not \Exists Guard g \in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre
+		//          \and getEnvironment().getCellNature(getPlayer().getCol()@pre, getPlayer().getHgt()@pre - 1)@pre = TRP
+		//                  \implies getEnvironment().getCellNature(getPlayer().getCol()@pre, getPlayer().getHgt()@pre - 1) = EMP
+		if(!(Util.containsTreasure(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getNbTreasuresLeft_atPre == 1) && !Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getCellNature_atPre[getPlayerCol_atPre][getPlayerHgt_atPre - 1] == Cell.TRP){
+			if(!(getEnvironment().getCellNature(getPlayerCol_atPre, getPlayerHgt_atPre - 1) == Cell.EMP)){
+				Contractor.defaultContractor().postconditionError("EngineContract", "step", "Reveal trap");
+			}
+		}
+
+		//\post \not (\Exists Treasure t \in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre
+		//              \and getNbTreasuresLeft() = 1)
+		//      \not \Exists Guard g \in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre
+		//      \and \Forall Hole h \in getHoles()@pre
+		//              h.getTime() < 14 \impl \Exists Hole o \in getHoles() \with 
+		//                  (o.getX() == h.getX() \and o.getY() == h.getY() \and o.getTime() == h.getTime() + 1)
+		//              h.getTime() == 14 
+		//                  \impl \not \Exists Hole o \in getHoles() \with (o.getX() == h.getX() \and o.getY() == h.getY())
+		//              h.getTime() == 14 \and getPlayer().getX() == h.getX() \and getPlayer().getY() == h.getY() 
+		//                  \impl death
+		if(!(Util.containsTreasure(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getNbTreasuresLeft_atPre == 1) && !Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre))){
+			for(Hole h : getHoles_atPre){
+				boolean ok = false;
+				if(h.getTime() < 14){
+					for(Hole o: getHoles()){
+						if(o.getX() == h.getX() && o.getY() == h.getY() && o.getTime() == h.getTime() + 1){
+							ok = true;
+						}
+					}
+					if(!ok){
+						Contractor.defaultContractor().postconditionError("EngineContract", "step", "Increase time on hole");
+					}
+				}
+				if(h.getTime() == 14){
+					for(Hole o: getHoles()){
+						if(o.getX() == h.getX() && o.getY() == h.getY() && o.getTime() == h.getTime() + 1){
+							ok = true;
+						}
+					}
+					if(ok){
+						Contractor.defaultContractor().postconditionError("EngineContract", "step", "Fill old hole");
+					}
+					//TODO
+					// if(getPlayerCol_atPre == h.getX() && getPlayerHgt_atPre == h.getY()){
+					// 	death
+					// }
+				}
+			}
+		}
+
+		//\post \not \Exists Hole h \in getHoles()@pre \with (h.getTime() == 14 \and h.getX() == getPlayer().getX() \and h.getY() == getPlayer().getY())
+		//      \and \not \Exists Guard g \in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre
+		//      \and \not (\Exists Treasure t \in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre
+		//              \and getNbTreasuresLeft() = 1)
+		//      \impl getStatus() == Playing
+		if(!(Util.containsTreasure(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getNbTreasuresLeft_atPre == 1) && !Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre))){
+			boolean holeexists = false;
+			for(Hole o: getHoles_atPre){
+				if(o.getX() == getPlayerCol_atPre && o.getY() == getPlayerHgt_atPre && o.getTime() == 14){
+					holeexists = true;
+				}
+			}
+			if(!holeexists){
+				if(getStatus() != Status.Playing){
+					Contractor.defaultContractor().postconditionError("EngineContract", "step", "Keep playing when no reason to die");
+				}
+			}
+		}
+
 	}
 
 	@Override
@@ -202,6 +387,8 @@ public class EngineContract extends EngineDecorator{
 		int getScoreAtStartOfLevel_atPre = getScoreAtStartOfLevel();
 		ScreenManager getScreenManager_atPre = getScreenManager();
 		int getNbTreasuresLeft_atPre = getNbTreasuresLeft();
+		int getCurrentLevel_atPre = getCurrentLevel();
+
 		//inv pre
 		checkInvariant();
 		
@@ -275,6 +462,11 @@ public class EngineContract extends EngineDecorator{
 			Contractor.defaultContractor().postconditionError("EngineContract", "diplay", "getNbTreasuresLeft() == getNbTreasuresLeft()@pre");
 		}
 
+		//\post getCurrentLevel() == getCurrentLevel()@pre
+		if(!(getCurrentLevel() == getCurrentLevel_atPre)){
+			Contractor.defaultContractor().postconditionError("EngineContract", "display", "getCurrentLevel() == getCurrentLevel()@pre");
+		}
+
 	}
 
 	@Override
@@ -293,6 +485,7 @@ public class EngineContract extends EngineDecorator{
 		int getScoreAtStartOfLevel_atPre = getScoreAtStartOfLevel();
 		ScreenManager getScreenManager_atPre = getScreenManager();
 		int getNbTreasuresLeft_atPre = getNbTreasuresLeft();
+		int getCurrentLevel_atPre = getCurrentLevel();
 
 
 		//inv pre
@@ -364,7 +557,12 @@ public class EngineContract extends EngineDecorator{
 
 		//\post getNbTreasuresLeft() == getNbTreasuresLeft()@pre
 		if(!(getNbTreasuresLeft() == getNbTreasuresLeft_atPre)){
-			Contractor.defaultContractor().postconditionError("EngineContract", "diplay", "getNbTreasuresLeft() == getNbTreasuresLeft()@pre");
+			Contractor.defaultContractor().postconditionError("EngineContract", "display", "getNbTreasuresLeft() == getNbTreasuresLeft()@pre");
+		}
+
+		//\post getCurrentLevel() == getCurrentLevel()@pre
+		if(!(getCurrentLevel() == getCurrentLevel_atPre)){
+			Contractor.defaultContractor().postconditionError("EngineContract", "display", "getCurrentLevel() == getCurrentLevel()@pre");
 		}
 		
 	}

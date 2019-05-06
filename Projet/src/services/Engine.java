@@ -77,7 +77,6 @@ public interface Engine{
     //                          sm.getScreen(getCurrentLlevel()@pre).getCellNature(i, j) == getEnvironment().getCellNature(i, j))
     //                  \and getPlayer().getCol() == sm.getPlayerFromScreen(no).getX();
     //                  \and getPlayer().getHgt() == sm.getPlayerFromScreen(no).getY();
-    //                  \and getPlayer().getEngine() == engineInstance
     //                  \and \Forall CoordItem c \in sm.getItemsFromScreen(no)
     //                            \Exists Item i \in getTreasures() \with (i.getHgt() == c.getY() && i.getCol() == c.getX() && i.getNature() == c.getItemType())
     //                  \and \Forall CoordGuard c \ in sm.getGuardsFromScreen(no)

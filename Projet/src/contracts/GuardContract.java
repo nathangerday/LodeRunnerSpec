@@ -23,7 +23,56 @@ public class GuardContract extends GuardDecorator {
     }
 
     public void checkInvariant() {
+        Set<Cell> HOL_HDR = new HashSet<>();
+        HOL_HDR.add(Cell.HOL);
+        HOL_HDR.add(Cell.HDR);
 
+        Set<Cell> PLT_MLT_LAD_DOR_NGU_TRP = new HashSet<>();
+        PLT_MLT_LAD_DOR_NGU_TRP.add(Cell.PLT);
+        PLT_MLT_LAD_DOR_NGU_TRP.add(Cell.PLT);
+        PLT_MLT_LAD_DOR_NGU_TRP.add(Cell.LAD);
+        PLT_MLT_LAD_DOR_NGU_TRP.add(Cell.DOR);
+        PLT_MLT_LAD_DOR_NGU_TRP.add(Cell.NGU);
+        PLT_MLT_LAD_DOR_NGU_TRP.add(Cell.TRP);
+
+        Set<Cell> libre = new HashSet<>();
+        libre.add(Cell.EMP);
+        libre.add(Cell.HDR);
+        libre.add(Cell.LAD);
+        libre.add(Cell.NPL);
+        
+
+        if(!(Checker.implication(getEnvi().getCellNature(getCol(), getHgt()) == Cell.LAD && getHgt() < getTarget().getHgt(), getBehaviour() == Command.MOVEU ))){
+            Contractor.defaultContractor().invariantError("GuardContract", "Go up on ladder");
+        }
+
+
+        if(!(Checker.implication(getEnvi().getCellNature(getCol(), getHgt()) == Cell.LAD && getHgt() > getTarget().getHgt(), getBehaviour() == Command.MOVED ))){
+            Contractor.defaultContractor().invariantError("GuardContract", "Go up on ladder");
+        }
+
+        if(!(Checker.implication(getEnvi().getCellNature(getCol(), getHgt()) == Cell.HOL && getCol() == getTarget().getCol() &&
+        getHgt() + 1 == getTarget().getHgt() && libre.contains(getEnvi().getCellNature(getCol()+1, getHgt()+1)), getBehaviour() == Command.MOVER ))){
+
+            Contractor.defaultContractor().invariantError("GuardContract", "Climbing on player when he is above (via MOVER)");
+        }
+        if(!(Checker.implication(getEnvi().getCellNature(getCol(), getHgt()) == Cell.HOL && getCol() == getTarget().getCol() &&
+        getHgt() + 1 == getTarget().getHgt() && !libre.contains(getEnvi().getCellNature(getCol()+1, getHgt()+1)), getBehaviour() == Command.MOVEL ))){
+
+            Contractor.defaultContractor().invariantError("GuardContract", "Climbing on player when he is above (via MOVEL)");
+        }
+
+        if(getEnvi().getCellNature(getCol(), getHgt()) != Cell.LAD || getHgt() == getTarget().getHgt()){
+            if(!(Checker.implication((HOL_HDR.contains(getEnvi().getCellNature(getCol(), getHgt())) || PLT_MLT_LAD_DOR_NGU_TRP.contains(getEnvi().getCellNature(getCol(), getHgt()-1)) || Util.containsGuard(getEnvi().getCellContent(getCol(), getHgt()-1))) && getTarget().getCol() < getCol() , getBehaviour() == Command.MOVEL))){
+                Contractor.defaultContractor().invariantError("GuardContract", "Following target to the left");
+                
+            }
+    
+            if(!(Checker.implication((HOL_HDR.contains(getEnvi().getCellNature(getCol(), getHgt())) || PLT_MLT_LAD_DOR_NGU_TRP.contains(getEnvi().getCellNature(getCol(), getHgt()-1)) || Util.containsGuard(getEnvi().getCellContent(getCol(), getHgt()-1))) && getTarget().getCol() >= getCol() , getBehaviour() == Command.MOVER))){
+                Contractor.defaultContractor().invariantError("GuardContract", "Following target to the right");
+                
+            }
+        }
     }
 
     @Override
@@ -416,8 +465,10 @@ public class GuardContract extends GuardDecorator {
         //\post \Exists Guard g \in getEnvi().getCellContent(getInitCoords().getX(), getInitCoords().getY())@pre
         //      \impl g.getCol() == g.getInitCoords.getX() \and g.getHgt() == g.getInitCoords().getY()
         Guard g = Util.getGuard(getCellContent_atPre.get(getInitCoords().getX()).get(getInitCoords().getY()));
-        if(!(Checker.implication(g != null, g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()))){
-            Contractor.defaultContractor().postconditionError("GuardContract", "moveToInitCoords", "\\Exists Guard g \\in getEnvi().getCellContent(getInitCoords().getX(), getInitCoords().getY())@pre \\impl g.getCol() == g.getInitCoords.getX() \\and g.getHgt() == g.getInitCoords().getY()");
+        if(g != null){
+            if(!(Checker.implication(g != null, g.getCol() == g.getInitCoords().getX() && g.getHgt() == g.getInitCoords().getY()))){
+                Contractor.defaultContractor().postconditionError("GuardContract", "moveToInitCoords", "\\Exists Guard g \\in getEnvi().getCellContent(getInitCoords().getX(), getInitCoords().getY())@pre \\impl g.getCol() == g.getInitCoords.getX() \\and g.getHgt() == g.getInitCoords().getY()");
+            }
         }
 
 
@@ -1223,7 +1274,19 @@ public class GuardContract extends GuardDecorator {
     }
 
     private boolean isEqual(Guard g){
-        //TODO Define this method
-        return this.getCol() == g.getCol() && this.getHgt() == g.getHgt();
+        boolean cond1 =  this.getCol() == g.getCol() && this.getHgt() == g.getHgt();
+        boolean cond2 = true;
+        for(int i=0; i<getEnvi().getWidth(); i++){
+            for(int j=0;j<getEnvi().getHeight(); j++){
+                if(getEnvi().getCellNature(i, j) != g.getEnvi().getCellNature(i, j)){
+                        cond2 = false;
+                }
+            }
+        }
+        boolean cond3 = g.isCarryingTreasure() == isCarryingTreasure();
+        boolean cond4 = g.getTimeLeftParalyzed() == getTimeLeftParalyzed();
+        boolean cond5 = g.getTimeInHole() == getTimeInHole();
+        
+        return cond1 && cond2 && cond3 && cond4 && cond5;
     }
 }

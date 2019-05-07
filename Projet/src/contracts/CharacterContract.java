@@ -30,15 +30,6 @@ public class CharacterContract extends CharacterDecorator {
         if(!(EMP_HOL_LAD_HDR_NPL_NGU.contains(getEnvi().getCellNature(getCol(), getHgt())))){
             Contractor.defaultContractor().invariantError("CharacterContract", "getEnvi().getCellNature(getCol(), getHgt()) \\in {EMP, HOL, LAD, HDR, NPL, NGU}");
         }
-
-        //TODO Change & Move go guard inv
-        // //\inv (\Exists Character c \in getEnvi().getCellContent(getCol(), getHgt()))
-        // //          \impl c == this
-        // if(!Checker.implication(Util.constainsCharacter(getEnvi().getCellContent(getCol(), getHgt())), Util.getCharacter(getEnvi().getCellContent(getCol(), getHgt())).equals(getDelegate()))){
-        //     Contractor.defaultContractor().invariantError("CharacterContract", "(\\Exists Character c \\in getEnvi().getCellContent(getCol(), getHgt())) \\impl c == this");
-        // }
-
-
     }
 
 

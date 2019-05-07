@@ -18,14 +18,7 @@ public interface Guard extends Character{
     public int getTimeInHole();
     public int getTimeLeftParalyzed();
 
-    //TODO in inv
     public Command getBehaviour();
-
-    /* Invariants */
-
-    // \inv (\Exists Guard g \in getEnvi().getCellContent(getCol(), getHgt()))
-    //          \impl g == this
-
 
     
     /* Constructors */

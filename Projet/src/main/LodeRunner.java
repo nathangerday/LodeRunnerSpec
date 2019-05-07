@@ -88,7 +88,7 @@ public class LodeRunner{
         }
 
         // screen2.setNature(4, 2, Cell.NPL);
-        screen2.setNature(5, 2, Cell.DOR);
+        screen2.setNature(10, 2, Cell.PLT);
         screen2.setNature(6, 1, Cell.TRP);
         List<CoordItem> treasureCoords2 = new ArrayList<>();
         treasureCoords2.add(new CoordItem(10, 2, ItemType.Treasure));
@@ -102,10 +102,10 @@ public class LodeRunner{
         // treasureCoords2.add(new CoordItem(4, 2, ItemType.Flash));
         // treasureCoords2.add(new CoordItem(5, 2, ItemType.Flash));
         List<CoordGuard> guardCoords2 = new ArrayList<>();
-        guardCoords2.add(new CoordGuard(16, 7, GuardType.NORMAL));
+        guardCoords2.add(new CoordGuard(9, 7, GuardType.NORMAL));
 
         sm.addScreen(screen2, guardCoords2, treasureCoords2, new Coord(8, 2));
-        sm.removeScreen(0);
+        // sm.removeScreen(0);
         engi.init(sm, cm, engi);
         while(engi.getStatus() == Status.Playing){
             engi.step();

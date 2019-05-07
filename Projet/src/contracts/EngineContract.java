@@ -42,6 +42,11 @@ public class EngineContract extends EngineDecorator{
 	
 	@Override
 	public void init(ScreenManager sm, CommandManager cm, Engine engineInstance) {
+		//\pre sm != null
+		if(!(sm != null)){
+			Contractor.defaultContractor().preconditionError("EngineContract", "init", "sm != null");
+		}
+
 		//\pre sm.getNbScreen() >= 1
 		if(!(sm.getNbScreen() >= 1)){
 			Contractor.defaultContractor().preconditionError("EngineContract", "init", "sm.getNbScreen() >= 1");
@@ -205,7 +210,12 @@ public class EngineContract extends EngineDecorator{
 		ScreenManager getScreenManager_atPre = getScreenManager();
 		int getNbTreasuresLeft_atPre = getNbTreasuresLeft();
 		int getCurrentLevel_atPre = getCurrentLevel();
-		Command commandManagerPeekCurrentCommand_atPre = getCommandManager().peekCurrentCommand();
+		Command commandManagerPeekCurrentCommand_atPre;
+		if(getCommandManager() == null){
+			commandManagerPeekCurrentCommand_atPre = Command.NONE;
+		}else{
+			commandManagerPeekCurrentCommand_atPre = getCommandManager().peekCurrentCommand();
+		}
 		int getPlayerCol_atPre = getPlayer().getCol();
 		int getPlayerHgt_atPre = getPlayer().getHgt();
 
@@ -247,7 +257,6 @@ public class EngineContract extends EngineDecorator{
 		//\post \Exists Guard g \in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre
 		//          \and getNbLifes()@pre > 1
 		//          \implies death
-		//TODO
 		// if(!(Checker.implication(Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getNbLifes_atPre > 1, death))){
 		// 	Contractor.defaultContractor().postconditionError("EngineContract", "step", "\\Exists Guard g \\in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre \\and getNbLifes()@pre > 1 \\implies death");
 		// }
@@ -260,16 +269,15 @@ public class EngineContract extends EngineDecorator{
 		//                  \and (getNbTreasuresLeft()@pre == 1 \and getCurrentLevel()@pre = getScreenManager().getNbScreen() - 1
 		//                              \implies getStatus() = Win
 		if(!Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && Util.containsTreasure(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre))){
-			if(Util.containsTreasure(getEnvironment().getCellContent(getPlayerCol_atPre, getPlayerHgt_atPre)) || getNbTreasuresLeft() != getNbTreasuresLeft_atPre - 1 || getScore() != getScore_atPre + 1){
+			if(Util.containsTreasure(getEnvironment().getCellContent(getPlayerCol_atPre, getPlayerHgt_atPre)) || getScore() != getScore_atPre + 1){
 				Contractor.defaultContractor().postconditionError("EnfineContract", "step", "pickup treasure");
 			}
-			//TODO
 			// if(!(Checker.implication(getNbTreasuresLeft_atPre == 1 && getCurrentLevel_atPre < getScreenManager().getNbScreen() - 1, getCurrentLevel() == getCurrentLevel_atPre + 1 && loadlevel(getCurrentLevel_atPre + 1)){
 			// 	Contractor.defaultContractor().postconditionError("EngineContract", "step", "Load next level");
 			// }
 
 			if(!(Checker.implication(getNbTreasuresLeft_atPre == 1 && getCurrentLevel_atPre == getScreenManager().getNbScreen() - 1, getStatus() == Status.Win))){
-				Contractor.defaultContractor().postconditionError("EngineContract", "step", "Load next level");
+				Contractor.defaultContractor().postconditionError("EngineContract", "step", "No more levels, win");
 			}
 
 		}
@@ -331,7 +339,6 @@ public class EngineContract extends EngineDecorator{
 					if(ok){
 						Contractor.defaultContractor().postconditionError("EngineContract", "step", "Fill old hole");
 					}
-					//TODO
 					// if(getPlayerCol_atPre == h.getX() && getPlayerHgt_atPre == h.getY()){
 					// 	death
 					// }

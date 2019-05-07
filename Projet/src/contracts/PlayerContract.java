@@ -1225,8 +1225,27 @@ public class PlayerContract extends PlayerDecorator{
     }
 
     private boolean isEqual(PlayerContract pc){
-        //TODO define this method
-        return this.getCol() == pc.getCol() && this.getHgt() == pc.getHgt();
+        boolean cond1 = this.getCol() == pc.getCol() && this.getHgt() == pc.getHgt();
+        boolean cond2 = true;
+        for(int i=0; i<getEnvi().getWidth(); i++){
+            for(int j=0;j<getEnvi().getHeight(); j++){
+                if(getEnvi().getCellNature(i, j) != pc.getEnvi().getCellNature(i, j)){
+                        cond2 = false;
+                }
+            }
+        }
+        boolean cond3 = isFacingRight() == pc.isFacingRight();
+        boolean cond4;
+        if(getCurrentlyHeldItem() == null){
+            cond4 = pc.getCurrentlyHeldItem() == null;    
+        }else{
+            cond4 = pc.getCurrentlyHeldItem() != null && getCurrentlyHeldItem().getNature() == pc.getCurrentlyHeldItem().getNature();
+        }
+        boolean cond5 = getNumberOfUsagesLeftForCurrentItem() == pc.getNumberOfUsagesLeftForCurrentItem();
+
+        return cond1 && cond2 && cond3 && cond4 && cond5;
+        
     }
+    
     
 }

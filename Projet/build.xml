@@ -44,6 +44,11 @@
       <test name="test.ScreenTest" outfile="reportScreen"/>
       <test name="test.EditableScreenTest" outfile="reportEditableScreen"/>
       <test name="test.CharacterTest" outfile="reportCharacter"/>
+      <test name="test.EnvironmentTest" outfile="reportEnvironment"/>
+      <test name="test.PlayerTest" outfile="reportPlayer"/>
+      <test name="test.GuardTest" outfile="reportGuard"/>
+      <test name="test.EngineTest" outfile="reportEngine"/>
+      <test name="test.ScreenManagerTest" outfile="reportScreenManager"/>
 
 
     </junit>

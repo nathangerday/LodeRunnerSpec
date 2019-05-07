@@ -51,11 +51,7 @@ public interface Engine{
     //\post getScreenManager() == sm
     //\post getNbTreasuresLeft() == \Count CoordItem c \in sm.getItemsFromScreen(0) \with (c.getItemType() == Treasure)
     public void init(ScreenManager sm, CommandManager cm, Engine engineInstance);
-    
-    /* Invariants */
-    //TODO Synchronisation entre l'environment et personnage
-    
-    
+
     
     /* Operators */
 

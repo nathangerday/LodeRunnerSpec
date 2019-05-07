@@ -28,6 +28,17 @@ public class ScreenTest {
         //oracles : pas d'exception
         
     }
+
+    @Test(expected = contracts.ContractError.class)
+    public void testInit2(){
+        //CI
+        
+        //operations
+        screen.init(-10, 20);
+
+        //oracles : PreconditionError
+        
+    }
     
 
     @Test(expected = contracts.ContractError.class)
@@ -49,6 +60,30 @@ public class ScreenTest {
         
         //operations
         screen.fill(5, 2);
+
+        //oracles : PreconditionError
+        
+    }
+    
+    @Test(expected = contracts.ContractError.class)
+    public void testOpenDoor1(){
+        //CI
+        screen.init(10, 20);
+        
+        //operations
+        screen.openDoor(5, 2);
+
+        //oracles : PreconditionError
+        
+    }
+    
+    @Test(expected = contracts.ContractError.class)
+    public void testRevealTrap1(){
+        //CI
+        screen.init(10, 20);
+        
+        //operations
+        screen.revealTrap(5, 2);
 
         //oracles : PreconditionError
         

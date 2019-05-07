@@ -109,7 +109,6 @@ public interface Player extends /* includes */ Character{
     //          \and \Exists Guard g \in getEnvi().getCellContent(i, getHgt()@pre)@pre
     //          \impl \Exists g \in getEnvi().getCellContent(g.getInitCoords().getX(), g.getInitCoords().getY())
 
-    //TODO GUN
     //\post isFacingRight() == isFacingRight()@pre
     public void useItem();
 

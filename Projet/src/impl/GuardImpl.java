@@ -90,57 +90,50 @@ public class GuardImpl extends CharacterImpl implements Guard {
 
     @Override
     public Command getBehaviour() {
-        //TODO Improve behaviour
         if(getEnvi().getCellNature(x, y) == Cell.LAD && 
             getTarget().getHgt() > getHgt()){
                 return Command.MOVEU;
         }
-        Set<Cell> HOL_HDR = new HashSet<>();
-        HOL_HDR.add(Cell.HOL);
-        HOL_HDR.add(Cell.HDR);
 
-        Set<Cell> PLT_MLT_HDR = new HashSet<>();
-        PLT_MLT_HDR.add(Cell.PLT);
-        PLT_MLT_HDR.add(Cell.PLT);
-        PLT_MLT_HDR.add(Cell.LAD);
+        if(getEnvi().getCellNature(x, y) == Cell.LAD && 
+            getTarget().getHgt() < getHgt()){
+                return Command.MOVED;
+        }
+        Set<Cell> HOL_HDR_LAD = new HashSet<>();
+        HOL_HDR_LAD.add(Cell.HOL);
+        HOL_HDR_LAD.add(Cell.HDR);
+        HOL_HDR_LAD.add(Cell.LAD);
+
+        Set<Cell> PLT_MLT_LAD_DOR_NGU_TRP = new HashSet<>();
+        PLT_MLT_LAD_DOR_NGU_TRP.add(Cell.PLT);
+        PLT_MLT_LAD_DOR_NGU_TRP.add(Cell.PLT);
+        PLT_MLT_LAD_DOR_NGU_TRP.add(Cell.LAD);
+        PLT_MLT_LAD_DOR_NGU_TRP.add(Cell.DOR);
+        PLT_MLT_LAD_DOR_NGU_TRP.add(Cell.NGU);
+        PLT_MLT_LAD_DOR_NGU_TRP.add(Cell.TRP);
+
+        Set<Cell> libre = new HashSet<>();
+        libre.add(Cell.EMP);
+        libre.add(Cell.HDR);
+        libre.add(Cell.LAD);
+        libre.add(Cell.NPL);
 
         if(getEnvi().getCellNature(x, y) == Cell.HOL && this.target.getCol() == this.getCol() && this.target.getHgt() == this.getHgt() + 1){
-            return Command.MOVER;
+            if(libre.contains(getEnvi().getCellNature(x+1, y+1))){
+                return Command.MOVER;
+            }else{
+                return Command.MOVEL;
+            }
         }
 
         
-        if(HOL_HDR.contains(getEnvi().getCellNature(x, y)) || PLT_MLT_HDR.contains(getEnvi().getCellNature(x, y - 1)) || Util.containsGuard(getEnvi().getCellContent(x, y - 1))){
+        if(HOL_HDR_LAD.contains(getEnvi().getCellNature(x, y)) || PLT_MLT_LAD_DOR_NGU_TRP.contains(getEnvi().getCellNature(x, y - 1)) || Util.containsGuard(getEnvi().getCellContent(x, y - 1))){
             if(target.getCol() < getCol()){
                 return Command.MOVEL;
-            }else if(target.getCol() > getCol()){
+            }else{
                 return Command.MOVER;
-            }else{
-                return Command.NONE;
             }
         }
-
-        if(getEnvi().getCellNature(x, y) == Cell.LAD && (PLT_MLT_HDR.contains(getEnvi().getCellNature(x, y - 1)) || Util.containsGuard(getEnvi().getCellContent(x, y - 1)))){
-            int distanceh = getCol() - target.getCol();
-            int distancev = getHgt() - target.getHgt();
-
-            if(Math.abs(distancev) <= Math.abs(distanceh)){
-                if(distancev < 0){
-                    return Command.MOVEU;
-                }
-                //TODO D'apres la spec, on ne peut pas aller en bas puisque c'est pas une case libre
-                // else{
-                //     return Command.MOVED;
-                // }
-                return Command.NONE;
-            }else{
-                if(distanceh < 0){
-                    return Command.MOVER;
-                }else{
-                    return Command.MOVEL;
-                }
-            }
-        }
-
         return Command.NONE;
     }
 

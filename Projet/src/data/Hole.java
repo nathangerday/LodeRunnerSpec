@@ -48,7 +48,7 @@ public class Hole{
 
     @Override
     public int hashCode(){
-        return Objects.hash(x, y, time);
+        return Objects.hash(x, y);
     }
     
 }

@@ -325,4 +325,61 @@ public class GuardTest {
         assertTrue(guard.getHgt() == 2);
     }
 
+
+    @Test
+    public void testEtatRemarquable_Falling(){
+        //CI
+        guardCoords.add(new CoordGuard(4, 7, GuardType.NORMAL));
+        sm.addScreen(screen, guardCoords, treasureCoords, new Coord(5, 2));
+        engi.init(sm, null, engi);
+        guard = new GuardContract(engi.getGuards().get(1));
+
+        //operations
+        guard.step();
+
+        //oracle : Pas d'exception
+        assertTrue(guard.getHgt() == 6 && guard.getCol() == 4);
+    }
+
+
+    @Test
+    public void testEtatRemarquable_FallingIntoHOL(){
+        //CI
+        guardCoords.add(new CoordGuard(4, 2, GuardType.NORMAL));
+        screen.setNature(4, 1, Cell.HOL);
+        sm.addScreen(screen, guardCoords, treasureCoords, new Coord(6, 2));
+        engi.init(sm, null, engi);
+        guard = new GuardContract(engi.getGuards().get(1));
+
+        //operations
+        guard.step(); //Fall into HOL
+        guard.step(); 
+        guard.step();
+        guard.step();
+        guard.step();
+        guard.step();
+        guard.step(); //Get out with climbRight (because player tot the right)
+ 
+        //oracle : Pas d'exception
+        assertTrue(guard.getCol() == 5 && guard.getHgt() == 2);
+    }
+
+    @Test
+    public void testEtatRemarquable_StillFallingWhenParalyzed(){
+        //CI
+        guardCoords.add(new CoordGuard(4, 7, GuardType.NORMAL));
+        sm.addScreen(screen, guardCoords, treasureCoords, new Coord(6, 2));
+        engi.init(sm, null, engi);
+        guard = new GuardContract(engi.getGuards().get(1));
+
+        //operations
+        guard.paralyze();
+        guard.step(); 
+        guard.step();
+ 
+        //oracle : Pas d'exception
+        assertTrue(guard.getCol() == 4 && guard.getHgt() == 5);
+    }
+    
+
 }

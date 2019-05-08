@@ -13,12 +13,9 @@ import javax.swing.JTextField;
 
 
 public class CommandManager extends Thread{
-	private Scanner scanner = new Scanner(System.in);
-	private Thread mainThread;
 	private Command currentCommand;
 
 	public CommandManager(Thread mainThread){
-		this.mainThread = mainThread;
 		this.currentCommand = Command.NONE;
 		JTextField component = new JTextField();
 		component.addKeyListener(new MyKeyListener());
@@ -47,9 +44,6 @@ public class CommandManager extends Thread{
 
     class MyKeyListener extends KeyAdapter {
         public void keyPressed(KeyEvent evt) {
-            // if (evt.getKeyChar() == 'a') {
-            //     System.out.println("Check for key characters: " + evt.getKeyChar());
-            // }
             switch(evt.getKeyChar()){
                 case 'q': 
                     currentCommand = Command.MOVEL;

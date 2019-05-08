@@ -7,7 +7,6 @@ import java.util.Set;
 
 import data.Cell;
 import data.Command;
-import data.Coord;
 import data.CoordGuard;
 import data.CoordItem;
 import data.Entity;
@@ -16,7 +15,6 @@ import data.Item;
 import data.ItemType;
 import data.Status;
 import decorators.EngineDecorator;
-import services.EditableScreen;
 import services.Engine;
 import services.Environment;
 import services.Guard;

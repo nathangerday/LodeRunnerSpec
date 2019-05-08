@@ -15,7 +15,7 @@ import services.Environment;
 import services.Guard;
 import utils.Util;
 
-public class GuardImpl extends CharacterImpl implements Guard {
+public class GuardImplBug extends CharacterImpl implements Guard {
 
     private static int count = 0;
     private int id;
@@ -27,7 +27,7 @@ public class GuardImpl extends CharacterImpl implements Guard {
     private int timeLeftParalyzed;
 
     public Guard copy(Engine e){
-        GuardImpl copy = new GuardImpl();
+        GuardImplBug copy = new GuardImplBug();
         copy.x = this.x;
         copy.y = this.y;
         copy.engi = e;
@@ -159,7 +159,7 @@ public class GuardImpl extends CharacterImpl implements Guard {
             if(!Util.containsPlayer(envi.getCellContent(x, y + 1))){ //if player above, stops on the player
                 this.x -= 1;
             }
-            this.y += 1;
+            this.y += 2; //BUG va trop haut
             this.envi.addToCellContent(this.x, this.y, this);
         }
     }
@@ -176,7 +176,7 @@ public class GuardImpl extends CharacterImpl implements Guard {
             if(!Util.containsPlayer(envi.getCellContent(x, y + 1))){
                 this.x += 1;
             }
-            this.y += 1;
+            this.y += 2; //BUG va trop haut
             this.envi.addToCellContent(this.x, this.y, this);
         }
     }
@@ -184,10 +184,7 @@ public class GuardImpl extends CharacterImpl implements Guard {
     @Override
     public void moveToInitCoords(){
         if(Util.containsGuard(this.envi.getCellContent(this.initCoords.getX(), this.initCoords.getY()))){
-            Guard g = Util.getGuard(this.envi.getCellContent(this.initCoords.getX(), this.initCoords.getY()));
-            if(g != this){
-                g.moveToInitCoords();
-            }
+            Util.getGuard(this.envi.getCellContent(this.initCoords.getX(), this.initCoords.getY())).moveToInitCoords();
         }
         this.envi.removeFromCellContent(this.x, this.y, this);
         this.x = this.initCoords.getX();

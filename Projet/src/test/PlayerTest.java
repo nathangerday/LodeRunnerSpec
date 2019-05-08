@@ -21,6 +21,7 @@ import impl.PlayerImpl;
 import impl.ScreenManagerImpl;
 import services.EditableScreen;
 import services.Engine;
+import services.Guard;
 import services.Player;
 import services.ScreenManager;
 
@@ -321,5 +322,201 @@ public class PlayerTest {
 
         //oracles : pas d'exception
         assertTrue(player.getHgt() == 2);
+    }
+
+    @Test
+    public void paireTransition_goLeft_goRight(){
+        //CI
+        sm.addScreen(screen, guardCoords, treasureCoords, new Coord(19, 2));
+        engi.init(sm, null, engi);
+        player = new PlayerContract(engi.getPlayer());
+
+
+        //operations
+        player.goLeft();
+        player.goRight();
+
+        //oracles : pas d'exception
+        assertTrue(player.getHgt() == 2 && player.getCol() == 19);
+    }
+
+    @Test
+    public void paireTransition_goRight_goLeft(){
+        //CI
+        sm.addScreen(screen, guardCoords, treasureCoords, new Coord(15, 2));
+        engi.init(sm, null, engi);
+        player = new PlayerContract(engi.getPlayer());
+
+
+        //operations
+        player.goRight();
+        player.goLeft();
+
+        //oracles : pas d'exception
+        assertTrue(player.getHgt() == 2 && player.getCol() == 15);
+    }
+
+
+    @Test
+    public void paireTransition_goUp_goDown(){
+        //CI
+        screen.setNature(15, 2, Cell.LAD);
+        sm.addScreen(screen, guardCoords, treasureCoords, new Coord(15, 2));
+        engi.init(sm, null, engi);
+        player = new PlayerContract(engi.getPlayer());
+
+
+        //operations
+        player.goUp();
+        player.goDown();
+
+        //oracles : pas d'exception
+        assertTrue(player.getHgt() == 2 && player.getCol() == 15);
+    }
+
+    @Test
+    public void paireTransition_goDown_goUp(){
+        //CI
+        screen.setNature(15, 2, Cell.LAD);
+        sm.addScreen(screen, guardCoords, treasureCoords, new Coord(15, 3));
+        engi.init(sm, null, engi);
+        player = new PlayerContract(engi.getPlayer());
+
+
+        //operations
+        player.goDown();
+        player.goUp();
+
+        //oracles : pas d'exception
+        assertTrue(player.getHgt() == 3 && player.getCol() == 15);
+    }
+
+    @Test
+    public void paireTransition_digLeft_digRight(){
+        //CI
+        sm.addScreen(screen, guardCoords, treasureCoords, new Coord(15, 2));
+        engi.init(sm, null, engi);
+        player = new PlayerContract(engi.getPlayer());
+
+
+        //operations
+        player.digLeft();
+        player.digRight();
+
+        //oracles : pas d'exception
+        assertTrue(engi.getEnvironment().getCellNature(14, 1) == Cell.HOL && engi.getEnvironment().getCellNature(16, 1) == Cell.HOL);
+    }
+    
+    @Test
+    public void paireTransition_digRight_digLeft(){
+        //CI
+        sm.addScreen(screen, guardCoords, treasureCoords, new Coord(15, 2));
+        engi.init(sm, null, engi);
+        player = new PlayerContract(engi.getPlayer());
+
+
+        //operations
+        player.digLeft();
+        player.digRight();
+
+        //oracles : pas d'exception
+        assertTrue(engi.getEnvironment().getCellNature(14, 1) == Cell.HOL && engi.getEnvironment().getCellNature(16, 1) == Cell.HOL);
+    }
+
+
+    
+
+    @Test
+    public void testEtatRemarquable_UseSword(){
+        //CI
+        guardCoords.add(new CoordGuard(16, 2, GuardType.NORMAL));
+        sm.addScreen(screen, guardCoords, treasureCoords, new Coord(19, 2));
+        engi.init(sm, null, engi);
+        player = new PlayerContract(engi.getPlayer());
+        Guard g = engi.getGuards().get(1);
+        g.goRight();
+
+        //operations
+        player.pickupItem(ItemType.Sword);
+        player.useItem();
+
+        //oracle : pas d'exception
+        assertTrue(g.getCol() == 16 && g.getHgt() == 2);
+    }
+
+    @Test
+    public void testEtatRemarquable_UseGun(){
+        //CI
+        guardCoords.add(new CoordGuard(8, 2, GuardType.NORMAL));
+        sm.addScreen(screen, guardCoords, treasureCoords, new Coord(19, 2));
+        engi.init(sm, null, engi);
+        player = new PlayerContract(engi.getPlayer());
+        Guard g = engi.getGuards().get(1);
+        g.goRight();
+        g.goRight();
+        g.goRight();
+
+        //operations
+        player.pickupItem(ItemType.Gun);
+        player.digLeft(); // To face left side
+        player.useItem(); // Kill the guard
+
+        //oracle : pas d'exception
+        assertTrue(g.getCol() == 8 && g.getHgt() == 2);
+    }
+
+    @Test
+    public void testEtatRemarquable_UseGunWithObstacle(){
+        //CI
+        screen.setNature(13, 2, Cell.PLT);
+        guardCoords.add(new CoordGuard(8, 2, GuardType.NORMAL));
+        sm.addScreen(screen, guardCoords, treasureCoords, new Coord(19, 2));
+        engi.init(sm, null, engi);
+        player = new PlayerContract(engi.getPlayer());
+        Guard g = engi.getGuards().get(1);
+        g.goRight();
+        g.goRight();
+        g.goRight();
+
+        //operations
+        player.pickupItem(ItemType.Gun);
+        player.digLeft(); // To face left side
+        player.useItem(); // Kill the guard
+
+        //oracle : pas d'exception
+        assertTrue(g.getCol() == 11 && g.getHgt() == 2);
+    }
+
+    @Test
+    public void testEtatRemarquable_UnlockDoor(){
+        //CI
+        screen.setNature(17, 2, Cell.DOR);
+        sm.addScreen(screen, guardCoords, treasureCoords, new Coord(19, 2));
+        engi.init(sm, null, engi);
+        player = new PlayerContract(engi.getPlayer());
+
+        //operations
+        player.pickupItem(ItemType.Key);
+        player.goLeft(); 
+        player.useItem(); // Uses the key on the door
+
+        //oracle : pas d'exception
+        assertTrue(engi.getEnvironment().getCellNature(17, 2) == Cell.EMP);
+    }
+
+    @Test
+    public void testEtatRemarquable_FlashBomb(){
+        //CI
+        screen.setNature(17, 2, Cell.DOR);
+        sm.addScreen(screen, guardCoords, treasureCoords, new Coord(19, 2));
+        engi.init(sm, null, engi);
+        player = new PlayerContract(engi.getPlayer());
+
+        //operations
+        player.pickupItem(ItemType.Flash);
+        player.useItem(); // Uses the bomb
+
+        //oracle : pas d'exception
+        assertTrue(engi.getGuards().get(0).getTimeLeftParalyzed() == 10);
     }
 }

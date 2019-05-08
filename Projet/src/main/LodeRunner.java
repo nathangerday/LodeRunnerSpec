@@ -62,8 +62,6 @@ public class LodeRunner{
         screen.setNature(16, 2, Cell.NPL);
         screen.setNature(7, 2, Cell.DOR);
 
-        screen.setNature(10, 1, Cell.HOL);
-
         CommandManager cm = new CommandManager(Thread.currentThread());
         ScreenManager sm = Factory.createScreenManager();
         sm.init();
@@ -73,7 +71,7 @@ public class LodeRunner{
         treasureCoords.add(new CoordItem(1, 2, ItemType.Key));
         treasureCoords.add(new CoordItem(12, 2, ItemType.Sword));
         List<CoordGuard> guardCoords = new ArrayList<>();
-        guardCoords.add(new CoordGuard(19, 2, GuardType.NORMAL));
+        guardCoords.add(new CoordGuard(1, 7, GuardType.NORMAL));
         // guardCoords.add(new Coord(10, 3));
         sm.addScreen(screen, guardCoords, treasureCoords, new Coord(5, 2));
 
@@ -112,7 +110,7 @@ public class LodeRunner{
         guardCoords2.add(new CoordGuard(9, 7, GuardType.NORMAL));
 
         sm.addScreen(screen2, guardCoords2, treasureCoords2, new Coord(8, 2));
-        // sm.removeScreen(0);
+        sm.removeScreen(1);
         engi.init(sm, cm, engi);
         while(engi.getStatus() == Status.Playing){
             engi.step();

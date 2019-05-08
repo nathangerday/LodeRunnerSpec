@@ -1,5 +1,5 @@
 Testsuite: test.GuardTest
-Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.059 sec
+Tests run: 20, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.031 sec
 ------------- Standard Error -----------------
 Service 'GuardContract' method 'init': precondition error
   ==> x < e.getEnvironment().getWidth()
@@ -9,20 +9,23 @@ Service 'GuardContract' method 'init': precondition error
   ==> \not e.getEnvironment().getCellNature(x, y) \in {MTL, PLT, DOR, NGU}
 ------------- ---------------- ---------------
 
-Testcase: testInit1 took 0.003 sec
-Testcase: testInit2 took 0.003 sec
-Testcase: testGoLeft1 took 0.004 sec
-Testcase: testGoLeft2 took 0.003 sec
-Testcase: testGoRight1 took 0.003 sec
-Testcase: testGoRight2 took 0.003 sec
-Testcase: testGoUp1 took 0.004 sec
-Testcase: testGoUp2 took 0.004 sec
-Testcase: testGoDown1 took 0.003 sec
-Testcase: testGoDown2 took 0.014 sec
-Testcase: testStep1 took 0.003 sec
-Testcase: testTimeLeftParalyzed1 took 0 sec
+Testcase: testInit1 took 0.001 sec
+Testcase: testInit2 took 0 sec
+Testcase: testGoLeft1 took 0.001 sec
+Testcase: testGoLeft2 took 0.001 sec
+Testcase: testGoRight1 took 0.001 sec
+Testcase: testGoRight2 took 0.001 sec
+Testcase: testGoUp1 took 0.002 sec
+Testcase: testGoUp2 took 0.001 sec
+Testcase: testGoDown1 took 0.001 sec
+Testcase: testGoDown2 took 0.001 sec
+Testcase: testStep1 took 0.002 sec
 Testcase: testMoveToInitCoords took 0.002 sec
+Testcase: testTimeLeftParalyzed1 took 0 sec
 Testcase: testClimbRight1 took 0.001 sec
-Testcase: testClimbRight2 took 0.001 sec
+Testcase: testClimbRight2 took 0 sec
 Testcase: testClimbLeft1 took 0.001 sec
 Testcase: testClimbLeft2 took 0 sec
+Testcase: testEtatRemarquable_Falling took 0.002 sec
+Testcase: testEtatRemarquable_FallingIntoHOL took 0.006 sec
+Testcase: testEtatRemarquable_StillFallingWhenParalyzed took 0.004 sec

@@ -68,7 +68,7 @@ public class Util {
 
     public static boolean containsItem(Set<Entity> content){
         for(Entity e : content){
-            if(e instanceof Item){
+            if(e instanceof Item && ((Item)e).getNature() != ItemType.Treasure){
                 return true;
             }
         }
@@ -77,7 +77,7 @@ public class Util {
 
     public static Item getItem(Set<Entity> content){
         for(Entity e : content){
-            if(e instanceof Item){
+            if(e instanceof Item && ((Item)e).getNature() != ItemType.Treasure){
                 return (Item)e;
             }
         }
@@ -87,7 +87,7 @@ public class Util {
     public static Item removeItem(Set<Entity> content){
         Item toDelete = null;
         for(Entity e : content){
-            if(e instanceof Item){
+            if(e instanceof Item && ((Item)e).getNature() != ItemType.Treasure){
                 toDelete = (Item)e;
             }
         }

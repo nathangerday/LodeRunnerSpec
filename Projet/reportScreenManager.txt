@@ -1,19 +1,19 @@
 Testsuite: test.ScreenManagerTest
-Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 sec
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 sec
 ------------- Standard Error -----------------
+Service 'ScreenManagerContract' method 'removeScreen': precondition error
+  ==> i < getNbScreen()
+Service 'ScreenManagerContract' method 'removeScreen': precondition error
+  ==> i < getNbScreen()
 Service 'ScreenManagerContract' method 'addScreen': precondition error
   ==> player != null
-Service 'ScreenManagerContract' method 'removeScreen': precondition error
-  ==> i < getNbScreen()
-Service 'ScreenManagerContract' method 'removeScreen': precondition error
-  ==> i < getNbScreen()
 ------------- ---------------- ---------------
 
 Testcase: testInit1 took 0.001 sec
-Testcase: testAddScreen1 took 0.001 sec
-Testcase: testAddScreen2 took 0 sec
 Testcase: testRemoveScreen1 took 0 sec
 Testcase: testRemoveScreen2 took 0 sec
 Testcase: testRemoveScreen3 took 0 sec
 Testcase: testPaireTransition_addScreen_removeScreen took 0 sec
 Testcase: testPaireTransition_removeScreen_addScreen took 0 sec
+Testcase: testAddScreen1 took 0 sec
+Testcase: testAddScreen2 took 0 sec

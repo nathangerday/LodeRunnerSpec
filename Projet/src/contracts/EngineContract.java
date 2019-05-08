@@ -226,7 +226,7 @@ public class EngineContract extends EngineDecorator{
 		checkInvariant();
 
 		//\post getCommandManager()@pre != null \implies getNextCommand() == getCommandManager().peekCurrentCommand()@pre
-		if(!(Util.containsTreasure(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getNbTreasuresLeft_atPre == 1) && !Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre))){
+		if(!(Util.containsTreasure(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getNbTreasuresLeft_atPre == 1) && !Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getEnvironment_atPre.getCellNature(getPlayerCol_atPre, getPlayerHgt_atPre) != Cell.HOL){
 			boolean holeexists = false;
 			for(Hole o: getHoles_atPre){
 				if(o.getX() == getPlayerCol_atPre && o.getY() == getPlayerHgt_atPre && o.getTime() == 14){
@@ -286,9 +286,12 @@ public class EngineContract extends EngineDecorator{
 		//          \and \Exists Item i \in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre
 		//              \implies getPlayer().getCurrentlyHeldItem().getNature() = i.getNature()
 		if(!Util.containsTreasure(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && !Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && Util.containsItem(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getNbLifes_atPre == getNbLifes()){
-			ItemType nature = Util.getItem(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)).getNature();
-			if(!(getPlayer().getCurrentlyHeldItem().getNature() == nature)){
-				Contractor.defaultContractor().postconditionError("EngineContract", "step", "Pickup item");
+			Item i = Util.getItem(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre));
+			if(i != null){
+				ItemType nature = i.getNature();
+				if(getPlayer().getCurrentlyHeldItem() != null && !(getPlayer().getCurrentlyHeldItem().getNature() == nature)){
+					Contractor.defaultContractor().postconditionError("EngineContract", "step", "Pickup item");
+				}
 			}
 		}
 
@@ -349,7 +352,7 @@ public class EngineContract extends EngineDecorator{
 		//      \and \not (\Exists Treasure t \in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre
 		//              \and getNbTreasuresLeft() = 1)
 		//      \impl getStatus() == Playing
-		if(!(Util.containsTreasure(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getNbTreasuresLeft_atPre == 1) && !Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre))){
+		if(!(Util.containsTreasure(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getNbTreasuresLeft_atPre == 1) && !Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getEnvironment_atPre.getCellNature(getPlayerCol_atPre, getPlayerHgt_atPre) != Cell.HOL){
 			boolean holeexists = false;
 			for(Hole o: getHoles_atPre){
 				if(o.getX() == getPlayerCol_atPre && o.getY() == getPlayerHgt_atPre && o.getTime() == 14){

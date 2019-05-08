@@ -197,8 +197,7 @@ public class LodeRunner{
         //         CREATE ENGI AND EXECUTE
         //==============================================
         
-        sm.removeScreen(0);
-        sm.removeScreen(0);
+
         engi.init(sm, cm, engi);
         while(engi.getStatus() == Status.Playing){
             engi.step();

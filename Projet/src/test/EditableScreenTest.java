@@ -38,7 +38,7 @@ public class EditableScreenTest {
         //operations
         screen.setNature(24, 5, Cell.PLT);
 
-        //oracles : pas d'exception
+       //Oracle : ContractError attendu
         
     }
 
@@ -60,7 +60,7 @@ public class EditableScreenTest {
         //operations
         screen.init(-10, 20);
 
-        //oracles : PreconditionError
+        //Oracle : ContractError attendu
         
     }
     

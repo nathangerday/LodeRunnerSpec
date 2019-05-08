@@ -73,7 +73,7 @@ public class ScreenManagerTest {
         //operations
         manager.addScreen(screen, guardCoords2, itemsCoord, null);
 
-        //oracles : pas d'exception
+        //Oracle : ContractError attendu
     }
 
 
@@ -105,7 +105,7 @@ public class ScreenManagerTest {
         //operations
         manager.removeScreen(0);
 
-        //oracles : pas d'exception
+        //Oracle : ContractError attendu
     }
 
     @Test(expected = contracts.ContractError.class)
@@ -125,7 +125,7 @@ public class ScreenManagerTest {
         //operations
         manager.removeScreen(1);
 
-        //oracles : pas d'exception
+        //Oracle : ContractError attendu
     }
 
 

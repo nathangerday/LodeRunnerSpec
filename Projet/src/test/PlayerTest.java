@@ -88,7 +88,7 @@ public class PlayerTest {
         //operations
         player.init(engi.getEnvironment(), 30, 2);
 
-        //oracles Pas d'exceptions
+        //Oracle : ContractError attendu
 
     }
 

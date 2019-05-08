@@ -62,7 +62,7 @@ public class CharacterTest {
         //operations
         character.init(envi, 5, 2);
 
-        //oracles : pas d'exception
+        //Oracle : ContractError attendu
     }
 
     @Test(expected = contracts.ContractError.class)
@@ -73,7 +73,7 @@ public class CharacterTest {
         //operations
         character.init(envi, 30, 2);
 
-        //oracles : pas d'exception
+        //Oracle : ContractError attendu
     }
 
 

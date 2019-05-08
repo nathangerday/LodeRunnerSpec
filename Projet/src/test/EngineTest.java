@@ -81,7 +81,7 @@ public class EngineTest {
         //operation
         engi.init(null, null, engi);
 
-        //oracle : Pas d'exceptions
+        //Oracle : ContractError attendus
     }
 
     @Test(expected = contracts.ContractError.class)
@@ -91,7 +91,7 @@ public class EngineTest {
         //operation
         engi.init(sm, null, engi);
 
-        //oracle : Pas d'exceptions
+        //Oracle : ContractError attendu
     }
 
     @Test
@@ -116,7 +116,7 @@ public class EngineTest {
         //operation
         engi.addHole(3, 1);
 
-        //oracle : Pas d'exceptions
+        //Oracle : ContractError attendu
     }
 
     @Test

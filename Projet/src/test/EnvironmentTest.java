@@ -56,7 +56,7 @@ public class EnvironmentTest {
         //operations
         envi.addToCellContent(30, 5, new Item(ItemType.Treasure, 5, 5));
 
-        //oracles : pas d'exception
+        //Oracle : ContractError attendu
     }
 
     @Test(expected = contracts.ContractError.class)
@@ -68,7 +68,7 @@ public class EnvironmentTest {
         //operations
         envi.addToCellContent(5, 5, new GuardImpl());
 
-        //oracles : pas d'exception
+        //Oracle : ContractError attendu
     }
 
 
@@ -95,7 +95,7 @@ public class EnvironmentTest {
         //operations
         envi.removeFromCellContent(5, 5, new Item(ItemType.Treasure, 8, 8));
 
-        //oracles : pas d'exception
+        //Oracle : ContractError attendu
     }
 
 

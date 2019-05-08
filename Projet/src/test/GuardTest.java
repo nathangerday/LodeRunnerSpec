@@ -89,7 +89,7 @@ public class GuardTest {
         //operation
         guard.init(engi, 30, 2, engi.getPlayer());
 
-        //oracle : Pas d'exceptions
+        //Oracle : ContractError attendu
         
     }
 
@@ -193,7 +193,7 @@ public class GuardTest {
         //operations
         guard.climbLeft();
 
-        //oracles : pas d'exception
+        //Oracle : ContractError attendu
     }
 
 

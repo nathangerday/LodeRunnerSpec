@@ -123,7 +123,7 @@ public class GuardTest {
     }
 
     @Test
-    public void testTimeLeftParalyzed1(){
+    public void testParalyze1(){
         //CI
         sm.addScreen(screen, guardCoords, treasureCoords, new Coord(5, 2));
         engi.init(sm, null, engi);

@@ -1,5 +1,5 @@
 Testsuite: test.EngineTest
-Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.075 sec
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.033 sec
 ------------- Standard Output ---------------
 ============================
 Score : 0
@@ -17,20 +17,20 @@ Item : Sword (Usages : 3)
 ------------- ---------------- ---------------
 ------------- Standard Error -----------------
 Service 'EngineContract' method 'init': precondition error
-  ==> sm.getNbScreen() >= 1
-Service 'EngineContract' method 'init': precondition error
   ==> sm != null
+Service 'EngineContract' method 'init': precondition error
+  ==> sm.getNbScreen() >= 1
 Service 'EngineContract' method 'addHole': precondition error
   ==> getEnvironment().getCellNature(x, y) == HOL
 ------------- ---------------- ---------------
 
-Testcase: testInit3 took 0.007 sec
 Testcase: testInit1 took 0.003 sec
-Testcase: testInit2 took 0 sec
-Testcase: testEtatRemarquable_RemplissageTrouApresDuree took 0.021 sec
-Testcase: testAdd2 took 0.004 sec
-Testcase: testDisplay took 0.02 sec
-Testcase: testStep took 0.005 sec
-Testcase: testEtatRemarquable_Win took 0.002 sec
-Testcase: testEtatRemarquable_Loss took 0.006 sec
-Testcase: testAdd1 took 0.002 sec
+Testcase: testInit2 took 0.001 sec
+Testcase: testInit3 took 0 sec
+Testcase: testEtatRemarquable_Win took 0.001 sec
+Testcase: testAdd1 took 0.001 sec
+Testcase: testAdd2 took 0.001 sec
+Testcase: testDisplay took 0.009 sec
+Testcase: testStep took 0.003 sec
+Testcase: testEtatRemarquable_Loss took 0.003 sec
+Testcase: testEtatRemarquable_RemplissageTrouApresDuree took 0.011 sec

@@ -30,6 +30,18 @@ public class EditableScreenTest {
         
     }
 
+    @Test(expected = contracts.ContractError.class)
+    public void testSetNature2(){
+        //CI
+        screen.init(10, 20);
+        
+        //operations
+        screen.setNature(24, 5, Cell.PLT);
+
+        //oracles : pas d'exception
+        
+    }
+
     @Test
     public void testInit1(){
         // Pas de condition initiale

@@ -1,5 +1,0 @@
-1) Utilisation de l'interface Entity, qui sera notamment implémenté par Item et Character.
-        Elle ne contient pas de méthode a redéfini, elle sert simplement a identifier le fait que certaines méthodes peuvent
-        retourner tout ce qui implémente cette interface.
-
-2) On a le droit de creuser quand on est sur une echelle

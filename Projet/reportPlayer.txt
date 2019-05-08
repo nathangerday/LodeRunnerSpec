@@ -1,5 +1,5 @@
 Testsuite: test.PlayerTest
-Tests run: 28, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.105 sec
+Tests run: 28, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.103 sec
 ------------- Standard Error -----------------
 Service 'EnvironmentContract' method 'addToCellContent': precondition error
   ==> x < getWidth()
@@ -7,29 +7,29 @@ Service 'EnvironmentContract' method 'addToCellContent': precondition error
 
 Testcase: testInit1 took 0.01 sec
 Testcase: testInit2 took 0.002 sec
-Testcase: testGoLeft1 took 0.003 sec
-Testcase: testGoLeft2 took 0.003 sec
+Testcase: testGoLeft1 took 0.004 sec
+Testcase: testGoLeft2 took 0.004 sec
 Testcase: testGoRight1 took 0.003 sec
 Testcase: testGoRight2 took 0.003 sec
-Testcase: testGoUp1 took 0.003 sec
+Testcase: testGoUp1 took 0.004 sec
 Testcase: testGoUp2 took 0.002 sec
 Testcase: testGoDown1 took 0.003 sec
 Testcase: testGoDown2 took 0.003 sec
 Testcase: testStep1 took 0.004 sec
-Testcase: testPickupItem1 took 0.002 sec
-Testcase: testUseItem1 took 0.003 sec
-Testcase: digLeft1 took 0.003 sec
-Testcase: digLeft2 took 0.016 sec
+Testcase: testPickupItem1 took 0.001 sec
+Testcase: testUseItem1 took 0.002 sec
+Testcase: digLeft1 took 0.002 sec
+Testcase: digLeft2 took 0.002 sec
 Testcase: digRight1 took 0.003 sec
 Testcase: digRight2 took 0.003 sec
 Testcase: paireTransition_goLeft_goRight took 0.004 sec
-Testcase: paireTransition_goRight_goLeft took 0.004 sec
+Testcase: paireTransition_goRight_goLeft took 0.003 sec
 Testcase: paireTransition_goUp_goDown took 0.004 sec
-Testcase: paireTransition_goDown_goUp took 0.002 sec
-Testcase: paireTransition_digLeft_digRight took 0.002 sec
-Testcase: paireTransition_digRight_digLeft took 0.002 sec
-Testcase: testEtatRemarquable_UseSword took 0.002 sec
-Testcase: testEtatRemarquable_UseGun took 0.004 sec
-Testcase: testEtatRemarquable_UseGunWithObstacle took 0.004 sec
-Testcase: testEtatRemarquable_UnlockDoor took 0.002 sec
-Testcase: testEtatRemarquable_FlashBomb took 0.001 sec
+Testcase: paireTransition_goDown_goUp took 0.003 sec
+Testcase: paireTransition_digLeft_digRight took 0.003 sec
+Testcase: paireTransition_digRight_digLeft took 0.003 sec
+Testcase: testEtatRemarquable_UseSword took 0.004 sec
+Testcase: testEtatRemarquable_UseGun took 0.006 sec
+Testcase: testEtatRemarquable_UseGunWithObstacle took 0.006 sec
+Testcase: testEtatRemarquable_UnlockDoor took 0.003 sec
+Testcase: testEtatRemarquable_FlashBomb took 0.002 sec

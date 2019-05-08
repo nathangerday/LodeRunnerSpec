@@ -1283,9 +1283,7 @@ public class GuardContract extends GuardDecorator {
                 }
             }
         }
-        boolean cond3 = g.isCarryingTreasure() == isCarryingTreasure();
-        boolean cond4 = g.getTimeLeftParalyzed() == getTimeLeftParalyzed();
-        return cond1 && cond2 && cond3 && cond4;
+        return cond1 && cond2;
     }
     
 }

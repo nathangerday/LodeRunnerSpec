@@ -1,5 +1,5 @@
 Testsuite: test.CharacterTest
-Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 sec
+Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 sec
 ------------- Standard Error -----------------
 Service 'CharacterContract' method 'init': precondition error
   ==> \not s.getCellNature(x, y) \in {MTL, PLT, DOR}
@@ -8,20 +8,20 @@ Service 'CharacterContract' method 'init': precondition error
 ------------- ---------------- ---------------
 
 Testcase: testInit1 took 0.002 sec
-Testcase: testInit2 took 0 sec
+Testcase: testInit2 took 0.001 sec
 Testcase: testInit3 took 0 sec
 Testcase: testGoLeft1 took 0.001 sec
 Testcase: testGoLeft2 took 0.001 sec
 Testcase: testGoLeft3 took 0.001 sec
 Testcase: testGoLeft4 took 0 sec
-Testcase: testGoLeft5 took 0 sec
+Testcase: testGoLeft5 took 0.001 sec
 Testcase: testGoLeft6 took 0 sec
-Testcase: testGoLeft7 took 0 sec
+Testcase: testGoLeft7 took 0.001 sec
 Testcase: testGoLeft8 took 0 sec
 Testcase: testGoLeft9 took 0 sec
-Testcase: testGoRight1 took 0 sec
-Testcase: testGoRight2 took 0.001 sec
-Testcase: testGoUp1 took 0 sec
+Testcase: testGoRight1 took 0.001 sec
+Testcase: testGoRight2 took 0 sec
+Testcase: testGoUp1 took 0.001 sec
 Testcase: testGoUp2 took 0.001 sec
 Testcase: testGoDown1 took 0 sec
-Testcase: testGoDown2 took 0.001 sec
+Testcase: testGoDown2 took 0 sec

@@ -285,7 +285,7 @@ public class EngineContract extends EngineDecorator{
 		//			\and \not \Exists Guard g \in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre
 		//          \and \Exists Item i \in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre
 		//              \implies getPlayer().getCurrentlyHeldItem().getNature() = i.getNature()
-		if(!Util.containsTreasure(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && !Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && Util.containsItem(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre))){
+		if(!Util.containsTreasure(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && !Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && Util.containsItem(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getNbLifes_atPre == getNbLifes()){
 			ItemType nature = Util.getItem(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)).getNature();
 			if(!(getPlayer().getCurrentlyHeldItem().getNature() == nature)){
 				Contractor.defaultContractor().postconditionError("EngineContract", "step", "Pickup item");
@@ -299,7 +299,7 @@ public class EngineContract extends EngineDecorator{
 		//			\and \not \Exists Guard g \in getEnvironment().getCellContent(getPlayer().getCol()@pre, getPlayer().getHgt()@pre)@pre
 		//          \and getEnvironment().getCellNature(getPlayer().getCol()@pre, getPlayer().getHgt()@pre - 1)@pre = TRP
 		//                  \implies getEnvironment().getCellNature(getPlayer().getCol()@pre, getPlayer().getHgt()@pre - 1) = EMP
-		if(!(Util.containsTreasure(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getNbTreasuresLeft_atPre == 1) && !Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getCellNature_atPre[getPlayerCol_atPre][getPlayerHgt_atPre - 1] == Cell.TRP){
+		if(!(Util.containsTreasure(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getNbTreasuresLeft_atPre == 1) && !Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getCellNature_atPre[getPlayerCol_atPre][getPlayerHgt_atPre - 1] == Cell.TRP && getNbLifes_atPre == getNbLifes()){
 			if(!(getEnvironment().getCellNature(getPlayerCol_atPre, getPlayerHgt_atPre - 1) == Cell.EMP)){
 				Contractor.defaultContractor().postconditionError("EngineContract", "step", "Reveal trap");
 			}
@@ -315,7 +315,7 @@ public class EngineContract extends EngineDecorator{
 		//                  \impl \not \Exists Hole o \in getHoles() \with (o.getX() == h.getX() \and o.getY() == h.getY())
 		//              h.getTime() == 14 \and getPlayer().getX() == h.getX() \and getPlayer().getY() == h.getY() 
 		//                  \impl death
-		if(!(Util.containsTreasure(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getNbTreasuresLeft_atPre == 1) && !Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre))){
+		if(!(Util.containsTreasure(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getNbTreasuresLeft_atPre == 1) && !Util.containsGuard(getCellContent_atPre.get(getPlayerCol_atPre).get(getPlayerHgt_atPre)) && getNbLifes_atPre == getNbLifes()){
 			for(Hole h : getHoles_atPre){
 				boolean ok = false;
 				if(h.getTime() < 14){

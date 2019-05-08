@@ -1,5 +1,5 @@
 Testsuite: test.EditableScreenTest
-Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.02 sec
+Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 sec
 ------------- Standard Error -----------------
 Service 'EditableScreenContract' method 'openDoor': precondition error
   ==> getCellNature(x,y) == Cell.DOR
@@ -15,12 +15,14 @@ Service 'EditableScreenContract' method 'fill': precondition error
 
 Testcase: testOpenDoor1 took 0.002 sec
 Testcase: testRevealTrap1 took 0 sec
-Testcase: testInit1 took 0.001 sec
-Testcase: testInit2 took 0 sec
-Testcase: testDig1 took 0.001 sec
-Testcase: testFill1 took 0.001 sec
-Testcase: testSetNature1 took 0.002 sec
-Testcase: testDig2 took 0.003 sec
-Testcase: testFill2 took 0.004 sec
-Testcase: testOpenDoor2 took 0.001 sec
-Testcase: testRevealTrap2 took 0.001 sec
+Testcase: testInit1 took 0 sec
+Testcase: testInit2 took 0.001 sec
+Testcase: testDig1 took 0 sec
+Testcase: testFill1 took 0 sec
+Testcase: testSetNature1 took 0.001 sec
+Testcase: testDig2 took 0.001 sec
+Testcase: testFill2 took 0 sec
+Testcase: testOpenDoor2 took 0 sec
+Testcase: testRevealTrap2 took 0 sec
+Testcase: testPaireTransition_Dig_Fill took 0.001 sec
+Testcase: testPaireTransition_Fill_Dig took 0.001 sec

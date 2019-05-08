@@ -153,5 +153,34 @@ public class EditableScreenTest {
         
     }
 
+    @Test
+    public void testPaireTransition_Dig_Fill(){
+        //CI
+        screen.init(10, 20);
+        screen.setNature(5, 2, Cell.PLT);
+        
+        //operations
+        screen.dig(5, 2);
+        screen.fill(5, 2);
+
+        //oracles : Pas d'exception
+        
+    }
+
+    @Test
+    public void testPaireTransition_Fill_Dig(){
+        //CI
+        screen.init(10, 20);
+        screen.setNature(5, 2, Cell.HOL);
+        
+        //operations
+        screen.fill(5, 2);
+        screen.dig(5, 2);
+
+        //oracles : Pas d'exception
+        
+    }
+    
+
 
 }

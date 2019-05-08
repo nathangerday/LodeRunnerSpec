@@ -15,6 +15,7 @@ import data.CoordGuard;
 import data.CoordItem;
 import data.GuardType;
 import data.ItemType;
+import data.Status;
 import impl.EditableScreenImpl;
 import impl.EngineImpl;
 import impl.ScreenManagerImpl;
@@ -54,7 +55,7 @@ public class EngineTest {
         treasureCoords = new ArrayList<>();
         treasureCoords.add(new CoordItem(0, 2, ItemType.Treasure));
         treasureCoords.add(new CoordItem(17, 4, ItemType.Treasure));
-        treasureCoords.add(new CoordItem(5, 2, ItemType.Key));
+        treasureCoords.add(new CoordItem(8, 2, ItemType.Key));
         treasureCoords.add(new CoordItem(1, 2, ItemType.Sword));
         guardCoords = new ArrayList<>();
         guardCoords.add(new CoordGuard(1, 7, GuardType.NORMAL));
@@ -140,5 +141,56 @@ public class EngineTest {
         engi.step();
 
         //oracle : Pas d'exceptions
+    }
+
+
+
+    @Test
+    public void testEtatRemarquable_Win(){
+        //CI
+        treasureCoords.clear();
+        treasureCoords.add(new CoordItem(5, 2, ItemType.Treasure));
+        sm.addScreen(screen, guardCoords, treasureCoords, new Coord(5, 2));
+
+        //operations
+        engi.init(sm, null, engi);
+        engi.step();
+
+        //oracles : pas d'exceptions
+        assertTrue(engi.getStatus() == Status.Win);
+    }
+
+    @Test
+    public void testEtatRemarquable_Loss(){
+        //CI
+        guardCoords.add(new CoordGuard(5, 2, GuardType.NORMAL));
+        sm.addScreen(screen, guardCoords, treasureCoords, new Coord(5, 2));
+
+        //operations
+        engi.init(sm, null, engi); // 3 lifes at this point
+
+        engi.step(); // First death
+        engi.step(); // Second death
+        engi.step(); // Third and last death, no more lifes left
+
+        //oracles : pas d'exceptions
+        assertTrue(engi.getStatus() == Status.Loss);
+    }
+
+    @Test    
+    public void testEtatRemarquable_RemplissageTrouApresDuree(){
+        //CI
+        screen.setNature(2, 1, Cell.HOL);
+        sm.addScreen(screen, null, treasureCoords, new Coord(5, 2));
+
+        //operations
+        engi.init(sm, null, engi);
+        engi.addHole(2, 1);
+        for(int i=0; i<15; i++){
+            engi.step();
+        }
+        
+        //oracles : pas d'exceptions
+        assertTrue(engi.getEnvironment().getCellNature(2, 1) == Cell.PLT);        
     }
 }

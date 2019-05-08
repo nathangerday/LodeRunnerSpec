@@ -204,4 +204,33 @@ public class EnvironmentTest {
     }
 
 
+    @Test
+    public void testPaireTransition_Dig_Fill(){
+        //CI
+        screen.setNature(5, 2, Cell.PLT);
+        envi.init(screen);
+        
+        //operations
+        envi.dig(5, 2);
+        envi.fill(5, 2);
+
+        //oracles : Pas d'exception
+        
+    }
+
+    @Test
+    public void testPaireTransition_Fill_Dig(){
+        //CI
+        screen.setNature(5, 2, Cell.HOL);
+        envi.init(screen);
+        
+        //operations
+        envi.fill(5, 2);
+        envi.dig(5, 2);
+
+        //oracles : Pas d'exception
+        
+    }
+
+
 }

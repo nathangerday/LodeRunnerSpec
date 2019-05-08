@@ -128,4 +128,47 @@ public class ScreenManagerTest {
         //oracles : pas d'exception
     }
 
+
+    @Test
+    public void testPaireTransition_addScreen_removeScreen(){
+        //CI
+        manager.init();
+        List<CoordItem> itemsCoord = new ArrayList<>();
+        itemsCoord.add(new CoordItem(10, 2, ItemType.Treasure));
+        itemsCoord.add(new CoordItem(11, 2, ItemType.Treasure));
+        itemsCoord.add(new CoordItem(8, 2, ItemType.Gun));
+        List<CoordGuard> guardCoords2 = new ArrayList<>();
+        guardCoords2.add(new CoordGuard(9, 7, GuardType.NORMAL));
+        EditableScreen screen = new EditableScreenImpl();
+        screen.init(8, 20);
+
+        //operations
+        manager.addScreen(screen, guardCoords2, itemsCoord, new Coord(5, 2));
+        manager.removeScreen(0);
+
+        //oracles : pas d'exception
+    }
+
+    @Test
+    public void testPaireTransition_removeScreen_addScreen(){
+        //CI
+        manager.init();
+        List<CoordItem> itemsCoord = new ArrayList<>();
+        itemsCoord.add(new CoordItem(10, 2, ItemType.Treasure));
+        itemsCoord.add(new CoordItem(11, 2, ItemType.Treasure));
+        itemsCoord.add(new CoordItem(8, 2, ItemType.Gun));
+        List<CoordGuard> guardCoords2 = new ArrayList<>();
+        guardCoords2.add(new CoordGuard(9, 7, GuardType.NORMAL));
+        EditableScreen screen = new EditableScreenImpl();
+        screen.init(8, 20);
+
+        //operations
+        manager.addScreen(screen, guardCoords2, itemsCoord, new Coord(5, 2));
+        manager.removeScreen(0);
+        manager.addScreen(screen, guardCoords2, itemsCoord, new Coord(8, 2));
+
+
+        //oracles : pas d'exception
+    }
+    
 }

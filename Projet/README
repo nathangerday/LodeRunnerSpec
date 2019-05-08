@@ -2,6 +2,7 @@
 MOVING : Z Q S D
 DIG LEFT : A
 DIG RIGHT : E
+USE ITEM : Space Bar
 
 
 ===================== COMPILE =====================

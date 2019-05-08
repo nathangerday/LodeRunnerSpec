@@ -31,6 +31,7 @@ public class Factory{
     }
     public static Guard createGuard(){
         return new GuardContract(new GuardImpl());
+        // return new GuardImpl();
     }
     public static Screen createScreen(){
         return new ScreenContract(new ScreenImpl());
@@ -38,5 +39,6 @@ public class Factory{
     }
     public static ScreenManager createScreenManager(){
         return new ScreenManagerContract(new ScreenManagerImpl());
+        // return new ScreenManagerImpl();
     }
 }

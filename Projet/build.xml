@@ -32,7 +32,7 @@
 
  <target name="test" depends="compile"
           description="test of first implementation">
-    <echo>================ Run first test ================</echo>
+    <echo>================ Running All Tests ================</echo>
     <junit printsummary="yes">
       <classpath>
         <pathelement location="${build}"/>

@@ -1,5 +1,5 @@
 Testsuite: test.EnvironmentTest
-Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 sec
+Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.018 sec
 ------------- Standard Error -----------------
 Service 'EnvironmentContract' method 'openDoor': precondition error
   ==> getCellNature(x,y) == Cell.DOR
@@ -17,19 +17,19 @@ Service 'EnvironmentContract' method 'addToCellContent': precondition error
   ==> (\Exists Guard c \in getCellContent(x, y)) \impl (\not (e \is Guard))
 ------------- ---------------- ---------------
 
-Testcase: testPaireTransition_Dig_Fill took 0.002 sec
-Testcase: testDig2 took 0.001 sec
-Testcase: testOpenDoor1 took 0.003 sec
+Testcase: testOpenDoor1 took 0.002 sec
 Testcase: testRevealTrap1 took 0.001 sec
 Testcase: testInit1 took 0 sec
-Testcase: testPaireTransition_Fill_Dig took 0 sec
 Testcase: testDig1 took 0.001 sec
-Testcase: testFill1 took 0.001 sec
-Testcase: testFill2 took 0 sec
-Testcase: testOpenDoor2 took 0.001 sec
+Testcase: testFill1 took 0 sec
+Testcase: testDig2 took 0.001 sec
+Testcase: testFill2 took 0.001 sec
+Testcase: testOpenDoor2 took 0 sec
 Testcase: testRevealTrap2 took 0.001 sec
+Testcase: testPaireTransition_Dig_Fill took 0.001 sec
+Testcase: testPaireTransition_Fill_Dig took 0.001 sec
 Testcase: testRemoveFromCellContent1 took 0.003 sec
-Testcase: testRemoveFromCellContent2 took 0.002 sec
+Testcase: testRemoveFromCellContent2 took 0.001 sec
 Testcase: testAddToCellContent1 took 0.001 sec
 Testcase: testAddToCellContent2 took 0.001 sec
 Testcase: testAddToCellContent3 took 0.002 sec
